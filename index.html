@@ -323,6 +323,9 @@
                     <p class="text-xs text-slate-500 font-medium mt-0.5">Aprueba solicitudes pendientes, edita o elimina las oportunidades publicadas en el portal.</p>
                 </div>
                 <div class="flex items-center gap-3">
+                    <button onclick="loadFromGoogleSheets()" class="bg-brand-lilaghost hover:bg-brand-lila text-brand-dark text-xs font-extrabold px-3 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs">
+                        <i class="fa-solid fa-rotate"></i> Actualizar Datos
+                    </button>
                     <span id="pending-count-badge" class="bg-brand-amarillo/40 text-brand-dark text-xs font-extrabold px-3 py-1.5 rounded-xl border border-brand-amarillo">
                         0 Solicitudes Pendientes
                     </span>
@@ -458,7 +461,7 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         const ADMIN_PIN = "ceps2026";
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyQOX3wTGbGVSWIlO867GY9E8jZ-rJ8cHaxKRwfgEeqIlnM_GC6nqzKxoFI_fjpRI-v/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzk9cThmashkng78RN60hUHSXV8YeYLEHMGyy2YXILVatGPmFBxsEFL8eb5UKM3yqh/exec";
 
         let rawData = [];
         let currentRole = 'estudiante';
@@ -470,37 +473,15 @@
 
         async function loadFromGoogleSheets() {
             try {
-                updateConnectionStatus(true, "Conectando a Google Sheets...");
+                updateConnectionStatus(true, "Actualizando con Google Sheets...");
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 const data = await response.json();
                 
                 if (Array.isArray(data) && data.length > 0) {
                     rawData = data;
-                    updateConnectionStatus(true, "Conectado a Google Sheets");
+                    updateConnectionStatus(true, "Conectado a Google Sheets (Sincronizado)");
                 } else {
-                    updateConnectionStatus(true, "Sheets vacío (Usando datos locales)");
-                    rawData = [
-                        {
-                            id: "1",
-                            institucion: "Municipalidad Distrital de Jesús María",
-                            puesto: "Interno / Practicante de Psicología",
-                            area: "Social-Comunitaria",
-                            tipo: "Prácticas Preprofesionales",
-                            modalidad: "Presencial",
-                            ubicacion: "Jesús María, Lima",
-                            descripcion: "Apoyo en el Área de Salud Mental y Bienestar Social.",
-                            contacto_email: "salud@munijesusmaria.gob.pe",
-                            contacto_telefono: "+51998877665",
-                            contacto_web: "https://munijesusmaria.gob.pe",
-                            proponente_nombre: "Sarah Oscátegui",
-                            proponente_correo: "sarah.oscategui@upch.pe",
-                            proponente_telefono: "+51999888777",
-                            permitir_contacto: "si",
-                            estado: "aprobado",
-                            fecha: "2026-08-15"
-                        }
-                    ];
-                    syncToGoogleSheets();
+                    updateConnectionStatus(true, "Sheets vacío");
                 }
                 renderAll();
             } catch (error) {
@@ -573,7 +554,8 @@
                 }
             });
 
-            if (tab === 'admin' && currentRole === 'ceps') renderAdminPanel();
+            // 🚀 CADA VEZ QUE ENTRAS AL PANEL ADMIN O EXPLORAR, DESCARGA LOS DATOS FRESCOS DE SHEETS
+            loadFromGoogleSheets();
         }
 
         function applyFilters() {
@@ -582,7 +564,6 @@
             const tipo = document.getElementById('filter-tipo').value;
             const modalidad = document.getElementById('filter-modalidad').value;
 
-            // Filtro estricto para mostrar solo los aprobados en Explorar
             const approvedList = rawData.filter(item => String(item.estado).trim().toLowerCase() === 'aprobado');
 
             const filtered = approvedList.filter(item => {
@@ -832,7 +813,7 @@
             if (item) {
                 item.institucion = document.getElementById('edit-institucion').value;
                 item.puesto = document.getElementById('edit-puesto').value;
-                item.area = document.getElementById('edit-area').value;
+                item.area = document.getElementById('edit-area-select') ? document.getElementById('edit-area-select').value : document.getElementById('edit-area').value;
                 item.tipo = document.getElementById('edit-tipo').value;
                 item.modalidad = document.getElementById('edit-modalidad').value;
                 item.ubicacion = document.getElementById('edit-ubicacion').value;
