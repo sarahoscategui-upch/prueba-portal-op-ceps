@@ -458,21 +458,16 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         const ADMIN_PIN = "ceps2026";
-        
-        // 🚀 URL EXACTA DE TU GOOGLE APPS SCRIPT
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyQOX3wTGbGVSWIlO867GY9E8jZ-rJ8cHaxKRwfgEeqIlnM_GC6nqzKxoFI_fjpRI-v/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzk9cThmashkng78RN60hUHSXV8YeYLEHMGyy2YXILVatGPmFBxsEFL8eb5UKM3yqh/exec";
 
-        // GLOBAL STATE
         let rawData = [];
         let currentRole = 'estudiante';
         let activeTab = 'explorar';
 
-        // INITIALIZATION: CARGAR DESDE GOOGLE SHEETS AUTOMÁTICAMENTE AL ABRIR
         document.addEventListener('DOMContentLoaded', () => {
             loadFromGoogleSheets();
         });
 
-        // CARGAR DATOS DESDE GOOGLE SHEETS
         async function loadFromGoogleSheets() {
             try {
                 updateConnectionStatus(true, "Conectando a Google Sheets...");
@@ -483,7 +478,7 @@
                     rawData = data;
                     updateConnectionStatus(true, "Conectado a Google Sheets");
                 } else {
-                    updateConnectionStatus(true, "Sheets vacío (Usando datos locales por defecto)");
+                    updateConnectionStatus(true, "Sheets vacío (Usando datos locales)");
                     rawData = [
                         {
                             id: "1",
@@ -497,8 +492,8 @@
                             contacto_email: "salud@munijesusmaria.gob.pe",
                             contacto_telefono: "+51998877665",
                             contacto_web: "https://munijesusmaria.gob.pe",
-                            proponente_nombre: "Pepe Pera",
-                            proponente_correo: "pepe.pera@upch.pe",
+                            proponente_nombre: "Sarah Oscátegui",
+                            proponente_correo: "sarah.oscategui@upch.pe",
                             proponente_telefono: "+51999888777",
                             permitir_contacto: "si",
                             estado: "aprobado",
@@ -515,7 +510,6 @@
             }
         }
 
-        // SINCRONIZAR TODO EL ARRAY
         async function syncToGoogleSheets() {
             try {
                 await fetch(GOOGLE_SCRIPT_URL, {
@@ -529,7 +523,6 @@
             }
         }
 
-        // ROLE CHANGE HANDLER WITH STRICT PIN CHECK
         function handleRoleChange(role) {
             if (role === 'ceps') {
                 const pin = prompt('Ingrese el PIN de Administrador CEPS:');
@@ -555,7 +548,6 @@
             renderAll();
         }
 
-        // TAB SWITCHER
         function switchTab(tab) {
             if (tab === 'admin' && currentRole !== 'ceps') {
                 showToast('Acceso denegado. Se requiere el rol CEPS.');
@@ -584,20 +576,20 @@
             if (tab === 'admin' && currentRole === 'ceps') renderAdminPanel();
         }
 
-        // FILTER & SEARCH LOGIC
         function applyFilters() {
             const search = document.getElementById('search-input').value.toLowerCase();
             const area = document.getElementById('filter-area').value;
             const tipo = document.getElementById('filter-tipo').value;
             const modalidad = document.getElementById('filter-modalidad').value;
 
-            const approvedList = rawData.filter(item => item.estado === 'aprobado');
+            // Filtro estricto para mostrar solo los aprobados en Explorar
+            const approvedList = rawData.filter(item => String(item.estado).trim().toLowerCase() === 'aprobado');
 
             const filtered = approvedList.filter(item => {
-                const matchesSearch = item.institucion.toLowerCase().includes(search) ||
-                                      item.puesto.toLowerCase().includes(search) ||
-                                      item.area.toLowerCase().includes(search) ||
-                                      item.descripcion.toLowerCase().includes(search);
+                const matchesSearch = (item.institucion || '').toLowerCase().includes(search) ||
+                                      (item.puesto || '').toLowerCase().includes(search) ||
+                                      (item.area || '').toLowerCase().includes(search) ||
+                                      (item.descripcion || '').toLowerCase().includes(search);
                 const matchesArea = area ? item.area === area : true;
                 const matchesTipo = tipo ? item.tipo === tipo : true;
                 const matchesModalidad = modalidad ? item.modalidad === modalidad : true;
@@ -608,7 +600,6 @@
             renderGrid(filtered);
         }
 
-        // RENDER OPPORTUNITIES GRID
         function renderGrid(list) {
             const grid = document.getElementById('opportunities-grid');
             const emptyState = document.getElementById('empty-state');
@@ -640,7 +631,7 @@
                     `;
                 }
                 if (item.contacto_telefono) {
-                    const cleanPhone = item.contacto_telefono.replace(/[^0-9]/g, '');
+                    const cleanPhone = String(item.contacto_telefono).replace(/[^0-9]/g, '');
                     contactButtonsHtml += `
                         <a href="https://wa.me/${cleanPhone}" target="_blank" class="flex-1 bg-brand-verde/40 hover:bg-brand-verde text-brand-dark font-extrabold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all">
                             <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp
@@ -715,11 +706,10 @@
             });
         }
 
-        // RENDER ADMIN PANEL
         function renderAdminPanel() {
             if (currentRole !== 'ceps') return;
-            const pendingList = rawData.filter(i => i.estado === 'pendiente');
-            const approvedList = rawData.filter(i => i.estado === 'aprobado');
+            const pendingList = rawData.filter(i => String(i.estado).trim().toLowerCase() === 'pendiente');
+            const approvedList = rawData.filter(i => String(i.estado).trim().toLowerCase() === 'aprobado');
 
             const pendingGrid = document.getElementById('admin-pending-grid');
             const approvedGrid = document.getElementById('admin-approved-grid');
@@ -811,7 +801,6 @@
             }
         }
 
-        // EDIT & DELETE MODAL HANDLERS (CON CORRECCIÓN DE TIPO DE ID)
         function openEditModal(id) {
             const item = rawData.find(i => String(i.id) === String(id));
             if (!item) return;
@@ -874,7 +863,6 @@
             deleteOpportunity(id);
         }
 
-        // ENVÍO AUTOMÁTICO A GOOGLE SHEETS
         async function handleFormSubmit(e) {
             e.preventDefault();
             const form = e.target;
@@ -919,7 +907,6 @@
             renderAll();
         }
 
-        // UPDATE STATUS FROM ADMIN (APROBAR) CON CORRECCIÓN DE TIPO DE ID
         function updateStatusApp(id, newStatus) {
             if (currentRole !== 'ceps') return;
             const item = rawData.find(i => String(i.id) === String(id));
@@ -931,7 +918,6 @@
             }
         }
 
-        // RENDER ALL VIEWS
         function renderAll() {
             applyFilters();
             if (currentRole === 'ceps') {
@@ -939,7 +925,6 @@
             }
         }
 
-        // STATUS CONNECTION HELPER
         function updateConnectionStatus(isConnected, message) {
             const dot = document.getElementById('status-dot');
             const text = document.getElementById('status-text');
@@ -949,7 +934,6 @@
             }
         }
 
-        // TOAST HELPER
         function showToast(msg) {
             const toast = document.getElementById('toast');
             const toastMsg = document.getElementById('toast-message');
