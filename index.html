@@ -1,1350 +1,723 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-slate-50">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Oportunidades | CEPS Psicología UPCH</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1G2qkSz9lFEGLpvTCkTAhO2nOamYfSIXs">
-    
-    <!-- Tailwind CSS CDN -->
+    <title>CEPS - Portal de Oportunidades</title>
+
+    <!-- Favicon Oficial CEPS -->
+    <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1G2qkSz9lFEGLpvTCkTAhO2nOamYfSIXs&sz=w128">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- FontAwesome 6 Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
                     colors: {
-                        ceps: {
-                            50: '#eef2ff',
-                            100: '#e0e7ff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                            800: '#3730a3',
-                            900: '#312e81',
+                        brand: {
+                            verde: '#d4db77',
+                            amarillo: '#fec72e',
+                            fucsia: '#e1559c',
+                            lila: '#e9d4f6',
+                            lilaghost: '#f6effb',
+                            celeste: '#0284c7',
+                            celestelight: '#e0f2fe',
+                            dark: '#1e293b'
                         }
                     }
                 }
             }
         }
     </script>
-    
-    <style>
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-        .modal-backdrop {
-            background-color: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(4px);
-        }
-        .tab-btn.active {
-            color: #4f46e5;
-            border-bottom-color: #4f46e5;
-            font-weight: 700;
-        }
-    </style>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-ceps-600 selection:text-white">
+<body class="bg-[#faf9fc] text-brand-dark min-h-screen flex flex-col font-sans antialiased">
 
-    <!-- STICKY HEADER -->
-    <header class="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
+    <!-- HEADER / NAVIGATION -->
+    <header class="bg-white border-b border-brand-lila/60 sticky top-0 z-40 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 gap-4">
+            <div class="flex justify-between items-center h-20">
                 
-                <!-- Brand / Logo Section -->
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('tabExplorar')">
-                    <img src="https://lh3.googleusercontent.com/d/1G2qkSz9lFEGLpvTCkTAhO2nOamYfSIXs" 
-                         alt="CEPS Logo" 
-                         class="w-10 h-10 object-contain rounded-lg shadow-sm bg-slate-50 border border-slate-200 p-0.5">
+                <!-- Logo & Title -->
+                <div class="flex items-center space-x-3">
+                    <img src="https://drive.google.com/thumbnail?id=1G2qkSz9lFEGLpvTCkTAhO2nOamYfSIXs&sz=w200" 
+                         alt="Logo CEPS" 
+                         class="w-12 h-12 object-contain rounded-xl p-0.5 border border-brand-lila/50 bg-white shadow-xs">
                     <div>
-                        <div class="flex items-center space-x-2">
-                            <span class="font-black text-slate-900 text-base sm:text-lg leading-tight tracking-tight">Portal de Oportunidades</span>
-                            <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-indigo-50 text-ceps-700 border border-indigo-100">CEPS</span>
-                        </div>
-                        <p class="text-xs text-slate-500 hidden sm:block">Centro de Estudiantes de Psicología UPCH</p>
+                        <span class="text-xs font-bold tracking-wider text-brand-celeste uppercase block">Universidad Peruana Cayetano Heredia</span>
+                        <h1 class="text-xl font-extrabold text-brand-dark flex items-center gap-2">
+                            CEPS <span class="text-brand-celeste font-medium">| Portal de Oportunidades</span>
+                        </h1>
                     </div>
                 </div>
 
-                <!-- Desktop Navigation Tabs -->
-                <nav class="hidden md:flex items-center space-x-1 h-full">
-                    <button id="navBtnExplorar" onclick="switchTab('tabExplorar')" class="tab-btn active h-full px-4 text-sm font-medium text-slate-600 hover:text-ceps-600 border-b-2 border-transparent transition flex items-center gap-2">
-                        <i class="fa-solid fa-compass"></i>
-                        <span>Explorar Oportunidades</span>
-                    </button>
-                    <button id="navBtnProponer" onclick="switchTab('tabProponer')" class="tab-btn h-full px-4 text-sm font-medium text-slate-600 hover:text-ceps-600 border-b-2 border-transparent transition flex items-center gap-2">
-                        <i class="fa-solid fa-plus-circle"></i>
-                        <span>Proponer Lugar</span>
-                    </button>
-                    <button id="navBtnAdmin" onclick="switchTab('tabAdmin')" class="tab-btn hidden h-full px-4 text-sm font-medium text-amber-700 hover:text-amber-900 border-b-2 border-transparent transition items-center gap-2">
-                        <i class="fa-solid fa-user-shield"></i>
-                        <span>Panel CEPS</span>
-                        <span id="navPendingBadge" class="hidden bg-amber-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full">0</span>
-                    </button>
-                </nav>
-
-                <!-- Right Side Role Selector Dropdown -->
-                <div class="flex items-center space-x-2 sm:space-x-3">
-                    
-                    <!-- Backend Sync Status Indicator -->
-                    <button onclick="checkBackendConnection()" title="Comprobar sincronización backend" class="hidden lg:inline-flex items-center text-xs px-2.5 py-1.5 rounded-lg font-medium border bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 transition">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>
-                        Backend Activo
-                    </button>
-
-                    <!-- CLEAN ROLE SWITCHER DROPDOWN (TEXT ONLY) -->
-                    <div class="relative inline-block text-left">
-                        <button id="btnRoleSwitcher" onclick="toggleRoleMenu()" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 transition">
-                            <span id="roleBadgeDot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                            <span id="roleLabel" class="font-bold">Estudiante</span>
-                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-500"></i>
+                <!-- Navigation Tabs & Role Selector -->
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <nav class="hidden md:flex space-x-1 bg-brand-lilaghost p-1.5 rounded-xl border border-brand-lila/40">
+                        <button onclick="switchTab('explorar')" id="tab-explorar" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 bg-white text-brand-dark shadow-xs">
+                            <i class="fa-solid fa-compass mr-1.5 text-brand-celeste"></i> Explorar
                         </button>
+                        <button onclick="switchTab('proponer')" id="tab-proponer" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-slate-600 hover:text-brand-dark">
+                            <i class="fa-solid fa-plus-circle mr-1.5 text-brand-fucsia"></i> Proponer Lugar
+                        </button>
+                        <button onclick="switchTab('admin')" id="tab-admin" class="hidden px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-slate-600 hover:text-brand-dark relative">
+                            <i class="fa-solid fa-user-shield mr-1.5 text-brand-celeste"></i> Panel CEPS
+                            <span id="pending-badge" class="hidden absolute -top-1 -right-1 bg-brand-fucsia text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">0</span>
+                        </button>
+                    </nav>
 
-                        <!-- Clean Dropdown Menu Options -->
-                        <div id="roleMenuDropdown" class="hidden absolute right-0 mt-2 w-48 rounded-2xl bg-white shadow-xl border border-slate-200 z-50 overflow-hidden py-1">
-                            <div class="px-3 py-2 bg-slate-50 border-b border-slate-100">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Modo de Vista</p>
-                            </div>
-                            
-                            <!-- Option 1: Estudiante -->
-                            <button onclick="selectRole('STUDENT')" class="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center justify-between transition">
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-graduation-cap text-indigo-600"></i>
-                                    <span>Estudiante</span>
-                                </div>
-                                <i id="checkRoleStudent" class="fa-solid fa-check text-emerald-600 text-xs"></i>
-                            </button>
-
-                            <!-- Option 2: CEPS (Admin) -->
-                            <button onclick="selectRole('ADMIN')" class="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center justify-between transition border-t border-slate-100">
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-user-shield text-amber-600"></i>
-                                    <span>CEPS</span>
-                                </div>
-                                <i id="checkRoleAdmin" class="fa-solid fa-check text-emerald-600 text-xs hidden"></i>
-                            </button>
-                        </div>
+                    <!-- Role Switcher -->
+                    <div class="relative">
+                        <select id="role-selector" onchange="handleRoleChange(this.value)" class="bg-white border-2 border-brand-amarillo text-brand-dark font-bold text-xs sm:text-sm py-2 px-3 rounded-xl shadow-xs hover:border-brand-amarillo/80 focus:outline-none cursor-pointer">
+                            <option value="estudiante">Estudiante</option>
+                            <option value="ceps">CEPS</option>
+                        </select>
                     </div>
-
                 </div>
-
             </div>
-        </div>
 
-        <!-- Mobile Navigation Tabs Bar -->
-        <div class="md:hidden border-t border-slate-100 bg-slate-50 px-2 flex justify-around">
-            <button id="mobileNavBtnExplorar" onclick="switchTab('tabExplorar')" class="py-2.5 px-3 text-xs font-bold text-ceps-600 border-b-2 border-ceps-600 flex items-center gap-1.5">
-                <i class="fa-solid fa-compass"></i> Explorar
-            </button>
-            <button id="mobileNavBtnProponer" onclick="switchTab('tabProponer')" class="py-2.5 px-3 text-xs font-semibold text-slate-600 flex items-center gap-1.5">
-                <i class="fa-solid fa-plus-circle"></i> Proponer
-            </button>
-            <button id="mobileNavBtnAdmin" onclick="switchTab('tabAdmin')" class="hidden py-2.5 px-3 text-xs font-bold text-amber-800 flex items-center gap-1.5">
-                <i class="fa-solid fa-user-shield"></i> Panel CEPS
-                <span id="mobilePendingBadge" class="hidden bg-amber-500 text-white text-[9px] font-black px-1.5 py-0.2 rounded-full">0</span>
-            </button>
+            <!-- Mobile Navigation Bar -->
+            <div class="md:hidden flex border-t border-brand-lila/30 py-2 justify-around">
+                <button onclick="switchTab('explorar')" id="mob-tab-explorar" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-brand-celestelight text-brand-celeste">
+                    <i class="fa-solid fa-compass mr-1"></i> Explorar
+                </button>
+                <button onclick="switchTab('proponer')" id="mob-tab-proponer" class="text-xs font-medium text-slate-600 px-3 py-1.5">
+                    <i class="fa-solid fa-plus-circle mr-1 text-brand-fucsia"></i> Proponer
+                </button>
+                <button onclick="switchTab('admin')" id="mob-tab-admin" class="hidden text-xs font-medium text-slate-600 px-3 py-1.5">
+                    <i class="fa-solid fa-user-shield mr-1 text-brand-celeste"></i> Panel
+                </button>
+            </div>
         </div>
     </header>
 
-    <!-- MAIN CONTENT CONTAINER -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-
-        <!-- ========================================== -->
-        <!-- TAB 1: EXPLORAR OPORTUNIDADES (DIRECTORY) -->
-        <!-- ========================================== -->
-        <div id="tabExplorar" class="space-y-6">
-
-            <!-- Hero Banner -->
-            <div class="bg-gradient-to-r from-ceps-900 via-ceps-800 to-indigo-900 text-white rounded-3xl p-6 sm:p-8 shadow-lg relative overflow-hidden">
-                <div class="absolute right-0 top-0 bottom-0 opacity-10 pointer-events-none pr-8 flex items-center">
-                    <i class="fa-solid fa-brain text-9xl"></i>
-                </div>
-                <div class="max-w-3xl relative z-10">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-indigo-200 text-xs font-medium backdrop-blur-sm mb-3">
-                        <i class="fa-solid fa-award text-amber-300"></i> Banco Oficial de Plazas - CEPS UPCH
-                    </div>
-                    <h1 class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight leading-tight">
-                        Encuentra tu centro ideal de desarrollo profesional
-                    </h1>
-                    <p class="mt-2 text-indigo-100 text-sm sm:text-base leading-relaxed">
-                        Explora centros de prácticas preprofesionales, internados y voluntariados revisados y centralizados por el Centro de Estudiantes de Psicología.
-                    </p>
-
-                    <!-- Quick Metrics Row -->
-                    <div class="flex flex-wrap items-center gap-4 mt-6 text-xs font-medium">
-                        <div class="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl backdrop-blur-sm">
-                            <span class="text-amber-300 font-extrabold text-sm" id="statActive">0</span> Plazas Publicadas
-                        </div>
-                        <div class="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl backdrop-blur-sm">
-                            <span class="text-sky-300 font-extrabold text-sm">6</span> Áreas de Psicología
-                        </div>
-                        <div class="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl backdrop-blur-sm">
-                            <span class="text-emerald-300 font-extrabold text-sm"><i class="fa-solid fa-shield-halved"></i></span> Contacto Directo
-                        </div>
-                    </div>
-                </div>
+    <!-- HERO SECTION -->
+    <section class="bg-gradient-to-r from-brand-lilaghost via-white to-brand-celestelight/40 py-8 border-b border-brand-lila/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+                <span class="inline-block bg-brand-amarillo/30 text-brand-dark text-xs font-extrabold px-3 py-1 rounded-full border border-brand-amarillo/50 mb-2">
+                    <i class="fa-solid fa-graduation-cap mr-1"></i> Centro de Estudiantes de Psicología
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-black text-brand-dark tracking-tight">
+                    Encuentra tu próximo espacio de <span class="text-brand-celeste underline decoration-brand-amarillo decoration-4 underline-offset-4">prácticas o voluntariado</span>
+                </h2>
+                <p class="text-sm sm:text-base text-slate-600 mt-2 max-w-2xl">
+                    Base comunitaria de oportunidades en psicología clínica, social, organizacional, educativa y de la salud verificadas por el CEPS.
+                </p>
             </div>
 
-            <!-- Search & Filter Controls -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 space-y-4">
-                <!-- Search Box -->
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </div>
-                    <input type="text" id="searchInput" oninput="applyFilters()" placeholder="Buscar por empresa, funciones, requisitos o palabras clave..." 
-                        class="block w-full pl-10 pr-10 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-ceps-600 focus:border-ceps-600 transition placeholder:text-slate-400">
-                    <button id="btnClearSearch" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
-                        <i class="fa-solid fa-xmark text-sm"></i>
-                    </button>
-                </div>
+            <!-- Status Connection Pill -->
+            <div id="connection-status" class="flex items-center gap-2 bg-white px-3.5 py-2 rounded-xl border border-brand-lila/60 text-xs font-semibold text-slate-500 shadow-xs">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-300 animate-pulse" id="status-dot"></span>
+                <span id="status-text">Conectando...</span>
+            </div>
+        </div>
+    </section>
 
-                <!-- Dropdown Select Filters -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- TAB 1: EXPLORAR OPORTUNIDADES -->
+        <section id="view-explorar" class="space-y-6">
+            
+            <!-- Filter & Search Controls -->
+            <div class="bg-white p-4 sm:p-5 rounded-2xl border border-brand-lila/50 shadow-xs space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    
+                    <!-- Search Input -->
+                    <div class="relative">
+                        <i class="fa-solid fa-search absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+                        <input type="text" id="search-input" oninput="applyFilters()" placeholder="Buscar por institución, cargo o área..." class="w-full pl-10 pr-4 py-2.5 bg-brand-lilaghost/50 border border-brand-lila/60 rounded-xl text-sm focus:outline-none focus:border-brand-celeste focus:bg-white transition-all">
+                    </div>
+
                     <!-- Area Filter -->
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">
-                            <i class="fa-solid fa-layer-group text-ceps-600 mr-1"></i> Área de Psicología
-                        </label>
-                        <select id="filterArea" onchange="applyFilters()" class="w-full text-sm rounded-xl border border-slate-300 py-2 px-3 focus:ring-2 focus:ring-ceps-600">
-                            <option value="TODAS">Todas las áreas</option>
-                            <option value="Clínica y Salud">Clínica y Salud</option>
-                            <option value="Organizacional">Organizacional / RRHH</option>
-                            <option value="Educativa">Educativa</option>
-                            <option value="Social-Comunitaria">Social-Comunitaria</option>
-                            <option value="Neuropsicología">Neuropsicología</option>
-                            <option value="Deportiva">Deportiva</option>
+                        <select id="filter-area" onchange="applyFilters()" class="w-full py-2.5 px-3 bg-brand-lilaghost/50 border border-brand-lila/60 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:border-brand-celeste focus:bg-white transition-all">
+                            <option value="">Todas las Áreas</option>
+                            <option value="Clínica">Psicología Clínica</option>
+                            <option value="Social-Comunitaria">Psicología Social-Comunitaria</option>
+                            <option value="Organizacional">Psicología Organizacional</option>
+                            <option value="Educativa">Psicología Educativa</option>
+                            <option value="Deportiva">Psicología Deportiva</option>
+                            <option value="Salud">Psicología de la Salud</option>
                         </select>
                     </div>
 
                     <!-- Type Filter -->
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">
-                            <i class="fa-solid fa-briefcase text-ceps-600 mr-1"></i> Tipo de Plaza
-                        </label>
-                        <select id="filterType" onchange="applyFilters()" class="w-full text-sm rounded-xl border border-slate-300 py-2 px-3 focus:ring-2 focus:ring-ceps-600">
-                            <option value="TODOS">Todos los tipos</option>
-                            <option value="Internado">Internado</option>
+                        <select id="filter-tipo" onchange="applyFilters()" class="w-full py-2.5 px-3 bg-brand-lilaghost/50 border border-brand-lila/60 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:border-brand-celeste focus:bg-white transition-all">
+                            <option value="">Todos los Tipos</option>
                             <option value="Prácticas Preprofesionales">Prácticas Preprofesionales</option>
                             <option value="Voluntariado">Voluntariado</option>
-                            <option value="Empleo / Trabajo">Empleo / Trabajo</option>
+                            <option value="Investigación">Investigación</option>
+                            <option value="Empleo">Empleo / Practicante Pro</option>
                         </select>
                     </div>
 
                     <!-- Modality Filter -->
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">
-                            <i class="fa-solid fa-building-user text-ceps-600 mr-1"></i> Modalidad
-                        </label>
-                        <select id="filterModality" onchange="applyFilters()" class="w-full text-sm rounded-xl border border-slate-300 py-2 px-3 focus:ring-2 focus:ring-ceps-600">
-                            <option value="TODAS">Todas las modalidades</option>
+                        <select id="filter-modalidad" onchange="applyFilters()" class="w-full py-2.5 px-3 bg-brand-lilaghost/50 border border-brand-lila/60 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:border-brand-celeste focus:bg-white transition-all">
+                            <option value="">Todas las Modalidades</option>
                             <option value="Presencial">Presencial</option>
-                            <option value="Remoto">Remoto</option>
                             <option value="Híbrido">Híbrido</option>
+                            <option value="Remoto">Remoto</option>
                         </select>
                     </div>
                 </div>
             </div>
 
-            <!-- Results Counter Bar -->
-            <div class="flex items-center justify-between px-1">
-                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
-                    Oportunidades Disponibles 
-                    <span id="resultsBadge" class="bg-indigo-100 text-ceps-800 text-xs font-extrabold px-2.5 py-0.5 rounded-full">0</span>
-                </h2>
-                <button onclick="resetAllFilters()" class="text-xs font-semibold text-ceps-600 hover:text-ceps-800 flex items-center gap-1">
-                    <i class="fa-solid fa-rotate-left text-xs"></i> Limpiar Filtros
-                </button>
-            </div>
-
-            <!-- Cards Grid Container -->
-            <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Dynamic cards render here -->
+            <!-- Grid Cards -->
+            <div id="opportunities-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Skeleton Loading Cards -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-xs space-y-4 animate-pulse">
+                    <div class="h-4 bg-slate-200 rounded w-1/3"></div>
+                    <div class="h-6 bg-slate-200 rounded w-3/4"></div>
+                    <div class="h-4 bg-slate-200 rounded w-1/2"></div>
+                    <div class="h-16 bg-slate-100 rounded"></div>
+                    <div class="h-10 bg-slate-200 rounded"></div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-xs space-y-4 animate-pulse">
+                    <div class="h-4 bg-slate-200 rounded w-1/3"></div>
+                    <div class="h-6 bg-slate-200 rounded w-3/4"></div>
+                    <div class="h-4 bg-slate-200 rounded w-1/2"></div>
+                    <div class="h-16 bg-slate-100 rounded"></div>
+                    <div class="h-10 bg-slate-200 rounded"></div>
+                </div>
             </div>
 
             <!-- Empty State -->
-            <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-dashed border-slate-300 p-8">
-                <div class="w-16 h-16 mx-auto bg-slate-100 rounded-full flex items-center justify-center text-slate-400 text-2xl mb-4">
-                    <i class="fa-solid fa-folder-open"></i>
-                </div>
-                <h3 class="text-lg font-bold text-slate-800 mb-1">No se encontraron oportunidades</h3>
-                <p class="text-slate-500 text-sm max-w-md mx-auto mb-6">Prueba cambiando los filtros seleccionados o ingresa un nuevo término de búsqueda.</p>
-                <button onclick="resetAllFilters()" class="px-4 py-2 bg-slate-900 text-white text-sm font-semibold rounded-xl hover:bg-slate-800 transition">
-                    Restablecer Filtros
-                </button>
+            <div id="empty-state" class="hidden text-center py-16 bg-white rounded-2xl border border-dashed border-slate-300 p-8">
+                <i class="fa-solid fa-folder-open text-4xl text-slate-300 mb-3"></i>
+                <h3 class="text-lg font-bold text-brand-dark">No se encontraron oportunidades</h3>
+                <p class="text-sm text-slate-500 mt-1">Prueba cambiando los filtros de búsqueda o sé el primero en proponer una plaza.</p>
             </div>
-        </div>
+        </section>
 
-        <!-- ========================================== -->
-        <!-- TAB 2: PROPONER LUGAR (SUBMISSION FORM) -->
-        <!-- ========================================== -->
-        <div id="tabProponer" class="hidden max-w-3xl mx-auto space-y-6">
-            
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="bg-gradient-to-r from-ceps-900 to-indigo-800 p-6 text-white">
-                    <h2 class="text-xl font-bold">Proponer o Publicar Nueva Oportunidad</h2>
-                    <p class="text-xs text-indigo-200 mt-1">Completa los datos del centro o puesto. Las propuestas pasan a revisión del CEPS antes de ser visibles en el catálogo general.</p>
+        <!-- TAB 2: PROPONER LUGAR -->
+        <section id="view-proponer" class="hidden max-w-2xl mx-auto">
+            <div class="bg-white rounded-2xl border border-brand-lila/60 shadow-sm overflow-hidden">
+                <div class="bg-gradient-to-r from-brand-celestelight to-white p-6 border-b border-brand-lila/40">
+                    <h3 class="text-xl font-black text-brand-dark">Proponer una Oportunidad / Lugar</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1">Comparte con la comunidad universitaria vacantes de prácticas, voluntariados u proyectos.</p>
                 </div>
 
-                <form id="formProponer" onsubmit="handleProposeSubmit(event)" class="p-6 space-y-5">
+                <form id="proponer-form" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4">
                     
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Nombre de la Institución / Organización *</label>
+                        <input type="text" name="institucion" required placeholder="Ej. Municipalidad de Jesús María, ONG Modomental" class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-sm focus:outline-none focus:border-brand-celeste focus:bg-white">
+                    </div>
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Title -->
-                        <div class="sm:col-span-2">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Título de la Oportunidad / Puesto *</label>
-                            <input type="text" id="propTitulo" required placeholder="Ej. Practicante Preprofesional de Evaluación Psicopedagógica" 
-                                class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-600">
-                        </div>
-
-                        <!-- Organization -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Institución / Empresa / Centro *</label>
-                            <input type="text" id="propOrganizacion" required placeholder="Ej. Clínica San Pablo, Colegio Innova, ONG Sonrisas" 
-                                class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-600">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Puesto / Cargo *</label>
+                            <input type="text" name="puesto" required placeholder="Ej. Practicante de Psicología Comunitario" class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-sm focus:outline-none focus:border-brand-celeste focus:bg-white">
                         </div>
-
-                        <!-- Psychology Area -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Área de Psicología *</label>
-                            <select id="propArea" required class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-600">
-                                <option value="Clínica y Salud">Clínica y Salud</option>
-                                <option value="Organizacional">Organizacional / RRHH</option>
-                                <option value="Educativa">Educativa</option>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Área de la Psicología *</label>
+                            <select name="area" required class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-sm font-medium focus:outline-none focus:border-brand-celeste focus:bg-white">
                                 <option value="Social-Comunitaria">Social-Comunitaria</option>
-                                <option value="Neuropsicología">Neuropsicología</option>
+                                <option value="Clínica">Clínica</option>
+                                <option value="Organizacional">Organizacional</option>
+                                <option value="Educativa">Educativa</option>
                                 <option value="Deportiva">Deportiva</option>
+                                <option value="Salud">Salud</option>
                             </select>
                         </div>
+                    </div>
 
-                        <!-- Type -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tipo de Oportunidad *</label>
-                            <select id="propTipo" required class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-600">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tipo *</label>
+                            <select name="tipo" required class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-sm font-medium focus:outline-none focus:border-brand-celeste focus:bg-white">
                                 <option value="Prácticas Preprofesionales">Prácticas Preprofesionales</option>
-                                <option value="Internado">Internado</option>
                                 <option value="Voluntariado">Voluntariado</option>
-                                <option value="Empleo / Trabajo">Empleo / Trabajo</option>
+                                <option value="Investigación">Investigación</option>
+                                <option value="Empleo">Empleo / Practicante Pro</option>
                             </select>
                         </div>
-
-                        <!-- Modality -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Modalidad *</label>
-                            <select id="propModalidad" required class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-600">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Modalidad *</label>
+                            <select name="modalidad" required class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-sm font-medium focus:outline-none focus:border-brand-celeste focus:bg-white">
                                 <option value="Presencial">Presencial</option>
-                                <option value="Remoto">Remoto</option>
                                 <option value="Híbrido">Híbrido</option>
+                                <option value="Remoto">Remoto</option>
                             </select>
                         </div>
-
-                        <!-- Location -->
-                        <div class="sm:col-span-2">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Ubicación / Distrito *</label>
-                            <input type="text" id="propUbicacion" required placeholder="Ej. San Martín de Porres, Lima / En línea" 
-                                class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-600">
-                        </div>
                     </div>
 
-                    <!-- Description -->
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Descripción y Funciones Principales *</label>
-                        <textarea id="propDescripcion" required rows="3" placeholder="Describe las principales tareas y actividades a realizar..." 
-                            class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-600"></textarea>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Ubicación / Distrito *</label>
+                        <input type="text" name="ubicacion" required placeholder="Ej. Jesús María, San Juan de Lurigancho, Remoto" class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-sm focus:outline-none focus:border-brand-celeste focus:bg-white">
                     </div>
 
-                    <!-- Requirements -->
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Requisitos para el Estudiante *</label>
-                        <textarea id="propRequisitos" required rows="2" placeholder="Ej. Estudiantes de 7mo a 10mo ciclo, disponibilidad de 20 horas semanales..." 
-                            class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-600"></textarea>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Descripción y Requisitos *</label>
+                        <textarea name="descripcion" rows="4" required placeholder="Detalla las funciones, horarios, requerimientos o compromisos del puesto..." class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-sm focus:outline-none focus:border-brand-celeste focus:bg-white"></textarea>
                     </div>
 
-                    <!-- INDEPENDENT CONTACT FIELDS (OPTIONAL) -->
-                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
-                        <div class="border-b border-slate-200 pb-2 flex items-center justify-between">
-                            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                                <i class="fa-solid fa-address-book text-ceps-600"></i> Métodos de Contacto Directo
-                            </h3>
-                            <span class="text-[10px] bg-slate-200 text-slate-700 font-bold px-2 py-0.5 rounded-full">Opcionales e Independientes</span>
-                        </div>
-                        <p class="text-xs text-slate-500">Agrega solo las vías disponibles. Si incluyes una sola opción, el sistema generará únicamente ese botón directo.</p>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                            <!-- Email -->
+                    <!-- Independent Optional Contact Methods -->
+                    <div class="border-t border-brand-lila/50 pt-4 space-y-3">
+                        <span class="block text-xs font-black text-brand-celeste uppercase tracking-wider">Opciones de Contacto (Ingresa al menos una)</span>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-700 mb-1">
-                                    <i class="fa-regular fa-envelope text-blue-600 mr-1"></i> Correo Electrónico
-                                </label>
-                                <input type="email" id="propContactoEmail" placeholder="contacto@empresa.com" 
-                                    class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-600">
+                                <label class="block text-[11px] font-bold text-slate-600 mb-1">Correo Electrónico</label>
+                                <input type="email" name="contacto_email" placeholder="contacto@org.pe" class="w-full p-2 bg-brand-lilaghost/30 border border-brand-lila/50 rounded-lg text-xs focus:outline-none focus:border-brand-celeste">
                             </div>
-
-                            <!-- Phone / WhatsApp -->
                             <div>
-                                <label class="block text-xs font-semibold text-slate-700 mb-1">
-                                    <i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i> Teléfono o WhatsApp
-                                </label>
-                                <input type="tel" id="propContactoTelefono" placeholder="Ej. 987654321" 
-                                    class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-600">
+                                <label class="block text-[11px] font-bold text-slate-600 mb-1">Teléfono / WhatsApp</label>
+                                <input type="text" name="contacto_telefono" placeholder="+51 987654321" class="w-full p-2 bg-brand-lilaghost/30 border border-brand-lila/50 rounded-lg text-xs focus:outline-none focus:border-brand-celeste">
                             </div>
-
-                            <!-- Web / Social Link -->
-                            <div class="sm:col-span-2">
-                                <label class="block text-xs font-semibold text-slate-700 mb-1">
-                                    <i class="fa-solid fa-globe text-purple-600 mr-1"></i> Enlace Web, Instagram o LinkedIn
-                                </label>
-                                <input type="url" id="propContactoWeb" placeholder="https://instagram.com/tu_cuenta o https://linkedin.com/company/tu_empresa" 
-                                    class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-600">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-600 mb-1">Red Social / Web</label>
+                                <input type="url" name="contacto_web" placeholder="https://instagram.com/..." class="w-full p-2 bg-brand-lilaghost/30 border border-brand-lila/50 rounded-lg text-xs focus:outline-none focus:border-brand-celeste">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Proponent UPCH Email -->
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tu Correo Institucional UPCH (Proponente) *</label>
-                        <input type="email" id="propCorreoProponente" required placeholder="nombre.apellido@upch.pe" 
-                            class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-600">
-                        <span class="text-[11px] text-slate-400">Solo para verificación interna de la directiva CEPS. No se publica en el catálogo.</span>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <div class="pt-2 flex justify-end">
-                        <button type="submit" id="btnSubmitPropuesta" class="w-full sm:w-auto px-6 py-3 text-sm font-bold text-white bg-ceps-600 hover:bg-ceps-700 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-paper-plane"></i>
-                            <span>Enviar Propuesta para Revisión</span>
+                    <div class="pt-4 flex justify-end gap-3">
+                        <button type="button" onclick="switchTab('explorar')" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100">Cancelar</button>
+                        <button type="submit" id="submit-btn" class="px-6 py-2.5 bg-brand-amarillo text-brand-dark font-extrabold rounded-xl text-sm hover:bg-brand-amarillo/90 shadow-xs transition-all">
+                            Enviar Propuesta
                         </button>
                     </div>
-
                 </form>
             </div>
+        </section>
 
-        </div>
-
-        <!-- ========================================== -->
-        <!-- TAB 3: PANEL CEPS (ADMIN DASHBOARD) -->
-        <!-- ========================================== -->
-        <div id="tabAdmin" class="hidden space-y-6">
-
-            <!-- Admin Header Banner -->
-            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center text-lg font-bold">
-                        <i class="fa-solid fa-user-shield"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-bold text-amber-900">Panel de Administración CEPS</h2>
-                        <p class="text-xs text-amber-700">Modera propuestas enviadas por la comunidad antes de su difusión oficial.</p>
-                    </div>
+        <!-- TAB 3: ADMIN PANEL CEPS -->
+        <section id="view-admin" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-brand-lila/50 shadow-xs">
+                <div>
+                    <h3 class="text-xl font-black text-brand-dark flex items-center gap-2">
+                        <i class="fa-solid fa-user-shield text-brand-celeste"></i> Moderación de Oportunidades CEPS
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Aprueba o rechaza las propuestas enviadas antes de que aparezcan en la vista pública de estudiantes.</p>
                 </div>
-
-                <button onclick="selectRole('STUDENT')" class="px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-100 rounded-xl transition">
-                    <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Cambiar a Vista Estudiante
-                </button>
-            </div>
-
-            <!-- Stats Bar -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
-                    <div>
-                        <span class="block text-xs font-semibold text-slate-500">Pendientes de Revisión</span>
-                        <span id="adminPendingCount" class="text-2xl font-black text-amber-600">0</span>
-                    </div>
-                    <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center">
-                        <i class="fa-solid fa-clock"></i>
-                    </div>
-                </div>
-
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
-                    <div>
-                        <span class="block text-xs font-semibold text-slate-500">Publicadas en Catálogo</span>
-                        <span id="adminApprovedCount" class="text-2xl font-black text-emerald-600">0</span>
-                    </div>
-                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
-                        <i class="fa-solid fa-circle-check"></i>
-                    </div>
-                </div>
-
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
-                    <div>
-                        <span class="block text-xs font-semibold text-slate-500">Total en Registro</span>
-                        <span id="adminTotalCount" class="text-2xl font-black text-slate-800">0</span>
-                    </div>
-                    <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center">
-                        <i class="fa-solid fa-database"></i>
-                    </div>
+                <div class="flex items-center gap-3">
+                    <span id="pending-count-badge" class="bg-brand-amarillo/40 text-brand-dark text-xs font-bold px-3 py-1.5 rounded-xl border border-brand-amarillo">
+                        0 Solicitudes Pendientes
+                    </span>
                 </div>
             </div>
 
-            <!-- Subtabs Toggle -->
-            <div class="flex border-b border-slate-200 space-x-4">
-                <button id="adminSubtabBtnPending" onclick="switchAdminSubtab('pending')" class="py-2.5 px-3 text-sm font-bold text-ceps-600 border-b-2 border-ceps-600 flex items-center gap-2">
-                    <i class="fa-solid fa-clock"></i> Solicitudes Pendientes
-                    <span id="adminPendingBadgeSubtab" class="bg-amber-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full">0</span>
-                </button>
-                <button id="adminSubtabBtnPublished" onclick="switchAdminSubtab('published')" class="py-2.5 px-3 text-sm font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-2">
-                    <i class="fa-solid fa-list-check"></i> Catálogo Activo
-                </button>
+            <!-- Pending Cards Grid -->
+            <div id="admin-pending-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Populated via JS -->
             </div>
-
-            <!-- Subtab List Containers -->
-            <div id="adminSubtabPendingList" class="space-y-4">
-                <!-- Dynamic Pending items -->
-            </div>
-
-            <div id="adminSubtabPublishedList" class="hidden space-y-4">
-                <!-- Dynamic Published items -->
-            </div>
-
-        </div>
+        </section>
 
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-8 px-4 sm:px-6 lg:px-8 mt-auto text-sm">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            <div class="flex items-center space-x-3">
-                <img src="https://lh3.googleusercontent.com/d/1G2qkSz9lFEGLpvTCkTAhO2nOamYfSIXs" alt="CEPS Logo" class="w-8 h-8 object-contain rounded bg-white/10 p-0.5">
-                <div>
-                    <p class="text-slate-200 font-semibold">CEPS - Universidad Peruana Cayetano Heredia</p>
-                    <p class="text-xs text-slate-500">Bolsa y Banco Oficial de Oportunidades Académicas</p>
-                </div>
+    <footer class="bg-white border-t border-brand-lila/50 py-6 mt-12 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <img src="https://drive.google.com/thumbnail?id=1G2qkSz9lFEGLpvTCkTAhO2nOamYfSIXs&sz=w100" class="w-6 h-6 object-contain">
+                <span class="font-bold text-brand-dark">CEPS UPCH 2026</span>
             </div>
-            <p class="text-xs text-slate-500 text-center md:text-right">
-                &copy; 2026 Centro de Estudiantes de Psicología UPCH. Todos los derechos reservados.
-            </p>
+            <p>Gestión del Centro de Estudiantes de Psicología - Universidad Peruana Cayetano Heredia</p>
         </div>
     </footer>
 
-    <!-- ========================================== -->
-    <!-- MODAL 1: ADMIN LOGIN PIN VERIFICATION -->
-    <!-- ========================================== -->
-    <div id="modalAdminLogin" class="fixed inset-0 z-50 modal-backdrop hidden overflow-y-auto flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 border border-slate-100">
-            <div class="text-center mb-6">
-                <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-2xl flex items-center justify-center mx-auto mb-3 text-xl">
-                    <i class="fa-solid fa-lock"></i>
-                </div>
-                <h3 class="text-lg font-bold text-slate-900">Acceso a Panel CEPS</h3>
-                <p class="text-xs text-slate-500">Ingresa el PIN de seguridad de la junta directiva para cambiar a modo administrador.</p>
-            </div>
-
-            <form onsubmit="handleAdminLoginSubmit(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">PIN de Seguridad</label>
-                    <input type="password" id="adminPinInput" required placeholder="••••••••" 
-                        class="w-full text-center text-xl tracking-widest font-bold rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-amber-500">
-                </div>
-                <div class="flex space-x-2 pt-2">
-                    <button type="button" onclick="closeModal('modalAdminLogin')" class="w-1/2 py-2.5 text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition">
-                        Cancelar
-                    </button>
-                    <button type="submit" class="w-1/2 py-2.5 text-sm font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-xl shadow transition">
-                        Ingresar
-                    </button>
-                </div>
-            </form>
-        </div>
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-brand-dark text-white text-xs sm:text-sm font-semibold px-4 py-3 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-brand-verde text-base" id="toast-icon"></i>
+        <span id="toast-message">Notificación</span>
     </div>
 
-    <!-- ========================================== -->
-    <!-- MODAL 2: DETALLES DE LA OPORTUNIDAD -->
-    <!-- ========================================== -->
-    <div id="modalDetalle" class="fixed inset-0 z-50 modal-backdrop hidden overflow-y-auto flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full overflow-hidden border border-slate-100 my-8">
-            <!-- Header -->
-            <div class="p-6 text-white bg-gradient-to-r from-ceps-900 via-ceps-800 to-indigo-900 flex items-start justify-between">
-                <div class="pr-4">
-                    <div id="modalDetalleBadges" class="flex flex-wrap gap-2 mb-2.5"></div>
-                    <h3 id="modalDetalleTitulo" class="text-xl font-extrabold leading-tight"></h3>
-                    <p id="modalDetalleOrganizacion" class="text-indigo-200 text-sm mt-1 flex items-center gap-1.5"></p>
-                </div>
-                <button onclick="closeModal('modalDetalle')" class="text-white/70 hover:text-white p-1 rounded-lg hover:bg-white/10 transition">
-                    <i class="fa-solid fa-xmark text-2xl"></i>
-                </button>
-            </div>
-
-            <!-- Body -->
-            <div class="p-6 space-y-5 max-h-[65vh] overflow-y-auto">
-                <div>
-                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Información Resumida</h4>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
-                        <div>
-                            <span class="block text-xs text-slate-500">Área</span>
-                            <span id="modalDetalleArea" class="font-bold text-slate-800"></span>
-                        </div>
-                        <div>
-                            <span class="block text-xs text-slate-500">Tipo</span>
-                            <span id="modalDetalleTipo" class="font-bold text-slate-800"></span>
-                        </div>
-                        <div>
-                            <span class="block text-xs text-slate-500">Modalidad</span>
-                            <span id="modalDetalleModalidad" class="font-bold text-slate-800"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="modalDetalleUbicacionContainer" class="hidden">
-                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Ubicación</h4>
-                    <p id="modalDetalleUbicacion" class="text-sm text-slate-700 flex items-center gap-1.5 font-medium">
-                        <i class="fa-solid fa-location-dot text-rose-500"></i> <span></span>
-                    </p>
-                </div>
-
-                <div>
-                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Funciones Principales</h4>
-                    <p id="modalDetalleDescripcion" class="text-slate-700 text-sm whitespace-pre-line leading-relaxed bg-slate-50 p-4 rounded-2xl border border-slate-100"></p>
-                </div>
-
-                <div id="modalDetalleRequisitosContainer">
-                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Requisitos</h4>
-                    <p id="modalDetalleRequisitos" class="text-slate-700 text-sm whitespace-pre-line leading-relaxed bg-amber-50/60 p-4 rounded-2xl border border-amber-100/80"></p>
-                </div>
-
-                <!-- Direct Contact Section in Modal -->
-                <div>
-                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Canales Directos de Postulación</h4>
-                    <div id="modalDetalleContactos">
-                        <!-- Dynamic contact action buttons render here -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <div class="bg-slate-50 p-4 px-6 border-t border-slate-200 flex justify-end">
-                <button onclick="closeModal('modalDetalle')" class="px-5 py-2 text-sm font-bold text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-100 transition">
-                    Cerrar
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT APP LOGIC -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        
-        // GOOGLE APPS SCRIPT BACKEND URL
+        // CONFIGURATION
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzk9cThmashkng78RN60hUHSXV8YeYLEHMGyy2YXILVatGPmFBxsEFL8eb5UKM3yqh/exec";
-
-        // GLOBAL APP STATE
-        let opportunities = [];
-        let currentRole = "STUDENT"; // "STUDENT" | "ADMIN"
-        let currentTab = "tabExplorar"; // "tabExplorar" | "tabProponer" | "tabAdmin"
-        let currentAdminSubtab = "pending"; // "pending" | "published"
         const ADMIN_PIN = "ceps2026";
 
-        // DEFAULT FALLBACK DATASET
-        const DEFAULT_DATA = [
+        // GLOBAL STATE
+        let rawData = [];
+        let currentRole = 'estudiante';
+        let activeTab = 'explorar';
+
+        // MOCK INITIAL DATA FOR OFFLINE / FIRST RUN
+        const MOCK_DATA = [
             {
                 id: "1",
-                titulo: "Interno(a) en Psicología Clínica y de la Salud",
-                organizacion: "Hospital Cayetano Heredia",
-                area: "Clínica y Salud",
-                tipo: "Internado",
+                institucion: "Municipalidad Distrital de Jesús María",
+                puesto: "Interno / Practicante de Psicología",
+                area: "Social-Comunitaria",
+                tipo: "Prácticas Preprofesionales",
                 modalidad: "Presencial",
-                ubicacion: "San Martín de Porres, Lima",
-                descripcion: "Evaluación psicodiagnóstica, atención ambulatoria bajo supervisión, aplicación de pruebas psicológicas e intervención grupal.",
-                requisitos: "Estudiantes de último año o egresados pendientes de internado. Disponibilidad a tiempo completo.",
-                contacto_email: "psicologia@hospitalcayetano.gob.pe",
-                contacto_telefono: "987654321",
-                contacto_web_redes: "https://www.gob.pe/hospitalcayetano",
-                correo_proponente: "directiva@ceps.upch.pe",
-                estado: "APROBADO"
+                ubicacion: "Jesús María, Lima",
+                descripcion: "Apoyo en el Área de Salud Mental y Bienestar Social. Participación en el Protocolo Base de Actuación Conjunta (Ley Nº 30364) e intervenciones comunitarias.",
+                contacto_email: "salud@munijesusmaria.gob.pe",
+                contacto_telefono: "+51998877665",
+                contacto_web: "https://munijesusmaria.gob.pe",
+                estado: "aprobado",
+                fecha: "2026-08-15"
             },
             {
                 id: "2",
-                titulo: "Practicante Preprofesional de Reclutamiento y Selección",
-                organizacion: "Consultora HR Talent Peru",
-                area: "Organizacional",
-                tipo: "Prácticas Preprofesionales",
-                modalidad: "Híbrido",
-                ubicacion: "San Isidro, Lima",
-                descripcion: "Publicación de convocatorias, filtro curricular, entrevistas por competencias y elaboración de informes psicolaborales.",
-                requisitos: "Estudiantes de 7mo a 10mo ciclo. Dominio de pruebas de evaluación organizacional y Excel.",
-                contacto_email: "talento@hrtalent.pe",
-                contacto_telefono: "912345678",
-                contacto_web_redes: "https://www.linkedin.com/company/hrtalentperu",
-                correo_proponente: "directiva@ceps.upch.pe",
-                estado: "APROBADO"
-            },
-            {
-                id: "3",
-                titulo: "Voluntario(a) Facilitador Socioemocional",
-                organizacion: "ONG Psicología Comunitaria Perú",
+                institucion: "Modomental Educa",
+                puesto: "Líder / Voluntario de Proyectos Sociales",
                 area: "Social-Comunitaria",
                 tipo: "Voluntariado",
-                modalidad: "Presencial",
-                ubicacion: "Carabayllo, Lima",
-                descripcion: "Diseño y facilitación de talleres socioemocionales para niños y adolescentes en comunidades vulnerables.",
-                requisitos: "Estudiantes a partir de 4to ciclo con vocación de servicio y trabajo colaborativo.",
-                contacto_email: "contacto@psicologiacomunitaria.org",
-                contacto_telefono: "",
-                contacto_web_redes: "https://instagram.com/psico_comunitaria_peru",
-                correo_proponente: "alumni@upch.pe",
-                estado: "APROBADO"
+                modalidad: "Híbrido",
+                ubicacion: "San Juan de Lurigancho / Remoto",
+                descripcion: "Diseño y monitoreo del programa de agenciamiento infantil 'Somos Agentes Comunitarios'. Manejo de equipos de voluntariado y talleres interactivos.",
+                contacto_email: "contacto@modomental.org",
+                contacto_telefono: "+51912345678",
+                contacto_web: "https://instagram.com/modomental",
+                estado: "aprobado",
+                fecha: "2026-08-18"
             }
         ];
 
-        window.addEventListener('DOMContentLoaded', () => {
-            loadOpportunitiesFromBackend();
+        // INITIALIZATION
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchOpportunities();
         });
 
-        async function loadOpportunitiesFromBackend() {
+        // FETCH DATA FROM GOOGLE APPS SCRIPT
+        async function fetchOpportunities() {
+            updateStatus('connecting', 'Conectando con Google Sheets...');
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL + "?action=getOpportunities");
-                if (response.ok) {
-                    const data = await response.json();
-                    if (Array.isArray(data) && data.length > 0) {
-                        opportunities = data;
-                    } else if (data.status === "success" && Array.isArray(data.data)) {
-                        opportunities = data.data;
-                    } else {
-                        loadLocalStorageOrDefault();
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                if (!response.ok) throw new Error('Network error');
+                const data = await response.json();
+                
+                if (Array.isArray(data) && data.length > 0) {
+                    rawData = data;
+                } else {
+                    rawData = MOCK_DATA;
+                }
+                updateStatus('connected', 'Conectado a Google Sheets');
+            } catch (err) {
+                console.warn('Fallback to local mock data:', err);
+                rawData = MOCK_DATA;
+                updateStatus('offline', 'Modo Local (Sin conexión)');
+            }
+            renderAll();
+        }
+
+        // UPDATE STATUS PILL
+        function updateStatus(type, text) {
+            const dot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+            statusText.innerText = text;
+
+            if (type === 'connected') {
+                dot.className = "w-2.5 h-2.5 rounded-full bg-brand-verde";
+            } else if (type === 'connecting') {
+                dot.className = "w-2.5 h-2.5 rounded-full bg-brand-amarillo animate-pulse";
+            } else {
+                dot.className = "w-2.5 h-2.5 rounded-full bg-slate-400";
+            }
+        }
+
+        // ROLE CHANGE HANDLER
+        function handleRoleChange(role) {
+            if (role === 'ceps') {
+                const pin = prompt('Ingrese el PIN de Administrador CEPS:');
+                if (pin === ADMIN_PIN) {
+                    currentRole = 'ceps';
+                    showToast('Acceso concedido como Administrador CEPS');
+                    document.getElementById('tab-admin').classList.remove('hidden');
+                    document.getElementById('mob-tab-admin').classList.remove('hidden');
+                    switchTab('admin');
+                } else {
+                    alert('PIN Incorrecto');
+                    document.getElementById('role-selector').value = 'estudiante';
+                    currentRole = 'estudiante';
+                }
+            } else {
+                currentRole = 'estudiante';
+                document.getElementById('tab-admin').classList.add('hidden');
+                document.getElementById('mob-tab-admin').classList.add('hidden');
+                if (activeTab === 'admin') switchTab('explorar');
+            }
+            renderAll();
+        }
+
+        // TAB SWITCHER
+        function switchTab(tab) {
+            activeTab = tab;
+            const views = ['explorar', 'proponer', 'admin'];
+            
+            views.forEach(v => {
+                const viewEl = document.getElementById(`view-${v}`);
+                const tabEl = document.getElementById(`tab-${v}`);
+                const mobTabEl = document.getElementById(`mob-tab-${v}`);
+
+                if (v === tab) {
+                    if (viewEl) viewEl.classList.remove('hidden');
+                    if (tabEl) {
+                        tabEl.className = "px-4 py-2 text-sm font-bold rounded-lg bg-white text-brand-dark shadow-xs";
+                    }
+                    if (mobTabEl) {
+                        mobTabEl.className = "text-xs font-bold px-3 py-1.5 rounded-lg bg-brand-celestelight text-brand-celeste";
                     }
                 } else {
-                    loadLocalStorageOrDefault();
+                    if (viewEl) viewEl.classList.add('hidden');
+                    if (tabEl) {
+                        tabEl.className = "px-4 py-2 text-sm font-semibold rounded-lg text-slate-600 hover:text-brand-dark";
+                    }
+                    if (mobTabEl) {
+                        mobTabEl.className = "text-xs font-medium text-slate-600 px-3 py-1.5";
+                    }
                 }
-            } catch (err) {
-                console.warn("Backend request unavailable, loading local storage cache:", err);
-                loadLocalStorageOrDefault();
-            } finally {
-                renderCards();
-                updateStats();
-                updateAdminDashboard();
-            }
-        }
-
-        function loadLocalStorageOrDefault() {
-            const saved = localStorage.getItem('ceps_opportunities_v3');
-            if (saved) {
-                try {
-                    opportunities = JSON.parse(saved);
-                } catch(e) {
-                    opportunities = [...DEFAULT_DATA];
-                }
-            } else {
-                opportunities = [...DEFAULT_DATA];
-                saveToLocalStorage();
-            }
-        }
-
-        function saveToLocalStorage() {
-            localStorage.setItem('ceps_opportunities_v3', JSON.stringify(opportunities));
-        }
-
-        function checkBackendConnection() {
-            showToast("Comprobando conexión con Google Sheets...", "info");
-            fetch(GOOGLE_SCRIPT_URL + "?action=getOpportunities")
-                .then(res => res.json())
-                .then(() => {
-                    showToast("¡Backend de Google Sheets sincronizado!", "success");
-                })
-                .catch(() => {
-                    showToast("Modo offline / local activo.", "warning");
-                });
-        }
-
-        function toggleRoleMenu() {
-            const dropdown = document.getElementById('roleMenuDropdown');
-            dropdown.classList.toggle('hidden');
-        }
-
-        // Close dropdown menu when clicking outside
-        document.addEventListener('click', (e) => {
-            const btn = document.getElementById('btnRoleSwitcher');
-            const dropdown = document.getElementById('roleMenuDropdown');
-            if (btn && dropdown && !btn.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.add('hidden');
-            }
-        });
-
-        function selectRole(role) {
-            document.getElementById('roleMenuDropdown').classList.add('hidden');
-
-            if (role === 'ADMIN') {
-                if (currentRole === 'ADMIN') {
-                    switchTab('tabAdmin');
-                    return;
-                }
-                // Open PIN verification modal
-                openModal('modalAdminLogin');
-            } else {
-                // Switch to student view
-                currentRole = 'STUDENT';
-                applyRoleUI();
-                if (currentTab === 'tabAdmin') {
-                    switchTab('tabExplorar');
-                }
-                showToast("Modo Estudiante activado.", "info");
-            }
-        }
-
-        function handleAdminLoginSubmit(e) {
-            e.preventDefault();
-            const pin = document.getElementById('adminPinInput').value;
-            if (pin === ADMIN_PIN) {
-                currentRole = 'ADMIN';
-                applyRoleUI();
-                closeModal('modalAdminLogin');
-                document.getElementById('adminPinInput').value = '';
-                switchTab('tabAdmin');
-                showToast("¡Modo CEPS activado correctamente!", "success");
-            } else {
-                showToast("PIN de seguridad incorrecto.", "error");
-            }
-        }
-
-        function applyRoleUI() {
-            const isAdmin = (currentRole === 'ADMIN');
-
-            // Header Elements
-            document.getElementById('roleLabel').innerText = isAdmin ? "CEPS" : "Estudiante";
-            const badgeDot = document.getElementById('roleBadgeDot');
-            badgeDot.className = isAdmin ? "w-2 h-2 rounded-full bg-amber-500 animate-pulse" : "w-2 h-2 rounded-full bg-emerald-500";
-
-            // Checkmark Indicators in Dropdown Options
-            document.getElementById('checkRoleStudent').classList.toggle('hidden', isAdmin);
-            document.getElementById('checkRoleAdmin').classList.toggle('hidden', !isAdmin);
-
-            // Nav Tab Admin visibility
-            const navAdmin = document.getElementById('navBtnAdmin');
-            const mobileNavAdmin = document.getElementById('mobileNavBtnAdmin');
-            
-            if (isAdmin) {
-                navAdmin.classList.remove('hidden');
-                navAdmin.classList.add('flex');
-                mobileNavAdmin.classList.remove('hidden');
-                mobileNavAdmin.classList.add('flex');
-            } else {
-                navAdmin.classList.add('hidden');
-                navAdmin.classList.remove('flex');
-                mobileNavAdmin.classList.add('hidden');
-                mobileNavAdmin.classList.remove('flex');
-            }
-
-            updateAdminDashboard();
-        }
-
-        function switchTab(tabId) {
-            currentTab = tabId;
-
-            // Hide all tab containers
-            document.getElementById('tabExplorar').classList.add('hidden');
-            document.getElementById('tabProponer').classList.add('hidden');
-            document.getElementById('tabAdmin').classList.add('hidden');
-
-            // Show selected container
-            document.getElementById(tabId).classList.remove('hidden');
-
-            // Reset navigation tab button active styles
-            const navExplorar = document.getElementById('navBtnExplorar');
-            const navProponer = document.getElementById('navBtnProponer');
-            const navAdmin = document.getElementById('navBtnAdmin');
-
-            [navExplorar, navProponer, navAdmin].forEach(btn => btn.classList.remove('active'));
-
-            if (tabId === 'tabExplorar') navExplorar.classList.add('active');
-            if (tabId === 'tabProponer') navProponer.classList.add('active');
-            if (tabId === 'tabAdmin') navAdmin.classList.add('active');
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function renderCards() {
-            const container = document.getElementById('cardsGrid');
-            const emptyState = document.getElementById('emptyState');
-
-            const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
-            const areaVal = document.getElementById('filterArea').value;
-            const typeVal = document.getElementById('filterType').value;
-            const modalityVal = document.getElementById('filterModality').value;
-
-            // Filter approved items
-            const activeItems = opportunities.filter(item => {
-                const isApproved = (item.estado === "APROBADO" || !item.estado);
-                if (!isApproved) return false;
-
-                const matchSearch = !searchVal || 
-                    (item.titulo && item.titulo.toLowerCase().includes(searchVal)) ||
-                    (item.organizacion && item.organizacion.toLowerCase().includes(searchVal)) ||
-                    (item.descripcion && item.descripcion.toLowerCase().includes(searchVal)) ||
-                    (item.requisitos && item.requisitos.toLowerCase().includes(searchVal)) ||
-                    (item.ubicacion && item.ubicacion.toLowerCase().includes(searchVal));
-
-                const matchArea = (areaVal === "TODAS") || (item.area === areaVal);
-                const matchType = (typeVal === "TODOS") || (item.tipo === typeVal);
-                const matchModality = (modalityVal === "TODAS") || (item.modalidad === modalityVal);
-
-                return matchSearch && matchArea && matchType && matchModality;
             });
 
-            document.getElementById('resultsBadge').innerText = activeItems.length;
+            if (tab === 'admin') renderAdminPanel();
+        }
 
-            if (activeItems.length === 0) {
-                container.innerHTML = '';
+        // FILTER & SEARCH LOGIC
+        function applyFilters() {
+            const search = document.getElementById('search-input').value.toLowerCase();
+            const area = document.getElementById('filter-area').value;
+            const tipo = document.getElementById('filter-tipo').value;
+            const modalidad = document.getElementById('filter-modalidad').value;
+
+            const approvedList = rawData.filter(item => item.estado === 'aprobado');
+
+            const filtered = approvedList.filter(item => {
+                const matchesSearch = item.institucion.toLowerCase().includes(search) ||
+                                      item.puesto.toLowerCase().includes(search) ||
+                                      item.area.toLowerCase().includes(search) ||
+                                      item.descripcion.toLowerCase().includes(search);
+                const matchesArea = area ? item.area === area : true;
+                const matchesTipo = tipo ? item.tipo === tipo : true;
+                const matchesModalidad = modalidad ? item.modalidad === modalidad : true;
+
+                return matchesSearch && matchesArea && matchesTipo && matchesModalidad;
+            });
+
+            renderGrid(filtered);
+        }
+
+        // RENDER OPPORTUNITIES GRID
+        function renderGrid(list) {
+            const grid = document.getElementById('opportunities-grid');
+            const emptyState = document.getElementById('empty-state');
+
+            grid.innerHTML = '';
+
+            if (list.length === 0) {
                 emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            list.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl border border-brand-lila/60 shadow-xs hover:shadow-md transition-all p-5 flex flex-col justify-between";
+
+                // Area Color Mapping
+                let areaBadgeClass = "bg-brand-lilaghost text-brand-dark border-brand-lila";
+                if (item.area === 'Social-Comunitaria') areaBadgeClass = "bg-brand-lila/40 text-brand-dark border-brand-lila";
+                if (item.area === 'Clínica') areaBadgeClass = "bg-brand-celestelight text-brand-celeste border-brand-celestelight";
+                if (item.area === 'Organizacional') areaBadgeClass = "bg-brand-amarillo/30 text-brand-dark border-brand-amarillo/50";
+
+                // Contact Buttons Generator
+                let contactButtonsHtml = '';
+                if (item.contacto_email) {
+                    contactButtonsHtml += `
+                        <a href="mailto:${item.contacto_email}" target="_blank" class="flex-1 bg-brand-celestelight hover:bg-brand-celeste hover:text-white text-brand-celeste font-bold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all">
+                            <i class="fa-solid fa-envelope"></i> Correo
+                        </a>
+                    `;
+                }
+                if (item.contacto_telefono) {
+                    const cleanPhone = item.contacto_telefono.replace(/[^0-9]/g, '');
+                    contactButtonsHtml += `
+                        <a href="https://wa.me/${cleanPhone}" target="_blank" class="flex-1 bg-brand-verde/40 hover:bg-brand-verde text-brand-dark font-bold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp
+                        </a>
+                    `;
+                }
+                if (item.contacto_web) {
+                    let icon = "fa-globe";
+                    let label = "Web / Red";
+                    if (item.contacto_web.includes('instagram')) { icon = "fa-instagram"; label = "Instagram"; }
+                    if (item.contacto_web.includes('linkedin')) { icon = "fa-linkedin"; label = "LinkedIn"; }
+
+                    contactButtonsHtml += `
+                        <a href="${item.contacto_web}" target="_blank" class="flex-1 bg-brand-lilaghost hover:bg-brand-lila text-brand-dark font-bold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all">
+                            <i class="fa-brands ${icon} text-sm"></i> ${label}
+                        </a>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-[11px] font-extrabold px-2.5 py-1 rounded-full border ${areaBadgeClass}">
+                                ${item.area}
+                            </span>
+                            <span class="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+                                ${item.modalidad}
+                            </span>
+                        </div>
+
+                        <div>
+                            <h4 class="text-base font-extrabold text-brand-dark leading-snug">${item.puesto}</h4>
+                            <p class="text-xs font-bold text-brand-celeste mt-0.5"><i class="fa-solid fa-building mr-1"></i> ${item.institucion}</p>
+                        </div>
+
+                        <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                            ${item.descripcion}
+                        </p>
+                    </div>
+
+                    <div class="pt-4 mt-4 border-t border-brand-lila/30 space-y-2">
+                        <div class="flex items-center text-[11px] text-slate-500 gap-1">
+                            <i class="fa-solid fa-location-dot text-brand-fucsia"></i>
+                            <span class="truncate">${item.ubicacion}</span>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2 pt-1">
+                            ${contactButtonsHtml || '<span class="text-xs text-slate-400 italic">Sin datos de contacto directos</span>'}
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // RENDER ADMIN PANEL
+        function renderAdminPanel() {
+            const pendingList = rawData.filter(i => i.estado === 'pendiente');
+            const pendingGrid = document.getElementById('admin-pending-grid');
+            const pendingBadge = document.getElementById('pending-badge');
+            const pendingCountBadge = document.getElementById('pending-count-badge');
+
+            if (pendingList.length > 0) {
+                pendingBadge.innerText = pendingList.length;
+                pendingBadge.classList.remove('hidden');
+            } else {
+                pendingBadge.classList.add('hidden');
+            }
+
+            pendingCountBadge.innerText = `${pendingList.length} Solicitudes Pendientes`;
+            pendingGrid.innerHTML = '';
+
+            if (pendingList.length === 0) {
+                pendingGrid.innerHTML = `
+                    <div class="col-span-full bg-white p-8 rounded-2xl border border-dashed border-slate-300 text-center">
+                        <i class="fa-solid fa-circle-check text-3xl text-brand-verde mb-2"></i>
+                        <h4 class="text-sm font-bold text-brand-dark">¡Todo al día!</h4>
+                        <p class="text-xs text-slate-500">No hay nuevas propuestas pendientes de aprobación.</p>
+                    </div>
+                `;
                 return;
             }
 
-            emptyState.classList.add('hidden');
-            container.innerHTML = activeItems.map(item => createCardHTML(item)).join('');
-        }
+            pendingList.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl border border-brand-amarillo p-5 shadow-xs flex flex-col justify-between space-y-4";
 
-        function createCardHTML(item) {
-            const areaColor = getAreaBadgeColor(item.area);
-            const modalityBadge = getModalityBadge(item.modalidad);
-            const contactButtons = renderContactButtons(item, true);
-
-            return `
-                <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden group">
-                    <div class="p-5">
-                        <div class="flex flex-wrap items-center gap-1.5 mb-3">
-                            <span class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full ${areaColor}">
-                                ${item.area}
-                            </span>
-                            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
-                                ${item.tipo}
-                            </span>
-                            ${modalityBadge}
+                card.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-start">
+                            <span class="bg-brand-amarillo/30 text-brand-dark text-[10px] font-black px-2 py-0.5 rounded-md border border-brand-amarillo">PENDIENTE</span>
+                            <span class="text-[10px] text-slate-400">${item.fecha || 'Reciente'}</span>
                         </div>
-
-                        <h3 class="text-base font-extrabold text-slate-900 group-hover:text-ceps-600 transition duration-150 line-clamp-2 mb-1.5">
-                            ${escapeHtml(item.titulo)}
-                        </h3>
-
-                        <p class="text-xs font-semibold text-slate-600 flex items-center gap-1.5 mb-2.5">
-                            <i class="fa-solid fa-building text-slate-400"></i> ${escapeHtml(item.organizacion)}
-                        </p>
-
-                        ${item.ubicacion ? `
-                            <p class="text-xs text-slate-500 mb-3 flex items-center gap-1.5">
-                                <i class="fa-solid fa-location-dot text-rose-500"></i> ${escapeHtml(item.ubicacion)}
-                            </p>
-                        ` : ''}
-
-                        <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4">
-                            ${escapeHtml(item.descripcion)}
-                        </p>
+                        <h4 class="font-extrabold text-sm text-brand-dark">${item.puesto}</h4>
+                        <p class="text-xs font-bold text-brand-celeste">${item.institucion}</p>
+                        <p class="text-xs text-slate-600">${item.descripcion}</p>
                     </div>
 
-                    <div class="bg-slate-50 p-4 border-t border-slate-100 space-y-2 mt-auto">
-                        <!-- Direct Action Contact Buttons -->
-                        ${contactButtons}
-
-                        <!-- View Detail Modal Button -->
-                        <button onclick="openDetailModal('${item.id}')" class="w-full py-2 px-3 text-xs font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-100 rounded-xl transition flex items-center justify-center gap-1.5">
-                            <i class="fa-regular fa-eye"></i> Ver Detalles Completos
+                    <div class="flex gap-2 pt-2 border-t border-slate-100">
+                        <button onclick="updateStatusApp('${item.id}', 'aprobado')" class="flex-1 bg-brand-verde text-brand-dark font-extrabold text-xs py-2 rounded-xl hover:bg-brand-verde/80 transition-all">
+                            <i class="fa-solid fa-check mr-1"></i> Aprobar
+                        </button>
+                        <button onclick="updateStatusApp('${item.id}', 'rechazado')" class="flex-1 bg-slate-100 text-slate-600 font-bold text-xs py-2 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all">
+                            <i class="fa-solid fa-xmark mr-1"></i> Rechazar
                         </button>
                     </div>
-                </div>
-            `;
-        }
-
-        function renderContactButtons(item, isCard = false) {
-            let html = '<div class="flex flex-col sm:flex-row flex-wrap gap-2 w-full">';
-
-            const hasEmail = item.contacto_email && item.contacto_email.trim() !== "";
-            const hasPhone = item.contacto_telefono && item.contacto_telefono.trim() !== "";
-            const hasWeb = item.contacto_web_redes && item.contacto_web_redes.trim() !== "";
-
-            if (!hasEmail && !hasPhone && !hasWeb) {
-                return `<div class="text-[11px] text-slate-400 italic text-center py-1">Sin información de contacto directo dada</div>`;
-            }
-
-            // WhatsApp / Phone
-            if (hasPhone) {
-                const rawPhone = item.contacto_telefono.replace(/\D/g, '');
-                const waLink = rawPhone.length >= 9 ? `https://wa.me/51${rawPhone}` : `tel:${rawPhone}`;
-                html += `
-                    <a href="${waLink}" target="_blank" rel="noopener" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-sm transition">
-                        <i class="fa-brands fa-whatsapp text-sm"></i> ${isCard ? 'WhatsApp' : 'WhatsApp / Teléfono'}
-                    </a>
                 `;
-            }
 
-            // Email
-            if (hasEmail) {
-                const mailtoLink = `mailto:${item.contacto_email.trim()}?subject=Postulación:%20${encodeURIComponent(item.titulo)}`;
-                html += `
-                    <a href="${mailtoLink}" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm transition">
-                        <i class="fa-regular fa-envelope text-sm"></i> ${isCard ? 'Correo' : 'Enviar Correo'}
-                    </a>
-                `;
-            }
-
-            // Social / Website Link
-            if (hasWeb) {
-                const url = item.contacto_web_redes.trim();
-                const socialInfo = detectSocialPlatform(url);
-                html += `
-                    <a href="${url.startsWith('http') ? url : 'https://' + url}" target="_blank" rel="noopener" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-white ${socialInfo.bg} rounded-xl shadow-sm transition">
-                        <i class="${socialInfo.icon} text-sm"></i> ${socialInfo.label}
-                    </a>
-                `;
-            }
-
-            html += '</div>';
-            return html;
+                pendingGrid.appendChild(card);
+            });
         }
 
-        function detectSocialPlatform(url) {
-            const lower = url.toLowerCase();
-            if (lower.includes('instagram.com')) {
-                return { label: 'Instagram', icon: 'fa-brands fa-instagram', bg: 'bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90' };
-            } else if (lower.includes('linkedin.com')) {
-                return { label: 'LinkedIn', icon: 'fa-brands fa-linkedin', bg: 'bg-sky-700 hover:bg-sky-800' };
-            } else {
-                return { label: 'Página Web', icon: 'fa-solid fa-globe', bg: 'bg-teal-600 hover:bg-teal-700' };
-            }
-        }
-
-        function openDetailModal(id) {
-            const item = opportunities.find(o => String(o.id) === String(id));
-            if (!item) return;
-
-            document.getElementById('modalDetalleTitulo').innerText = item.titulo;
-            document.getElementById('modalDetalleOrganizacion').innerHTML = `<i class="fa-solid fa-building"></i> ${item.organizacion}`;
-            document.getElementById('modalDetalleArea').innerText = item.area;
-            document.getElementById('modalDetalleTipo').innerText = item.tipo;
-            document.getElementById('modalDetalleModalidad').innerText = item.modalidad;
-            document.getElementById('modalDetalleDescripcion').innerText = item.descripcion;
-
-            if (item.requisitos) {
-                document.getElementById('modalDetalleRequisitosContainer').classList.remove('hidden');
-                document.getElementById('modalDetalleRequisitos').innerText = item.requisitos;
-            } else {
-                document.getElementById('modalDetalleRequisitosContainer').classList.add('hidden');
-            }
-
-            // Badges
-            const badgesContainer = document.getElementById('modalDetalleBadges');
-            badgesContainer.innerHTML = `
-                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${getAreaBadgeColor(item.area)}">${item.area}</span>
-                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-white/20 text-white">${item.tipo}</span>
-            `;
-
-            // Location
-            const locContainer = document.getElementById('modalDetalleUbicacionContainer');
-            if (item.ubicacion) {
-                locContainer.classList.remove('hidden');
-                document.getElementById('modalDetalleUbicacion').querySelector('span').innerText = item.ubicacion;
-            } else {
-                locContainer.classList.add('hidden');
-            }
-
-            // Contact Buttons in Modal
-            const contactContainer = document.getElementById('modalDetalleContactos');
-            contactContainer.innerHTML = renderContactButtons(item, false);
-
-            openModal('modalDetalle');
-        }
-
-        async function handleProposeSubmit(e) {
+        // HANDLE FORM SUBMISSION
+        async function handleFormSubmit(e) {
             e.preventDefault();
-            const btn = document.getElementById('btnSubmitPropuesta');
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Guardando propuesta...`;
+            const form = e.target;
+            const submitBtn = document.getElementById('submit-btn');
 
-            const newOpportunity = {
+            const formData = {
                 id: Date.now().toString(),
-                titulo: document.getElementById('propTitulo').value.trim(),
-                organizacion: document.getElementById('propOrganizacion').value.trim(),
-                area: document.getElementById('propArea').value,
-                tipo: document.getElementById('propTipo').value,
-                modalidad: document.getElementById('propModalidad').value,
-                ubicacion: document.getElementById('propUbicacion').value.trim(),
-                descripcion: document.getElementById('propDescripcion').value.trim(),
-                requisitos: document.getElementById('propRequisitos').value.trim(),
-                contacto_email: document.getElementById('propContactoEmail').value.trim(),
-                contacto_telefono: document.getElementById('propContactoTelefono').value.trim(),
-                contacto_web_redes: document.getElementById('propContactoWeb').value.trim(),
-                correo_proponente: document.getElementById('propCorreoProponente').value.trim(),
-                estado: "PENDIENTE",
-                action: "create"
+                institucion: form.institucion.value,
+                puesto: form.puesto.value,
+                area: form.area.value,
+                tipo: form.tipo.value,
+                modalidad: form.modalidad.value,
+                ubicacion: form.ubicacion.value,
+                descripcion: form.descripcion.value,
+                contacto_email: form.contacto_email.value,
+                contacto_telefono: form.contacto_telefono.value,
+                contacto_web: form.contacto_web.value,
+                estado: "pendiente",
+                fecha: new Date().toISOString().split('T')[0]
             };
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Enviando...";
 
             try {
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(newOpportunity)
+                    body: JSON.stringify(formData)
                 });
 
-                opportunities.push(newOpportunity);
-                saveToLocalStorage();
-
-                showToast("¡Propuesta enviada con éxito! La directiva CEPS la revisará pronto.", "success");
-                document.getElementById('formProponer').reset();
-                switchTab('tabExplorar');
+                rawData.push(formData);
+                showToast("¡Propuesta enviada! Se revisará antes de ser publicada.");
+                form.reset();
+                switchTab('explorar');
             } catch (err) {
-                console.error("Error submitting form to Google Apps Script:", err);
-                opportunities.push(newOpportunity);
-                saveToLocalStorage();
-                showToast("Propuesta guardada localmente. Pendiente de aprobación.", "info");
-                document.getElementById('formProponer').reset();
-                switchTab('tabExplorar');
+                console.error('Error submitting form:', err);
+                rawData.push(formData);
+                showToast("Propuesta guardada en el sistema.");
+                form.reset();
+                switchTab('explorar');
             } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span>Enviar Propuesta para Revisión</span>`;
-                updateAdminDashboard();
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Enviar Propuesta";
+                renderAll();
             }
         }
 
-        function updateAdminDashboard() {
-            const pending = opportunities.filter(o => o.estado === "PENDIENTE");
-            const approved = opportunities.filter(o => o.estado === "APROBADO" || !o.estado);
-
-            document.getElementById('adminPendingCount').innerText = pending.length;
-            document.getElementById('adminApprovedCount').innerText = approved.length;
-            document.getElementById('adminTotalCount').innerText = opportunities.length;
-
-            const pendingBadgeNav = document.getElementById('navPendingBadge');
-            const pendingBadgeMobile = document.getElementById('mobilePendingBadge');
-            const pendingBadgeSubtab = document.getElementById('adminPendingBadgeSubtab');
-
-            [pendingBadgeNav, pendingBadgeMobile, pendingBadgeSubtab].forEach(badge => {
-                if (badge) {
-                    badge.innerText = pending.length;
-                    if (pending.length > 0) badge.classList.remove('hidden');
-                    else badge.classList.add('hidden');
-                }
-            });
-
-            renderAdminSubtabs();
-        }
-
-        function switchAdminSubtab(subtab) {
-            currentAdminSubtab = subtab;
-
-            const btnPending = document.getElementById('adminSubtabBtnPending');
-            const btnPublished = document.getElementById('adminSubtabBtnPublished');
-
-            btnPending.className = subtab === 'pending' 
-                ? "py-2.5 px-3 text-sm font-bold text-ceps-600 border-b-2 border-ceps-600 flex items-center gap-2"
-                : "py-2.5 px-3 text-sm font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-2";
-
-            btnPublished.className = subtab === 'published'
-                ? "py-2.5 px-3 text-sm font-bold text-ceps-600 border-b-2 border-ceps-600 flex items-center gap-2"
-                : "py-2.5 px-3 text-sm font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-2";
-
-            document.getElementById('adminSubtabPendingList').classList.toggle('hidden', subtab !== 'pending');
-            document.getElementById('adminSubtabPublishedList').classList.toggle('hidden', subtab !== 'published');
-
-            renderAdminSubtabs();
-        }
-
-        function renderAdminSubtabs() {
-            if (currentAdminSubtab === 'pending') {
-                const list = document.getElementById('adminSubtabPendingList');
-                const pending = opportunities.filter(o => o.estado === "PENDIENTE");
-
-                if (pending.length === 0) {
-                    list.innerHTML = `
-                        <div class="text-center py-12 bg-white rounded-2xl border border-dashed border-slate-300 p-6">
-                            <i class="fa-solid fa-circle-check text-emerald-500 text-3xl mb-2"></i>
-                            <p class="text-sm font-bold text-slate-800">No hay solicitudes pendientes</p>
-                            <p class="text-xs text-slate-500">Todas las propuestas están moderadas y al día.</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                list.innerHTML = pending.map(item => `
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div class="space-y-1.5 flex-1">
-                            <div class="flex items-center gap-2 flex-wrap">
-                                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">PENDIENTE REVISIÓN</span>
-                                <span class="text-xs font-semibold text-slate-500">${item.area} • ${item.tipo}</span>
-                            </div>
-                            <h4 class="font-extrabold text-slate-900 text-base">${escapeHtml(item.titulo)}</h4>
-                            <p class="text-xs font-semibold text-slate-600"><i class="fa-solid fa-building"></i> ${escapeHtml(item.organizacion)}</p>
-                            <p class="text-xs text-slate-500 line-clamp-2">${escapeHtml(item.descripcion)}</p>
-                            
-                            <div class="pt-2 text-[11px] text-slate-500 border-t border-slate-100 flex flex-wrap gap-3">
-                                <span><i class="fa-solid fa-user text-slate-400"></i> Proponente: <strong>${escapeHtml(item.correo_proponente || 'No especificado')}</strong></span>
-                                ${item.contacto_email ? `<span><i class="fa-regular fa-envelope"></i> ${escapeHtml(item.contacto_email)}</span>` : ''}
-                                ${item.contacto_telefono ? `<span><i class="fa-brands fa-whatsapp"></i> ${escapeHtml(item.contacto_telefono)}</span>` : ''}
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-2 self-end md:self-center">
-                            <button onclick="approveOpportunity('${item.id}')" class="px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-check"></i> Aprobar
-                            </button>
-                            <button onclick="rejectOpportunity('${item.id}')" class="px-3.5 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-trash"></i> Rechazar
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
-            } else {
-                const list = document.getElementById('adminSubtabPublishedList');
-                const published = opportunities.filter(o => o.estado === "APROBADO" || !o.estado);
-
-                if (published.length === 0) {
-                    list.innerHTML = `<div class="text-center py-8 text-slate-500 text-sm">No hay publicaciones activas.</div>`;
-                    return;
-                }
-
-                list.innerHTML = published.map(item => `
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 flex items-center justify-between gap-4">
-                        <div>
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">PUBLICADO</span>
-                            <h4 class="font-bold text-slate-900 text-sm mt-1">${escapeHtml(item.titulo)}</h4>
-                            <p class="text-xs text-slate-600">${escapeHtml(item.organizacion)} • ${item.area}</p>
-                        </div>
-                        <button onclick="rejectOpportunity('${item.id}')" class="px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 border border-rose-200 rounded-xl transition">
-                            <i class="fa-solid fa-trash mr-1"></i> Eliminar
-                        </button>
-                    </div>
-                `).join('');
+        // UPDATE STATUS FROM ADMIN
+        function updateStatusApp(id, newStatus) {
+            const item = rawData.find(i => i.id === id);
+            if (item) {
+                item.estado = newStatus;
+                showToast(`Publicación ${newStatus === 'aprobado' ? 'aprobada con éxito' : 'rechazada'}`);
+                renderAll();
             }
         }
 
-        async function approveOpportunity(id) {
-            const opp = opportunities.find(o => String(o.id) === String(id));
-            if (opp) {
-                opp.estado = "APROBADO";
-                saveToLocalStorage();
-                renderCards();
-                updateStats();
-                updateAdminDashboard();
-                showToast("Publicación aprobada e integrada al catálogo.", "success");
-
-                try {
-                    await fetch(`${GOOGLE_SCRIPT_URL}?action=approve&id=${id}`);
-                } catch(e){}
-            }
+        // RENDER ALL VIEWS
+        function renderAll() {
+            applyFilters();
+            renderAdminPanel();
         }
 
-        async function rejectOpportunity(id) {
-            opportunities = opportunities.filter(o => String(o.id) !== String(id));
-            saveToLocalStorage();
-            renderCards();
-            updateStats();
-            updateAdminDashboard();
-            showToast("Publicación eliminada correctamente.", "info");
-
-            try {
-                await fetch(`${GOOGLE_SCRIPT_URL}?action=reject&id=${id}`);
-            } catch(e){}
-        }
-
-        function applyFilters() {
-            const searchVal = document.getElementById('searchInput').value;
-            const btnClear = document.getElementById('btnClearSearch');
-            if (searchVal) btnClear.classList.remove('hidden');
-            else btnClear.classList.add('hidden');
-
-            renderCards();
-        }
-
-        function clearSearch() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('btnClearSearch').classList.add('hidden');
-            renderCards();
-        }
-
-        function resetAllFilters() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('filterArea').value = 'TODAS';
-            document.getElementById('filterType').value = 'TODOS';
-            document.getElementById('filterModality').value = 'TODAS';
-            document.getElementById('btnClearSearch').classList.add('hidden');
-            renderCards();
-        }
-
-        function updateStats() {
-            const approved = opportunities.filter(o => o.estado === "APROBADO" || !o.estado);
-            document.getElementById('statActive').innerText = approved.length;
-        }
-
-        function getAreaBadgeColor(area) {
-            switch(area) {
-                case 'Clínica y Salud': return 'bg-rose-100 text-rose-800 border border-rose-200';
-                case 'Organizacional': return 'bg-amber-100 text-amber-800 border border-amber-200';
-                case 'Educativa': return 'bg-blue-100 text-blue-800 border border-blue-200';
-                case 'Social-Comunitaria': return 'bg-emerald-100 text-emerald-800 border border-emerald-200';
-                case 'Neuropsicología': return 'bg-purple-100 text-purple-800 border border-purple-200';
-                case 'Deportiva': return 'bg-orange-100 text-orange-800 border border-orange-200';
-                default: return 'bg-slate-100 text-slate-800';
-            }
-        }
-
-        function getModalityBadge(modality) {
-            switch(modality) {
-                case 'Presencial': return `<span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700"><i class="fa-solid fa-building text-[10px]"></i> Presencial</span>`;
-                case 'Remoto': return `<span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-sky-50 text-sky-700"><i class="fa-solid fa-laptop text-[10px]"></i> Remoto</span>`;
-                case 'Híbrido': return `<span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700"><i class="fa-solid fa-arrows-split-up-and-left text-[10px]"></i> Híbrido</span>`;
-                default: return '';
-            }
-        }
-
-        function openModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-            document.body.classList.add('overflow-hidden');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-            document.body.classList.remove('overflow-hidden');
-        }
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/&/g, "&amp;")
-                      .replace(/</g, "&lt;")
-                      .replace(/>/g, "&gt;")
-                      .replace(/"/g, "&quot;")
-                      .replace(/'/g, "&#039;");
-        }
-
-        function showToast(message, type = "info") {
-            const existing = document.getElementById('toastNotification');
-            if (existing) existing.remove();
-
-            const toast = document.createElement('div');
-            toast.id = 'toastNotification';
-            
-            let bg = 'bg-slate-900 text-white';
-            if (type === 'success') bg = 'bg-emerald-700 text-white';
-            if (type === 'error') bg = 'bg-rose-700 text-white';
-            if (type === 'warning') bg = 'bg-amber-600 text-white';
-
-            toast.className = `fixed bottom-5 right-5 z-50 ${bg} px-4 py-3 rounded-2xl shadow-2xl font-bold text-xs flex items-center gap-2 transform transition-all duration-300 translate-y-full opacity-0`;
-            toast.innerHTML = `<span>${message}</span>`;
-
-            document.body.appendChild(toast);
-
+        // TOAST HELPER
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
             setTimeout(() => {
-                toast.classList.remove('translate-y-full', 'opacity-0');
-            }, 50);
-
-            setTimeout(() => {
-                toast.classList.add('translate-y-full', 'opacity-0');
-                setTimeout(() => toast.remove(), 300);
+                toast.classList.add('translate-y-20', 'opacity-0');
             }, 3500);
         }
     </script>
