@@ -191,13 +191,6 @@
                     <div class="h-16 bg-slate-100 rounded"></div>
                     <div class="h-10 bg-slate-200 rounded"></div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-xs space-y-4 animate-pulse">
-                    <div class="h-4 bg-slate-200 rounded w-1/3"></div>
-                    <div class="h-6 bg-slate-200 rounded w-3/4"></div>
-                    <div class="h-4 bg-slate-200 rounded w-1/2"></div>
-                    <div class="h-16 bg-slate-100 rounded"></div>
-                    <div class="h-10 bg-slate-200 rounded"></div>
-                </div>
             </div>
 
             <!-- Empty State -->
@@ -329,13 +322,13 @@
         </section>
 
         <!-- TAB 3: ADMIN PANEL CEPS (Protegido) -->
-        <section id="view-admin" class="hidden space-y-6">
+        <section id="view-admin" class="hidden space-y-8">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-brand-lila/50 shadow-xs">
                 <div>
                     <h3 class="text-lg font-black text-brand-dark flex items-center gap-2">
-                        <i class="fa-solid fa-user-shield text-brand-fucsia"></i> Moderación de Oportunidades CEPS
+                        <i class="fa-solid fa-user-shield text-brand-fucsia"></i> Moderación y Edición CEPS
                     </h3>
-                    <p class="text-xs text-slate-500 font-medium mt-0.5">Aprueba o rechaza las propuestas enviadas antes de que aparezcan en la vista pública de estudiantes.</p>
+                    <p class="text-xs text-slate-500 font-medium mt-0.5">Aprueba solicitudes pendientes o edita las oportunidades ya publicadas en el portal de explorar.</p>
                 </div>
                 <div class="flex items-center gap-3">
                     <span id="pending-count-badge" class="bg-brand-amarillo/40 text-brand-dark text-xs font-extrabold px-3 py-1.5 rounded-xl border border-brand-amarillo">
@@ -344,13 +337,113 @@
                 </div>
             </div>
 
-            <!-- Pending Cards Grid -->
-            <div id="admin-pending-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Populated via JS -->
+            <!-- Subsection 1: Pending Requests -->
+            <div class="space-y-4">
+                <h4 class="text-sm font-extrabold text-brand-dark flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-brand-amarillo"></i> Solicitudes Pendientes de Revisión
+                </h4>
+                <div id="admin-pending-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <!-- Subsection 2: Published & Approved Opportunities (Editable) -->
+            <div class="space-y-4 pt-4 border-t border-brand-lila/40">
+                <h4 class="text-sm font-extrabold text-brand-dark flex items-center gap-2">
+                    <i class="fa-solid fa-check-circle text-brand-verde"></i> Oportunidades Publicadas / Aprobadas (Editables)
+                </h4>
+                <div id="admin-approved-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Populated via JS -->
+                </div>
             </div>
         </section>
 
     </main>
+
+    <!-- EDIT MODAL -->
+    <div id="edit-modal" class="hidden fixed inset-0 bg-brand-dark/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto border border-brand-lila/60">
+            <div class="flex justify-between items-center border-b border-brand-lila/40 pb-3">
+                <h3 class="text-base font-black text-brand-dark flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-brand-fucsia"></i> Editar Oportunidad
+                </h3>
+                <button onclick="closeEditModal()" class="text-slate-400 hover:text-brand-dark w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-100 transition-all">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+
+            <form id="edit-form" onsubmit="handleEditSubmit(event)" class="space-y-3">
+                <input type="hidden" id="edit-id">
+
+                <div>
+                    <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">Nombre de la Institución *</label>
+                    <input type="text" id="edit-institucion" required class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-xs font-medium focus:outline-none focus:border-brand-fucsia focus:bg-white">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">Puesto / Cargo *</label>
+                        <input type="text" id="edit-puesto" required class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-xs font-medium focus:outline-none focus:border-brand-fucsia focus:bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">Área *</label>
+                        <select id="edit-area" required class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-xs font-extrabold text-slate-700 focus:outline-none focus:border-brand-fucsia focus:bg-white">
+                            <option value="Social-Comunitaria">Social-Comunitaria</option>
+                            <option value="Clínica">Clínica</option>
+                            <option value="Organizacional">Organizacional</option>
+                            <option value="Educativa">Educativa</option>
+                            <option value="Deportiva">Deportiva</option>
+                            <option value="Salud">Salud</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">Tipo *</label>
+                        <select id="edit-tipo" required class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-xs font-extrabold text-slate-700 focus:outline-none focus:border-brand-fucsia focus:bg-white">
+                            <option value="Prácticas Preprofesionales">Prácticas Preprofesionales</option>
+                            <option value="Voluntariado">Voluntariado</option>
+                            <option value="Investigación">Investigación</option>
+                            <option value="Empleo">Empleo / Practicante Pro</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">Modalidad *</label>
+                        <select id="edit-modalidad" required class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-xs font-extrabold text-slate-700 focus:outline-none focus:border-brand-fucsia focus:bg-white">
+                            <option value="Presencial">Presencial</option>
+                            <option value="Híbrido">Híbrido</option>
+                            <option value="Remoto">Remoto</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">Ubicación *</label>
+                    <input type="text" id="edit-ubicacion" required class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-xs font-medium focus:outline-none focus:border-brand-fucsia focus:bg-white">
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">Descripción y Requisitos *</label>
+                    <textarea id="edit-descripcion" rows="3" required class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-xs font-medium focus:outline-none focus:border-brand-fucsia focus:bg-white"></textarea>
+                </div>
+
+                <div class="border-t border-brand-lila/40 pt-3 space-y-2">
+                    <span class="block text-[11px] font-black text-brand-fucsia uppercase tracking-wider">Contacto Institucional</span>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <input type="email" id="edit-contacto_email" placeholder="Correo" class="w-full p-2 bg-brand-lilaghost/30 border border-brand-lila/50 rounded-lg text-xs focus:outline-none focus:border-brand-fucsia">
+                        <input type="text" id="edit-contacto_telefono" placeholder="Teléfono" class="w-full p-2 bg-brand-lilaghost/30 border border-brand-lila/50 rounded-lg text-xs focus:outline-none focus:border-brand-fucsia">
+                        <input type="url" id="edit-contacto_web" placeholder="Web / Red" class="w-full p-2 bg-brand-lilaghost/30 border border-brand-lila/50 rounded-lg text-xs focus:outline-none focus:border-brand-fucsia">
+                    </div>
+                </div>
+
+                <div class="pt-3 flex justify-end gap-2 border-t border-brand-lila/40">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100">Cancelar</button>
+                    <button type="submit" class="px-5 py-2 bg-brand-fucsia text-white font-extrabold rounded-xl text-xs hover:bg-brand-fucsia/90 shadow-xs transition-all">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- FOOTER -->
     <footer class="bg-white border-t border-brand-lila/50 py-6 mt-12 text-center text-xs text-slate-500 font-medium">
@@ -492,7 +585,6 @@
 
         // TAB SWITCHER WITH SECURITY GUARD FOR ADMIN PANEL
         function switchTab(tab) {
-            // Seguridad estricta: si intenta acceder a admin sin rol ceps, se bloquea
             if (tab === 'admin' && currentRole !== 'ceps') {
                 showToast('Acceso denegado. Se requiere el rol CEPS.');
                 return;
@@ -570,13 +662,11 @@
                 const card = document.createElement('div');
                 card.className = "bg-white rounded-2xl border border-brand-lila/60 shadow-xs hover:shadow-md transition-all p-5 flex flex-col justify-between";
 
-                // Area Color Mapping
                 let areaBadgeClass = "bg-brand-lilaghost text-brand-dark border-brand-lila";
                 if (item.area === 'Social-Comunitaria') areaBadgeClass = "bg-brand-fucsialight text-brand-fucsia border-brand-fucsia/30";
                 if (item.area === 'Clínica') areaBadgeClass = "bg-brand-celestelight text-brand-celeste border-brand-celestelight";
                 if (item.area === 'Organizacional') areaBadgeClass = "bg-brand-amarillo/30 text-brand-dark border-brand-amarillo/50";
 
-                // Contact Buttons Generator for Institution
                 let contactButtonsHtml = '';
                 if (item.contacto_email) {
                     contactButtonsHtml += `
@@ -606,7 +696,6 @@
                     `;
                 }
 
-                // Conditional Student Contact Box (Only if user allowed contact)
                 let studentContactBox = '';
                 const allowsContact = item.permitir_contacto === true || item.permitir_contacto === 'si' || item.permitir_contacto === 'true';
                 if (allowsContact && item.proponente_nombre && item.proponente_correo) {
@@ -667,7 +756,10 @@
         function renderAdminPanel() {
             if (currentRole !== 'ceps') return;
             const pendingList = rawData.filter(i => i.estado === 'pendiente');
+            const approvedList = rawData.filter(i => i.estado === 'aprobado');
+
             const pendingGrid = document.getElementById('admin-pending-grid');
+            const approvedGrid = document.getElementById('admin-approved-grid');
             const pendingBadge = document.getElementById('pending-badge');
             const pendingCountBadge = document.getElementById('pending-count-badge');
 
@@ -680,54 +772,124 @@
 
             pendingCountBadge.innerText = `${pendingList.length} Solicitudes Pendientes`;
             pendingGrid.innerHTML = '';
+            approvedGrid.innerHTML = '';
 
+            // 1. Pending Cards
             if (pendingList.length === 0) {
                 pendingGrid.innerHTML = `
-                    <div class="col-span-full bg-white p-8 rounded-2xl border border-dashed border-slate-300 text-center">
-                        <i class="fa-solid fa-circle-check text-3xl text-brand-verde mb-2"></i>
-                        <h4 class="text-sm font-extrabold text-brand-dark">¡Todo al día!</h4>
-                        <p class="text-xs text-slate-500 font-medium">No hay nuevas propuestas pendientes de aprobación.</p>
+                    <div class="col-span-full bg-white p-6 rounded-2xl border border-dashed border-slate-300 text-center">
+                        <i class="fa-solid fa-circle-check text-2xl text-brand-verde mb-1"></i>
+                        <h4 class="text-xs font-extrabold text-brand-dark">No hay solicitudes pendientes</h4>
                     </div>
                 `;
-                return;
+            } else {
+                pendingList.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = "bg-white rounded-2xl border border-brand-amarillo p-5 shadow-xs flex flex-col justify-between space-y-3";
+                    card.innerHTML = `
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-start">
+                                <span class="bg-brand-amarillo/30 text-brand-dark text-[10px] font-black px-2 py-0.5 rounded-md border border-brand-amarillo">PENDIENTE</span>
+                                <span class="text-[10px] text-slate-400">${item.fecha || ''}</span>
+                            </div>
+                            <h4 class="font-extrabold text-sm text-brand-dark">${item.puesto}</h4>
+                            <p class="text-xs font-bold text-brand-fucsia">${item.institucion}</p>
+                            <p class="text-xs text-slate-600 line-clamp-2">${item.descripcion}</p>
+                            <div class="bg-slate-50 p-2 rounded-xl text-[11px] text-slate-600">
+                                <strong>Proponente:</strong> ${item.proponente_nombre || 'N/D'} (${item.proponente_correo || ''})
+                            </div>
+                        </div>
+                        <div class="flex gap-2 pt-2 border-t border-slate-100">
+                            <button onclick="updateStatusApp('${item.id}', 'aprobado')" class="flex-1 bg-brand-verde text-brand-dark font-extrabold text-xs py-2 rounded-xl hover:bg-brand-verde/80">
+                                <i class="fa-solid fa-check mr-1"></i> Aprobar
+                            </button>
+                            <button onclick="updateStatusApp('${item.id}', 'rechazado')" class="flex-1 bg-slate-100 text-slate-600 font-bold text-xs py-2 rounded-xl hover:bg-red-50 hover:text-red-600">
+                                <i class="fa-solid fa-xmark mr-1"></i> Rechazar
+                            </button>
+                        </div>
+                    `;
+                    pendingGrid.appendChild(card);
+                });
             }
 
-            pendingList.forEach(item => {
-                const card = document.createElement('div');
-                card.className = "bg-white rounded-2xl border border-brand-amarillo p-5 shadow-xs flex flex-col justify-between space-y-4";
-
-                const allowsContactText = (item.permitir_contacto === true || item.permitir_contacto === 'si') ? 'Sí desea mostrar sus datos' : 'No desea mostrar sus datos';
-
-                card.innerHTML = `
-                    <div class="space-y-2">
-                        <div class="flex justify-between items-start">
-                            <span class="bg-brand-amarillo/30 text-brand-dark text-[10px] font-black px-2 py-0.5 rounded-md border border-brand-amarillo">PENDIENTE</span>
-                            <span class="text-[10px] font-semibold text-slate-400">${item.fecha || 'Reciente'}</span>
-                        </div>
-                        <h4 class="font-extrabold text-sm text-brand-dark">${item.puesto}</h4>
-                        <p class="text-xs font-bold text-brand-fucsia">${item.institucion}</p>
-                        <p class="text-xs font-medium text-slate-600">${item.descripcion}</p>
-                        
-                        <div class="bg-slate-50 p-2.5 rounded-xl text-xs space-y-1 border border-slate-200">
-                            <p class="font-bold text-brand-dark">Propuesto por: ${item.proponente_nombre || 'N/D'}</p>
-                            <p class="text-slate-600">Correo UPCH: ${item.proponente_correo || 'N/D'}</p>
-                            <p class="text-slate-600">Teléfono: ${item.proponente_telefono || 'N/D'}</p>
-                            <p class="text-[11px] font-semibold text-brand-fucsia">Contacto público: ${allowsContactText}</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-2 pt-2 border-t border-slate-100">
-                        <button onclick="updateStatusApp('${item.id}', 'aprobado')" class="flex-1 bg-brand-verde text-brand-dark font-extrabold text-xs py-2 rounded-xl hover:bg-brand-verde/80 transition-all">
-                            <i class="fa-solid fa-check mr-1"></i> Aprobar
-                        </button>
-                        <button onclick="updateStatusApp('${item.id}', 'rechazado')" class="flex-1 bg-slate-100 text-slate-600 font-bold text-xs py-2 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all">
-                            <i class="fa-solid fa-xmark mr-1"></i> Rechazar
-                        </button>
+            // 2. Approved / Published Cards (With Edit Button)
+            if (approvedList.length === 0) {
+                approvedGrid.innerHTML = `
+                    <div class="col-span-full bg-white p-6 rounded-2xl border border-dashed border-slate-300 text-center">
+                        <p class="text-xs text-slate-400">No hay oportunidades publicadas actualmente.</p>
                     </div>
                 `;
+            } else {
+                approvedList.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = "bg-white rounded-2xl border border-brand-lila/60 p-4 shadow-xs flex flex-col justify-between space-y-3";
+                    card.innerHTML = `
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] font-bold px-2 py-0.5 bg-brand-fucsialight text-brand-fucsia rounded-md">${item.area}</span>
+                                <span class="text-[10px] text-slate-400">${item.modalidad}</span>
+                            </div>
+                            <h4 class="font-extrabold text-xs sm:text-sm text-brand-dark">${item.puesto}</h4>
+                            <p class="text-[11px] font-bold text-brand-fucsia"><i class="fa-solid fa-building mr-1"></i> ${item.institucion}</p>
+                            <p class="text-[11px] text-slate-600 line-clamp-2">${item.descripcion}</p>
+                        </div>
+                        <div class="pt-2 border-t border-brand-lila/30 flex items-center justify-between">
+                            <span class="text-[10px] text-slate-500 italic truncate max-w-[150px]">${item.ubicacion}</span>
+                            <button onclick="openEditModal('${item.id}')" class="bg-brand-lilaghost hover:bg-brand-fucsia hover:text-white text-brand-dark font-extrabold text-[11px] px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5">
+                                <i class="fa-solid fa-pen-to-square"></i> Editar
+                            </button>
+                        </div>
+                    `;
+                    approvedGrid.appendChild(card);
+                });
+            }
+        }
 
-                pendingGrid.appendChild(card);
-            });
+        // EDIT MODAL HANDLERS
+        function openEditModal(id) {
+            const item = rawData.find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('edit-id').value = item.id;
+            document.getElementById('edit-institucion').value = item.institucion || '';
+            document.getElementById('edit-puesto').value = item.puesto || '';
+            document.getElementById('edit-area').value = item.area || 'Social-Comunitaria';
+            document.getElementById('edit-tipo').value = item.tipo || 'Prácticas Preprofesionales';
+            document.getElementById('edit-modalidad').value = item.modalidad || 'Presencial';
+            document.getElementById('edit-ubicacion').value = item.ubicacion || '';
+            document.getElementById('edit-descripcion').value = item.descripcion || '';
+            document.getElementById('edit-contacto_email').value = item.contacto_email || '';
+            document.getElementById('edit-contacto_telefono').value = item.contacto_telefono || '';
+            document.getElementById('edit-contacto_web').value = item.contacto_web || '';
+
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+        }
+
+        function handleEditSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('edit-id').value;
+            const item = rawData.find(i => i.id === id);
+
+            if (item) {
+                item.institucion = document.getElementById('edit-institucion').value;
+                item.puesto = document.getElementById('edit-puesto').value;
+                item.area = document.getElementById('edit-area').value;
+                item.tipo = document.getElementById('edit-tipo').value;
+                item.modalidad = document.getElementById('edit-modalidad').value;
+                item.ubicacion = document.getElementById('edit-ubicacion').value;
+                item.descripcion = document.getElementById('edit-descripcion').value;
+                item.contacto_email = document.getElementById('edit-contacto_email').value;
+                item.contacto_telefono = document.getElementById('edit-contacto_telefono').value;
+                item.contacto_web = document.getElementById('edit-contacto_web').value;
+
+                showToast("¡Oportunidad actualizada con éxito!");
+                closeEditModal();
+                renderAll();
+            }
         }
 
         // HANDLE FORM SUBMISSION
@@ -772,7 +934,7 @@
                 form.reset();
                 switchTab('explorar');
             } catch (err) {
-                console.error('Error submitting form:', err);
+                console.warn('Error submitting form:', err);
                 rawData.push(formData);
                 showToast("Propuesta guardada en el sistema.");
                 form.reset();
@@ -790,7 +952,7 @@
             const item = rawData.find(i => i.id === id);
             if (item) {
                 item.estado = newStatus;
-                showToast(`Publicación ${newStatus === 'aprobado' ? 'aprobada con éxito' : 'rechazada'}`);
+                showToast(`Publicación ${newStatus === 'aprobado' ? 'aprobada' : 'rechazada'}`);
                 renderAll();
             }
         }
