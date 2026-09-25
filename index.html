@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bolsa de Oportunidades - CEPS UPCH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans">
+
+  <!-- ENCABEZADO -->
+  <header class="bg-indigo-900 text-white shadow-lg">
+    <div class="max-w-6xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div>
+        <h1 class="text-2xl font-bold tracking-wide">CEPS - Bolsa de Oportunidades</h1>
+        <p class="text-indigo-200 text-sm">Voluntariados, Prácticas y Prácticas Preprofesionales para Psicología</p>
+      </div>
+      <button onclick="abrirModalFormulario()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-4 py-2 rounded-lg shadow transition flex items-center gap-2">
+        <i class="fas fa-plus-circle"></i> Proponer una Oportunidad
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    
+    <!-- BARRA DE BÚSQUEDA Y FILTROS -->
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-8 flex flex-col md:flex-row gap-4">
+      <input type="text" id="searchInput" oninput="filtrarOportunidades()" placeholder="Buscar por institución, puesto o palabra clave..." class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      
+      <select id="filterArea" onchange="filtrarOportunidades()" class="px-4 py-2 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <option value="">Todas las Áreas</option>
+        <option value="Clínica">Clínica</option>
+        <option value="Social-Comunitaria">Social-Comunitaria</option>
+        <option value="Organizacional">Organizacional</option>
+        <option value="Educativa">Educativa</option>
+        <option value="Deportiva">Deportiva</option>
+      </select>
+
+      <select id="filterTipo" onchange="filtrarOportunidades()" class="px-4 py-2 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <option value="">Todos los Tipos</option>
+        <option value="Voluntariado">Voluntariado</option>
+        <option value="Prácticas Preprofesionales">Prácticas Preprofesionales</option>
+        <option value="Internado">Internado</option>
+      </select>
+    </div>
+
+    <!-- CONTENEDOR DE TARJETAS -->
+    <div id="gridOportunidades" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <p class="text-slate-500 col-span-full text-center py-8">Cargando oportunidades desde Google Sheets...</p>
+    </div>
+  </main>
+
+  <!-- MODAL FORMULARIO DE PROPUESTA -->
+  <div id="modalFormulario" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b pb-3 mb-4">
+        <h2 class="text-xl font-bold text-slate-800">Proponer Oportunidad</h2>
+        <button onclick="cerrarModalFormulario()" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times text-xl"></i></button>
+      </div>
+
+      <form id="formPropuesta" onsubmit="enviarPropuesta(event)" class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1">Institución / Organización *</label>
+          <input type="text" id="inputInstitucion" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold mb-1">Área de Psicología *</label>
+            <select id="inputArea" required class="w-full px-3 py-2 border rounded-lg">
+              <option value="Clínica">Clínica</option>
+              <option value="Social-Comunitaria">Social-Comunitaria</option>
+              <option value="Organizacional">Organizacional</option>
+              <option value="Educativa">Educativa</option>
+              <option value="Deportiva">Deportiva</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">Tipo *</label>
+            <select id="inputTipo" required class="w-full px-3 py-2 border rounded-lg">
+              <option value="Voluntariado">Voluntariado</option>
+              <option value="Prácticas Preprofesionales">Prácticas Preprofesionales</option>
+              <option value="Internado">Internado</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold mb-1">Modalidad *</label>
+            <select id="inputModalidad" required class="w-full px-3 py-2 border rounded-lg">
+              <option value="Presencial">Presencial</option>
+              <option value="Remoto">Remoto</option>
+              <option value="Híbrido">Híbrido</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">Ubicación *</label>
+            <input type="text" id="inputUbicacion" placeholder="Ej: Jesús María, Lima" required class="w-full px-3 py-2 border rounded-lg">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1">Descripción de Funciones *</label>
+          <textarea id="inputDescripcion" rows="3" required class="w-full px-3 py-2 border rounded-lg"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1">Requisitos *</label>
+          <input type="text" id="inputRequisitos" placeholder="Ej: Estudiantes de 7mo ciclo en adelante" required class="w-full px-3 py-2 border rounded-lg">
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1">Contacto o Enlace de Postulación *</label>
+          <input type="text" id="inputContacto" placeholder="Correo o link de formulario" required class="w-full px-3 py-2 border rounded-lg">
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1">Tu Correo Institucional (UPCH) *</label>
+          <input type="email" id="inputCorreoProponente" placeholder="nombre.apellido@upch.pe" required class="w-full px-3 py-2 border rounded-lg">
+        </div>
+
+        <div class="flex justify-end gap-3 pt-3">
+          <button type="button" onclick="cerrarModalFormulario()" class="px-4 py-2 border rounded-lg hover:bg-slate-100">Cancelar</button>
+          <button type="submit" id="btnEnviar" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Enviar para Revisión</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCRIPT DE CONEXIÓN A GOOGLE SHEETS -->
+  <script>
+    // =========================================================================
+    // 🔗 PEGA TU URL DE GOOGLE APPS SCRIPT AQUÍ (Paso 3):
+    // =========================================================================
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzk9cThmashkng78RN60hUHSXV8YeYLEHMGyy2YXILVatGPmFBxsEFL8eb5UKM3yqh/exec";
+    // =========================================================================
+
+    let listaOportunidades = [];
+
+    // Cargar datos al abrir la página
+    window.addEventListener('DOMContentLoaded', cargarDatos);
+
+    async function cargarDatos() {
+      const container = document.getElementById('gridOportunidades');
+      
+      if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("TU_SCRIPT_ID_AQUI")) {
+        container.innerHTML = `
+          <div class="col-span-full bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-lg text-center">
+            <i class="fas fa-exclamation-triangle text-2xl mb-2"></i>
+            <p class="font-semibold">Falta configurar el enlace de Google Script.</p>
+            <p class="text-sm">Por favor coloca tu URL en la variable <code>GOOGLE_SCRIPT_URL</code> en el código HTML.</p>
+          </div>`;
+        return;
+      }
+
+      try {
+        const response = await fetch(GOOGLE_SCRIPT_URL);
+        const data = await response.json();
+        
+        // Solo mostramos las ofertas con Estado = "Aprobado"
+        listaOportunidades = data.filter(item => item.Estado === "Aprobado");
+        renderizarTarjetas(listaOportunidades);
+      } catch (error) {
+        console.error("Error cargando datos:", error);
+        container.innerHTML = `<p class="col-span-full text-red-500 text-center">Error al conectar con Google Sheets. Revisa la URL ingresada.</p>`;
+      }
+    }
+
+    function renderizarTarjetas(lista) {
+      const container = document.getElementById('gridOportunidades');
+      
+      if (lista.length === 0) {
+        container.innerHTML = `<p class="col-span-full text-slate-500 text-center py-8">No se encontraron oportunidades aprobadas por el momento.</p>`;
+        return;
+      }
+
+      container.innerHTML = lista.map(op => `
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between hover:shadow-md transition">
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider px-2 py-1 rounded bg-indigo-100 text-indigo-700">${op.Area}</span>
+              <span class="text-xs px-2 py-1 rounded bg-slate-100 text-slate-600">${op.Modalidad}</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mb-1">${op.Institucion}</h3>
+            <p class="text-xs font-semibold text-emerald-600 mb-3"><i class="fas fa-briefcase"></i> ${op.Tipo}</p>
+            <p class="text-sm text-slate-600 mb-4 line-clamp-3">${op.Descripcion}</p>
+            <p class="text-xs text-slate-500 mb-2"><i class="fas fa-map-marker-alt"></i> ${op.Ubicacion}</p>
+            <p class="text-xs text-slate-500"><i class="fas fa-user-check"></i> <strong>Requisitos:</strong> ${op.Requisitos}</p>
+          </div>
+          <div class="mt-5 pt-3 border-t">
+            <a href="mailto:${op.Contacto}" target="_blank" class="block text-center bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-sm font-semibold py-2 rounded-lg transition">
+              <i class="fas fa-paper-plane"></i> Postular / Contactar
+            </a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filtrarOportunidades() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const area = document.getElementById('filterArea').value;
+      const tipo = document.getElementById('filterTipo').value;
+
+      const filtradas = listaOportunidades.filter(op => {
+        const matchSearch = (op.Institucion + op.Descripcion + op.Requisitos).toLowerCase().includes(search);
+        const matchArea = area === "" || op.Area === area;
+        const matchTipo = tipo === "" || op.Tipo === tipo;
+        return matchSearch && matchArea && matchTipo;
+      });
+
+      renderizarTarjetas(filtradas);
+    }
+
+    function abrirModalFormulario() {
+      document.getElementById('modalFormulario').classList.remove('hidden');
+    }
+
+    function cerrarModalFormulario() {
+      document.getElementById('modalFormulario').classList.add('hidden');
+    }
+
+    async function enviarPropuesta(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnEnviar');
+      btn.innerText = "Enviando...";
+      btn.disabled = true;
+
+      const payload = {
+        action: "add",
+        institucion: document.getElementById('inputInstitucion').value,
+        area: document.getElementById('inputArea').value,
+        tipo: document.getElementById('inputTipo').value,
+        modalidad: document.getElementById('inputModalidad').value,
+        ubicacion: document.getElementById('inputUbicacion').value,
+        descripcion: document.getElementById('inputDescripcion').value,
+        requisitos: document.getElementById('inputRequisitos').value,
+        contacto: document.getElementById('inputContacto').value,
+        correoProponente: document.getElementById('inputCorreoProponente').value
+      };
+
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        alert("¡Propuesta enviada con éxito! El equipo del CEPS la revisará y aprobará pronto.");
+        document.getElementById('formPropuesta').reset();
+        cerrarModalFormulario();
+      } catch (err) {
+        alert("Ocurrió un error al enviar. Intenta de nuevo.");
+      } finally {
+        btn.innerText = "Enviar para Revisión";
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
