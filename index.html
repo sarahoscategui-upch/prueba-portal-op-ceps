@@ -98,7 +98,6 @@
                 <button onclick="switchTab('proponer')" id="mob-tab-proponer" class="text-xs font-bold text-slate-600 px-3 py-1.5">
                     <i class="fa-solid fa-plus-circle mr-1 text-brand-fucsia"></i> Proponer
                 </button>
-                <!-- Móvil Panel CEPS Oculto por defecto -->
                 <button onclick="switchTab('admin')" id="mob-tab-admin" class="hidden text-xs font-bold text-slate-600 px-3 py-1.5">
                     <i class="fa-solid fa-user-shield mr-1 text-brand-celeste"></i> Panel
                 </button>
@@ -123,8 +122,8 @@
 
             <!-- Status Connection Pill -->
             <div id="connection-status" class="flex items-center gap-2 bg-white px-4 py-2.5 rounded-2xl border border-brand-lila/60 text-xs font-bold text-slate-600 shadow-xs">
-                <span class="w-2.5 h-2.5 rounded-full bg-slate-300 animate-pulse" id="status-dot"></span>
-                <span id="status-text">Conectando...</span>
+                <span class="w-2.5 h-2.5 rounded-full bg-brand-verde" id="status-dot"></span>
+                <span id="status-text">Conectando a Google Sheets...</span>
             </div>
         </div>
     </section>
@@ -183,14 +182,7 @@
 
             <!-- Grid Cards -->
             <div id="opportunities-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Skeleton Loading Cards -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-xs space-y-4 animate-pulse">
-                    <div class="h-4 bg-slate-200 rounded w-1/3"></div>
-                    <div class="h-6 bg-slate-200 rounded w-3/4"></div>
-                    <div class="h-4 bg-slate-200 rounded w-1/2"></div>
-                    <div class="h-16 bg-slate-100 rounded"></div>
-                    <div class="h-10 bg-slate-200 rounded"></div>
-                </div>
+                <!-- Cards populated via JS -->
             </div>
 
             <!-- Empty State -->
@@ -264,7 +256,7 @@
                         <textarea name="descripcion" rows="4" required placeholder="Detalla las funciones, horarios, requerimientos o compromisos del puesto..." class="w-full p-3 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-xs font-medium focus:outline-none focus:border-brand-fucsia focus:bg-white"></textarea>
                     </div>
 
-                    <!-- Independent Optional Contact Methods for the Institution -->
+                    <!-- Contacto Institucional -->
                     <div class="border-t border-brand-lila/50 pt-4 space-y-3">
                         <span class="block text-xs font-black text-brand-fucsia uppercase tracking-wider">Medios de Contacto de la Institución (Opcional)</span>
                         
@@ -284,7 +276,7 @@
                         </div>
                     </div>
 
-                    <!-- Student Submitter Information & Permission Checkbox -->
+                    <!-- Datos del Estudiante Proponente -->
                     <div class="border-t border-brand-lila/50 pt-4 space-y-3 bg-brand-fucsialight/30 p-4 rounded-2xl border border-brand-fucsia/20">
                         <span class="block text-xs font-black text-brand-fucsia uppercase tracking-wider">Tus Datos como Estudiante Proponente (Obligatorio)</span>
                         
@@ -306,7 +298,7 @@
                         <div class="pt-2 flex items-start gap-2.5">
                             <input type="checkbox" id="permitir_contacto" name="permitir_contacto" value="si" class="mt-0.5 w-4 h-4 text-brand-fucsia rounded border-brand-lila focus:ring-brand-fucsia cursor-pointer">
                             <label for="permitir_contacto" class="text-xs font-medium text-slate-700 cursor-pointer leading-relaxed">
-                                <strong class="text-brand-dark">¿Deseas que otros estudiantes te contacten si tienen dudas?</strong> Si marcas esta casilla, tu nombre y correo UPCH aparecerán visiblemente en la tarjeta de la oportunidad para que puedan consultarte. Si no la marcas, tus datos de estudiante se mantendrán confidenciales solo para administración.
+                                <strong class="text-brand-dark">¿Deseas que otros estudiantes te contacten si tienen dudas?</strong> Si marcas esta casilla, tu nombre y correo UPCH aparecerán visiblemente en la tarjeta de la oportunidad.
                             </label>
                         </div>
                     </div>
@@ -321,14 +313,14 @@
             </div>
         </section>
 
-        <!-- TAB 3: ADMIN PANEL CEPS (Protegido) -->
+        <!-- TAB 3: ADMIN PANEL CEPS -->
         <section id="view-admin" class="hidden space-y-8">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-brand-lila/50 shadow-xs">
                 <div>
                     <h3 class="text-lg font-black text-brand-dark flex items-center gap-2">
-                        <i class="fa-solid fa-user-shield text-brand-fucsia"></i> Moderación y Edición CEPS
+                        <i class="fa-solid fa-user-shield text-brand-fucsia"></i> Moderación, Edición y Eliminación CEPS
                     </h3>
-                    <p class="text-xs text-slate-500 font-medium mt-0.5">Aprueba solicitudes pendientes o edita las oportunidades ya publicadas en el portal de explorar.</p>
+                    <p class="text-xs text-slate-500 font-medium mt-0.5">Aprueba solicitudes pendientes, edita o elimina las oportunidades publicadas en el portal.</p>
                 </div>
                 <div class="flex items-center gap-3">
                     <span id="pending-count-badge" class="bg-brand-amarillo/40 text-brand-dark text-xs font-extrabold px-3 py-1.5 rounded-xl border border-brand-amarillo">
@@ -337,24 +329,20 @@
                 </div>
             </div>
 
-            <!-- Subsection 1: Pending Requests -->
+            <!-- Solicitudes Pendientes -->
             <div class="space-y-4">
                 <h4 class="text-sm font-extrabold text-brand-dark flex items-center gap-2">
                     <i class="fa-solid fa-clock-rotate-left text-brand-amarillo"></i> Solicitudes Pendientes de Revisión
                 </h4>
-                <div id="admin-pending-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Populated via JS -->
-                </div>
+                <div id="admin-pending-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </div>
 
-            <!-- Subsection 2: Published & Approved Opportunities (Editable) -->
+            <!-- Oportunidades Aprobadas -->
             <div class="space-y-4 pt-4 border-t border-brand-lila/40">
                 <h4 class="text-sm font-extrabold text-brand-dark flex items-center gap-2">
-                    <i class="fa-solid fa-check-circle text-brand-verde"></i> Oportunidades Publicadas / Aprobadas (Editables)
+                    <i class="fa-solid fa-check-circle text-brand-verde"></i> Oportunidades Publicadas / Aprobadas (Editables y Eliminables)
                 </h4>
-                <div id="admin-approved-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Populated via JS -->
-                </div>
+                <div id="admin-approved-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </div>
         </section>
 
@@ -437,9 +425,14 @@
                     </div>
                 </div>
 
-                <div class="pt-3 flex justify-end gap-2 border-t border-brand-lila/40">
-                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100">Cancelar</button>
-                    <button type="submit" class="px-5 py-2 bg-brand-fucsia text-white font-extrabold rounded-xl text-xs hover:bg-brand-fucsia/90 shadow-xs transition-all">Guardar Cambios</button>
+                <div class="pt-3 flex justify-between items-center border-t border-brand-lila/40">
+                    <button type="button" onclick="deleteOpportunityFromModal()" class="px-4 py-2 bg-red-50 hover:bg-red-500 hover:text-white text-red-600 font-extrabold rounded-xl text-xs transition-all flex items-center gap-1.5 shadow-2xs">
+                        <i class="fa-solid fa-trash"></i> Eliminar
+                    </button>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="closeEditModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100">Cancelar</button>
+                        <button type="submit" class="px-5 py-2 bg-brand-fucsia text-white font-extrabold rounded-xl text-xs hover:bg-brand-fucsia/90 shadow-xs transition-all">Guardar Cambios</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -464,96 +457,76 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // CONFIGURATION
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzk9cThmashkng78RN60hUHSXV8YeYLEHMGyy2YXILVatGPmFBxsEFL8eb5UKM3yqh/exec";
         const ADMIN_PIN = "ceps2026";
+        
+        // 🚀 URL EXACTA DE TU GOOGLE APPS SCRIPT
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzk9cThmashkng78RN60hUHSXV8YeYLEHMGyy2YXILVatGPmFBxsEFL8eb5UKM3yqh/exec";
 
         // GLOBAL STATE
         let rawData = [];
         let currentRole = 'estudiante';
         let activeTab = 'explorar';
 
-        // MOCK INITIAL DATA FOR OFFLINE / FIRST RUN
-        const MOCK_DATA = [
-            {
-                id: "1",
-                institucion: "Municipalidad Distrital de Jesús María",
-                puesto: "Interno / Practicante de Psicología",
-                area: "Social-Comunitaria",
-                tipo: "Prácticas Preprofesionales",
-                modalidad: "Presencial",
-                ubicacion: "Jesús María, Lima",
-                descripcion: "Apoyo en el Área de Salud Mental y Bienestar Social. Participación en el Protocolo Base de Actuación Conjunta (Ley Nº 30364) e intervenciones comunitarias.",
-                contacto_email: "salud@munijesusmaria.gob.pe",
-                contacto_telefono: "+51998877665",
-                contacto_web: "https://munijesusmaria.gob.pe",
-                proponente_nombre: "Sarah Oscátegui",
-                proponente_correo: "sarah.oscategui@upch.pe",
-                proponente_telefono: "+51999888777",
-                permitir_contacto: true,
-                estado: "aprobado",
-                fecha: "2026-08-15"
-            },
-            {
-                id: "2",
-                institucion: "Modomental Educa",
-                puesto: "Líder / Voluntario de Proyectos Sociales",
-                area: "Social-Comunitaria",
-                tipo: "Voluntariado",
-                modalidad: "Híbrido",
-                ubicacion: "San Juan de Lurigancho / Remoto",
-                descripcion: "Diseño y monitoreo del programa de agenciamiento infantil 'Somos Agentes Comunitarios'. Manejo de equipos de voluntariado y talleres interactivos.",
-                contacto_email: "contacto@modomental.org",
-                contacto_telefono: "+51912345678",
-                contacto_web: "https://instagram.com/modomental",
-                proponente_nombre: "Equipo CEPS",
-                proponente_correo: "ceps.psicologia@upch.pe",
-                proponente_telefono: "+51911222333",
-                permitir_contacto: false,
-                estado: "aprobado",
-                fecha: "2026-08-18"
-            }
-        ];
-
-        // INITIALIZATION
+        // INITIALIZATION: CARGAR DESDE GOOGLE SHEETS AUTOMÁTICAMENTE AL ABRIR
         document.addEventListener('DOMContentLoaded', () => {
-            fetchOpportunities();
+            loadFromGoogleSheets();
         });
 
-        // FETCH DATA FROM GOOGLE APPS SCRIPT
-        async function fetchOpportunities() {
-            updateStatus('connecting', 'Conectando con Google Sheets...');
+        // CARGAR DATOS DESDE GOOGLE SHEETS
+        async function loadFromGoogleSheets() {
             try {
+                updateConnectionStatus(true, "Conectando a Google Sheets...");
                 const response = await fetch(GOOGLE_SCRIPT_URL);
-                if (!response.ok) throw new Error('Network error');
                 const data = await response.json();
                 
                 if (Array.isArray(data) && data.length > 0) {
                     rawData = data;
+                    updateConnectionStatus(true, "Conectado a Google Sheets");
                 } else {
-                    rawData = MOCK_DATA;
+                    updateConnectionStatus(true, "Sheets vacío (Usando datos locales por defecto)");
+                    // Datos iniciales si la hoja está totalmente vacía
+                    rawData = [
+                        {
+                            id: "1",
+                            institucion: "Municipalidad Distrital de Jesús María",
+                            puesto: "Interno / Practicante de Psicología",
+                            area: "Social-Comunitaria",
+                            tipo: "Prácticas Preprofesionales",
+                            modalidad: "Presencial",
+                            ubicacion: "Jesús María, Lima",
+                            descripcion: "Apoyo en el Área de Salud Mental y Bienestar Social.",
+                            contacto_email: "salud@munijesusmaria.gob.pe",
+                            contacto_telefono: "+51998877665",
+                            contacto_web: "https://munijesusmaria.gob.pe",
+                            proponente_nombre: "Sarah Oscátegui",
+                            proponente_correo: "sarah.oscategui@upch.pe",
+                            proponente_telefono: "+51999888777",
+                            permitir_contacto: "si",
+                            estado: "aprobado",
+                            fecha: "2026-08-15"
+                        }
+                    ];
+                    syncToGoogleSheets(); // Sube el dato inicial para inicializar las cabeceras en Sheets
                 }
-                updateStatus('connected', 'Conectado a Google Sheets');
-            } catch (err) {
-                console.warn('Fallback to local mock data:', err);
-                rawData = MOCK_DATA;
-                updateStatus('offline', 'Modo Local (Sin conexión)');
+                renderAll();
+            } catch (error) {
+                console.error("Error conectando a Sheets:", error);
+                updateConnectionStatus(false, "Modo Local (Error de conexión con Sheets)");
+                renderAll();
             }
-            renderAll();
         }
 
-        // UPDATE STATUS PILL
-        function updateStatus(type, text) {
-            const dot = document.getElementById('status-dot');
-            const statusText = document.getElementById('status-text');
-            statusText.innerText = text;
-
-            if (type === 'connected') {
-                dot.className = "w-2.5 h-2.5 rounded-full bg-brand-verde";
-            } else if (type === 'connecting') {
-                dot.className = "w-2.5 h-2.5 rounded-full bg-brand-amarillo animate-pulse";
-            } else {
-                dot.className = "w-2.5 h-2.5 rounded-full bg-slate-400";
+        // SINCRONIZAR TODO EL ARRAY (Para Ediciones y Eliminaciones)
+        async function syncToGoogleSheets() {
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(rawData)
+                });
+            } catch (error) {
+                console.error("Error al sincronizar en Sheets:", error);
             }
         }
 
@@ -583,7 +556,7 @@
             renderAll();
         }
 
-        // TAB SWITCHER WITH SECURITY GUARD FOR ADMIN PANEL
+        // TAB SWITCHER
         function switchTab(tab) {
             if (tab === 'admin' && currentRole !== 'ceps') {
                 showToast('Acceso denegado. Se requiere el rol CEPS.');
@@ -600,20 +573,12 @@
 
                 if (v === tab) {
                     if (viewEl) viewEl.classList.remove('hidden');
-                    if (tabEl) {
-                        tabEl.className = "px-4 py-2 text-sm font-bold rounded-xl bg-white text-brand-fucsia shadow-xs";
-                    }
-                    if (mobTabEl) {
-                        mobTabEl.className = "text-xs font-bold px-3 py-1.5 rounded-xl bg-brand-fucsia text-white";
-                    }
+                    if (tabEl) tabEl.className = "px-4 py-2 text-sm font-bold rounded-xl bg-white text-brand-fucsia shadow-xs";
+                    if (mobTabEl) mobTabEl.className = "text-xs font-bold px-3 py-1.5 rounded-xl bg-brand-fucsia text-white";
                 } else {
                     if (viewEl) viewEl.classList.add('hidden');
-                    if (tabEl && v !== 'admin') {
-                        tabEl.className = "px-4 py-2 text-sm font-bold rounded-xl text-slate-600 hover:text-brand-fucsia";
-                    }
-                    if (mobTabEl && v !== 'admin') {
-                        mobTabEl.className = "text-xs font-bold text-slate-600 px-3 py-1.5";
-                    }
+                    if (tabEl && v !== 'admin') tabEl.className = "px-4 py-2 text-sm font-bold rounded-xl text-slate-600 hover:text-brand-fucsia";
+                    if (mobTabEl && v !== 'admin') mobTabEl.className = "text-xs font-bold text-slate-600 px-3 py-1.5";
                 }
             });
 
@@ -708,7 +673,6 @@
                                 <i class="fa-solid fa-envelope text-brand-funcsia"></i> 
                                 <a href="mailto:${item.proponente_correo}" class="underline font-semibold hover:text-brand-fucsia">${item.proponente_correo}</a>
                             </div>
-                            <p class="text-[10px] text-slate-500 italic mt-0.5">Puedes escribirle si tienes dudas sobre esta oportunidad.</p>
                         </div>
                     `;
                 }
@@ -774,7 +738,6 @@
             pendingGrid.innerHTML = '';
             approvedGrid.innerHTML = '';
 
-            // 1. Pending Cards
             if (pendingList.length === 0) {
                 pendingGrid.innerHTML = `
                     <div class="col-span-full bg-white p-6 rounded-2xl border border-dashed border-slate-300 text-center">
@@ -803,8 +766,8 @@
                             <button onclick="updateStatusApp('${item.id}', 'aprobado')" class="flex-1 bg-brand-verde text-brand-dark font-extrabold text-xs py-2 rounded-xl hover:bg-brand-verde/80">
                                 <i class="fa-solid fa-check mr-1"></i> Aprobar
                             </button>
-                            <button onclick="updateStatusApp('${item.id}', 'rechazado')" class="flex-1 bg-slate-100 text-slate-600 font-bold text-xs py-2 rounded-xl hover:bg-red-50 hover:text-red-600">
-                                <i class="fa-solid fa-xmark mr-1"></i> Rechazar
+                            <button onclick="deleteOpportunity('${item.id}')" class="bg-red-50 text-red-600 font-bold text-xs px-3 py-2 rounded-xl hover:bg-red-500 hover:text-white transition-all">
+                                <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
                     `;
@@ -812,7 +775,6 @@
                 });
             }
 
-            // 2. Approved / Published Cards (With Edit Button)
             if (approvedList.length === 0) {
                 approvedGrid.innerHTML = `
                     <div class="col-span-full bg-white p-6 rounded-2xl border border-dashed border-slate-300 text-center">
@@ -834,10 +796,15 @@
                             <p class="text-[11px] text-slate-600 line-clamp-2">${item.descripcion}</p>
                         </div>
                         <div class="pt-2 border-t border-brand-lila/30 flex items-center justify-between">
-                            <span class="text-[10px] text-slate-500 italic truncate max-w-[150px]">${item.ubicacion}</span>
-                            <button onclick="openEditModal('${item.id}')" class="bg-brand-lilaghost hover:bg-brand-fucsia hover:text-white text-brand-dark font-extrabold text-[11px] px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5">
-                                <i class="fa-solid fa-pen-to-square"></i> Editar
-                            </button>
+                            <span class="text-[10px] text-slate-500 italic truncate max-w-[130px]">${item.ubicacion}</span>
+                            <div class="flex items-center gap-1.5">
+                                <button onclick="openEditModal('${item.id}')" class="bg-brand-lilaghost hover:bg-brand-fucsia hover:text-white text-brand-dark font-extrabold text-[11px] px-2.5 py-1.5 rounded-xl transition-all flex items-center gap-1">
+                                    <i class="fa-solid fa-pen-to-square"></i> Editar
+                                </button>
+                                <button onclick="deleteOpportunity('${item.id}')" class="bg-red-50 hover:bg-red-500 hover:text-white text-red-600 font-extrabold text-[11px] px-2.5 py-1.5 rounded-xl transition-all flex items-center gap-1">
+                                    <i class="fa-solid fa-trash"></i> Eliminar
+                                </button>
+                            </div>
                         </div>
                     `;
                     approvedGrid.appendChild(card);
@@ -845,7 +812,7 @@
             }
         }
 
-        // EDIT MODAL HANDLERS
+        // EDIT & DELETE MODAL HANDLERS
         function openEditModal(id) {
             const item = rawData.find(i => i.id === id);
             if (!item) return;
@@ -886,17 +853,32 @@
                 item.contacto_telefono = document.getElementById('edit-contacto_telefono').value;
                 item.contacto_web = document.getElementById('edit-contacto_web').value;
 
-                showToast("¡Oportunidad actualizada con éxito!");
+                syncToGoogleSheets();
+                showToast("¡Oportunidad actualizada y sincronizada!");
                 closeEditModal();
                 renderAll();
             }
         }
 
-        // HANDLE FORM SUBMISSION
+        function deleteOpportunity(id) {
+            if (confirm('¿Estás segura de que deseas eliminar esta oportunidad permanentemente?')) {
+                rawData = rawData.filter(i => i.id !== id);
+                syncToGoogleSheets();
+                showToast("Oportunidad eliminada de Google Sheets");
+                closeEditModal();
+                renderAll();
+            }
+        }
+
+        function deleteOpportunityFromModal() {
+            const id = document.getElementById('edit-id').value;
+            deleteOpportunity(id);
+        }
+
+        // 🚀 ENVÍO AUTOMÁTICO A GOOGLE SHEETS DESDE EL FORMULARIO DE ESTUDIANTES
         async function handleFormSubmit(e) {
             e.preventDefault();
             const form = e.target;
-            const submitBtn = document.getElementById('submit-btn');
 
             const formData = {
                 id: Date.now().toString(),
@@ -907,20 +889,21 @@
                 modalidad: form.modalidad.value,
                 ubicacion: form.ubicacion.value,
                 descripcion: form.descripcion.value,
-                contacto_email: form.contacto_email.value,
-                contacto_telefono: form.contacto_telefono.value,
-                contacto_web: form.contacto_web.value,
+                contacto_email: form.contacto_email.value || "",
+                contacto_telefono: form.contacto_telefono.value || "",
+                contacto_web: form.contacto_web.value || "",
                 proponente_nombre: form.proponente_nombre.value,
                 proponente_correo: form.proponente_correo.value,
                 proponente_telefono: form.proponente_telefono.value,
-                permitir_contacto: form.permitir_contacto.checked,
+                permitir_contacto: form.permitir_contacto.checked ? "si" : "no",
                 estado: "pendiente",
                 fecha: new Date().toISOString().split('T')[0]
             };
 
-            submitBtn.disabled = true;
-            submitBtn.innerText = "Enviando...";
+            // 1. Añadimos localmente para respuesta inmediata en pantalla
+            rawData.push(formData);
 
+            // 2. Envío automático a Google Sheets en segundo plano
             try {
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
@@ -928,31 +911,25 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
-
-                rawData.push(formData);
-                showToast("¡Propuesta enviada! Se revisará antes de ser publicada.");
-                form.reset();
-                switchTab('explorar');
-            } catch (err) {
-                console.warn('Error submitting form:', err);
-                rawData.push(formData);
-                showToast("Propuesta guardada en el sistema.");
-                form.reset();
-                switchTab('explorar');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = "Enviar Propuesta";
-                renderAll();
+                showToast("¡Propuesta enviada y registrada automáticamente en Google Sheets!");
+            } catch (error) {
+                console.error("Error al sincronizar con Sheets:", error);
+                showToast("Propuesta guardada (Verifica tu conexión con Google Sheets)");
             }
+
+            form.reset();
+            switchTab('explorar');
+            renderAll();
         }
 
-        // UPDATE STATUS FROM ADMIN
+        // UPDATE STATUS FROM ADMIN (Aprobar)
         function updateStatusApp(id, newStatus) {
             if (currentRole !== 'ceps') return;
             const item = rawData.find(i => i.id === id);
             if (item) {
                 item.estado = newStatus;
-                showToast(`Publicación ${newStatus === 'aprobado' ? 'aprobada' : 'rechazada'}`);
+                syncToGoogleSheets();
+                showToast(`Publicación aprobada y guardada en Sheets`);
                 renderAll();
             }
         }
@@ -962,6 +939,16 @@
             applyFilters();
             if (currentRole === 'ceps') {
                 renderAdminPanel();
+            }
+        }
+
+        // STATUS CONNECTION HELPER
+        function updateConnectionStatus(isConnected, message) {
+            const dot = document.getElementById('status-dot');
+            const text = document.getElementById('status-text');
+            if (dot && text) {
+                dot.className = `w-2.5 h-2.5 rounded-full ${isConnected ? 'bg-brand-verde' : 'bg-red-500'}`;
+                text.innerText = message;
             }
         }
 
