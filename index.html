@@ -351,6 +351,61 @@
 
     </main>
 
+    <!-- DETAIL MODAL (VER INFORMACIÓN COMPLETA) -->
+    <div id="detail-modal" class="hidden fixed inset-0 bg-brand-dark/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto border border-brand-lila/60 relative">
+            <button onclick="closeDetailModal()" class="absolute top-6 right-6 text-slate-400 hover:text-brand-dark w-9 h-9 rounded-full flex items-center justify-center bg-brand-lilaghost/60 hover:bg-brand-lilaghost transition-all">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="space-y-3 pr-8">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span id="modal-detail-area" class="text-xs font-black px-3 py-1 rounded-full border bg-brand-fucsialight text-brand-fucsia border-brand-fucsia/30">Área</span>
+                    <span id="modal-detail-tipo" class="text-xs font-bold px-3 py-1 rounded-full bg-slate-100 text-slate-600">Tipo</span>
+                    <span id="modal-detail-modalidad" class="text-xs font-bold px-3 py-1 rounded-full bg-brand-lilaghost text-brand-dark">Modalidad</span>
+                </div>
+                <div>
+                    <h3 id="modal-detail-puesto" class="text-xl sm:text-2xl font-black text-brand-dark leading-snug">Puesto</h3>
+                    <p id="modal-detail-institucion" class="text-sm font-bold text-brand-fucsia mt-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-building"></i> Institución
+                    </p>
+                </div>
+            </div>
+
+            <div class="space-y-4 text-xs sm:text-sm text-slate-700">
+                <div class="bg-brand-lilaghost/40 p-4 rounded-2xl border border-brand-lila/40 space-y-1.5">
+                    <span class="block text-[11px] font-black text-brand-fucsia uppercase tracking-wider"><i class="fa-solid fa-location-dot mr-1"></i> Ubicación</span>
+                    <p id="modal-detail-ubicacion" class="font-medium text-slate-800">Ubicación</p>
+                </div>
+
+                <div class="space-y-2">
+                    <span class="block text-xs font-black text-brand-dark uppercase tracking-wider">Descripción y Requisitos Completos</span>
+                    <p id="modal-detail-descripcion" class="text-slate-600 font-medium leading-relaxed whitespace-pre-line bg-slate-50 p-4 rounded-2xl border border-slate-100"></p>
+                </div>
+
+                <div class="space-y-2">
+                    <span class="block text-xs font-black text-brand-dark uppercase tracking-wider">Medios de Contacto Institucional</span>
+                    <div id="modal-detail-contacts" class="flex flex-wrap gap-2 pt-1">
+                        <!-- Generado dinámicamente -->
+                    </div>
+                </div>
+
+                <div id="modal-detail-student-box" class="hidden bg-brand-fucsialight/70 border border-brand-fucsia/30 rounded-2xl p-4 space-y-2">
+                    <span class="block text-xs font-black text-brand-fucsia uppercase tracking-wider"><i class="fa-solid fa-user-graduate mr-1"></i> Estudiante Proponente</span>
+                    <div class="text-xs text-slate-700 space-y-1">
+                        <p><strong>Nombre:</strong> <span id="modal-detail-proponente-nombre"></span></p>
+                        <p><strong>Correo UPCH:</strong> <a id="modal-detail-proponente-correo" href="#" class="underline text-brand-fucsia font-semibold"></a></p>
+                        <p><strong>Teléfono:</strong> <span id="modal-detail-proponente-telefono"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-brand-lila/40 flex justify-end">
+                <button onclick="closeDetailModal()" class="px-6 py-2.5 bg-brand-dark text-white font-extrabold rounded-xl text-xs hover:bg-slate-800 transition-all">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- EDIT MODAL -->
     <div id="edit-modal" class="hidden fixed inset-0 bg-brand-dark/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto border border-brand-lila/60">
@@ -554,7 +609,6 @@
                 }
             });
 
-            // 🚀 CADA VEZ QUE ENTRAS AL PANEL ADMIN O EXPLORAR, DESCARGA LOS DATOS FRESCOS DE SHEETS
             loadFromGoogleSheets();
         }
 
@@ -596,7 +650,8 @@
 
             list.forEach(item => {
                 const card = document.createElement('div');
-                card.className = "bg-white rounded-2xl border border-brand-lila/60 shadow-xs hover:shadow-md transition-all p-5 flex flex-col justify-between";
+                card.className = "bg-white rounded-2xl border border-brand-lila/60 shadow-xs hover:shadow-md hover:border-brand-funsia transition-all p-5 flex flex-col justify-between cursor-pointer group";
+                card.onclick = () => openDetailModal(item.id);
 
                 let areaBadgeClass = "bg-brand-lilaghost text-brand-dark border-brand-lila";
                 if (item.area === 'Social-Comunitaria') areaBadgeClass = "bg-brand-fucsialight text-brand-fucsia border-brand-fucsia/30";
@@ -606,29 +661,23 @@
                 let contactButtonsHtml = '';
                 if (item.contacto_email) {
                     contactButtonsHtml += `
-                        <a href="mailto:${item.contacto_email}" target="_blank" class="flex-1 bg-brand-fucsialight hover:bg-brand-fucsia hover:text-white text-brand-fucsia font-extrabold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all">
-                            <i class="fa-solid fa-envelope"></i> Correo Org.
-                        </a>
+                        <span class="inline-flex items-center gap-1 text-[11px] font-bold text-brand-fucsia bg-brand-fucsialight px-2 py-1 rounded-lg">
+                            <i class="fa-solid fa-envelope"></i> Correo
+                        </span>
                     `;
                 }
                 if (item.contacto_telefono) {
-                    const cleanPhone = String(item.contacto_telefono).replace(/[^0-9]/g, '');
                     contactButtonsHtml += `
-                        <a href="https://wa.me/${cleanPhone}" target="_blank" class="flex-1 bg-brand-verde/40 hover:bg-brand-verde text-brand-dark font-extrabold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all">
-                            <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp
-                        </a>
+                        <span class="inline-flex items-center gap-1 text-[11px] font-bold text-slate-700 bg-brand-verde/30 px-2 py-1 rounded-lg">
+                            <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                        </span>
                     `;
                 }
                 if (item.contacto_web) {
-                    let icon = "fa-globe";
-                    let label = "Web / Red";
-                    if (item.contacto_web.includes('instagram')) { icon = "fa-instagram"; label = "Instagram"; }
-                    if (item.contacto_web.includes('linkedin')) { icon = "fa-linkedin"; label = "LinkedIn"; }
-
                     contactButtonsHtml += `
-                        <a href="${item.contacto_web}" target="_blank" class="flex-1 bg-brand-lilaghost hover:bg-brand-lila text-brand-dark font-extrabold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all">
-                            <i class="fa-brands ${icon} text-sm"></i> ${label}
-                        </a>
+                        <span class="inline-flex items-center gap-1 text-[11px] font-bold text-slate-700 bg-brand-lilaghost px-2 py-1 rounded-lg">
+                            <i class="fa-solid fa-globe"></i> Web
+                        </span>
                     `;
                 }
 
@@ -642,7 +691,7 @@
                             </div>
                             <div class="text-slate-600 truncate flex items-center gap-1">
                                 <i class="fa-solid fa-envelope text-brand-funcsia"></i> 
-                                <a href="mailto:${item.proponente_correo}" class="underline font-semibold hover:text-brand-fucsia">${item.proponente_correo}</a>
+                                <span class="underline font-semibold">${item.proponente_correo}</span>
                             </div>
                         </div>
                     `;
@@ -660,7 +709,7 @@
                         </div>
 
                         <div>
-                            <h4 class="text-base font-extrabold text-brand-dark leading-snug">${item.puesto}</h4>
+                            <h4 class="text-base font-extrabold text-brand-dark leading-snug group-hover:text-brand-fucsia transition-colors">${item.puesto}</h4>
                             <p class="text-xs font-bold text-brand-fucsia mt-0.5"><i class="fa-solid fa-building mr-1"></i> ${item.institucion}</p>
                         </div>
 
@@ -672,19 +721,88 @@
                     </div>
 
                     <div class="pt-4 mt-4 border-t border-brand-lila/30 space-y-2">
-                        <div class="flex items-center text-[11px] font-semibold text-slate-500 gap-1">
-                            <i class="fa-solid fa-location-dot text-brand-fucsia"></i>
-                            <span class="truncate">${item.ubicacion}</span>
-                        </div>
-
-                        <div class="flex flex-wrap gap-2 pt-1">
-                            ${contactButtonsHtml || '<span class="text-xs text-slate-400 italic">Sin datos directos de la institución</span>'}
+                        <div class="flex items-center justify-between text-[11px] font-semibold text-slate-500">
+                            <div class="flex items-center gap-1 truncate max-w-[180px]">
+                                <i class="fa-solid fa-location-dot text-brand-fucsia"></i>
+                                <span class="truncate">${item.ubicacion}</span>
+                            </div>
+                            <span class="text-brand-fucsia font-bold text-[10px] uppercase tracking-wider group-hover:underline">Ver detalles <i class="fa-solid fa-arrow-right ml-0.5"></i></span>
                         </div>
                     </div>
                 `;
 
                 grid.appendChild(card);
             });
+        }
+
+        // FUNCIONES PARA EL MODAL DE DETALLES COMPLETOS
+        function openDetailModal(id) {
+            const item = rawData.find(i => String(i.id) === String(id));
+            if (!item) return;
+
+            document.getElementById('modal-detail-area').innerText = item.area || 'General';
+            document.getElementById('modal-detail-tipo').innerText = item.tipo || 'Oportunidad';
+            document.getElementById('modal-detail-modalidad').innerText = item.modalidad || 'Presencial';
+            document.getElementById('modal-detail-puesto').innerText = item.puesto || '';
+            document.getElementById('modal-detail-institucion').innerHTML = `<i class="fa-solid fa-building mr-1"></i> ${item.institucion || ''}`;
+            document.getElementById('modal-detail-ubicacion').innerText = item.ubicacion || 'No especificada';
+            document.getElementById('modal-detail-descripcion').innerText = item.descripcion || 'Sin descripción detallada.';
+
+            // Generar botones de contacto institucional en el modal
+            const contactsContainer = document.getElementById('modal-detail-contacts');
+            contactsContainer.innerHTML = '';
+            let hasContact = false;
+
+            if (item.contacto_email) {
+                hasContact = true;
+                contactsContainer.innerHTML += `
+                    <a href="mailto:${item.contacto_email}" target="_blank" class="bg-brand-fucsialight hover:bg-brand-fucsia hover:text-white text-brand-fucsia font-extrabold text-xs py-2 px-4 rounded-xl flex items-center gap-2 transition-all">
+                        <i class="fa-solid fa-envelope"></i> ${item.contacto_email}
+                    </a>
+                `;
+            }
+            if (item.contacto_telefono) {
+                hasContact = true;
+                const cleanPhone = String(item.contacto_telefono).replace(/[^0-9]/g, '');
+                contactsContainer.innerHTML += `
+                    <a href="https://wa.me/${cleanPhone}" target="_blank" class="bg-brand-verde/40 hover:bg-brand-verde text-brand-dark font-extrabold text-xs py-2 px-4 rounded-xl flex items-center gap-2 transition-all">
+                        <i class="fa-brands fa-whatsapp"></i> ${item.contacto_telefono}
+                    </a>
+                `;
+            }
+            if (item.contacto_web) {
+                hasContact = true;
+                contactsContainer.innerHTML += `
+                    <a href="${item.contacto_web}" target="_blank" class="bg-brand-lilaghost hover:bg-brand-lila text-brand-dark font-extrabold text-xs py-2 px-4 rounded-xl flex items-center gap-2 transition-all">
+                        <i class="fa-solid fa-globe"></i> Sitio Web / Red Social
+                    </a>
+                `;
+            }
+
+            if (!hasContact) {
+                contactsContainer.innerHTML = `<span class="text-xs text-slate-400 italic">No se proporcionaron datos de contacto directo de la institución.</span>`;
+            }
+
+            // Datos del estudiante proponente
+            const studentBox = document.getElementById('modal-detail-student-box');
+            const allowsContact = item.permitir_contacto === true || item.permitir_contacto === 'si' || item.permitir_contacto === 'true';
+            
+            if (allowsContact && item.proponente_nombre && item.proponente_correo) {
+                studentBox.classList.remove('hidden');
+                document.getElementById('modal-detail-proponente-nombre').innerText = item.proponente_nombre;
+                const correoLink = document.getElementById('modal-detail-proponente-correo');
+                correoLink.innerText = item.proponente_correo;
+                correoLink.href = `mailto:${item.proponente_correo}`;
+                document.getElementById('modal-detail-proponente-telefono').innerText = item.proponente_telefono || 'No especificado';
+            } else {
+                studentBox.classList.add('hidden');
+            }
+
+            document.getElementById('detail-modal').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detail-modal').classList.add('hidden');
         }
 
         function renderAdminPanel() {
@@ -813,7 +931,7 @@
             if (item) {
                 item.institucion = document.getElementById('edit-institucion').value;
                 item.puesto = document.getElementById('edit-puesto').value;
-                item.area = document.getElementById('edit-area-select') ? document.getElementById('edit-area-select').value : document.getElementById('edit-area').value;
+                item.area = document.getElementById('edit-area').value;
                 item.tipo = document.getElementById('edit-tipo').value;
                 item.modalidad = document.getElementById('edit-modalidad').value;
                 item.ubicacion = document.getElementById('edit-ubicacion').value;
