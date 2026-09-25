@@ -4,1420 +4,1078 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CEPS - Portal de Oportunidades en Psicología</title>
-    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
-                    colors: {
-                        ceps: {
-                            50: '#f0f4ff',
-                            100: '#e0e9ff',
-                            200: '#c7d7fe',
-                            300: '#a4bcfd',
-                            400: '#7c98fb',
-                            500: '#4f6bf6',
-                            600: '#3b4bf0',
-                            700: '#2d37de',
-                            800: '#282f34',
-                            900: '#1e245a',
-                            950: '#111438',
-                        },
-                        psych: {
-                            teal: '#0d9488',
-                            emerald: '#059669',
-                            rose: '#e11d48',
-                            amber: '#d97706',
-                            purple: '#7c3aed'
-                        }
-                    },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        ceps: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            800: '#1e3a8a',
+                            900: '#172554',
+                        }
                     }
                 }
             }
         }
     </script>
-    
-    <!-- Google Fonts & FontAwesome -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
+        ::-webkit-scrollbar-track {
             background: #f1f5f9;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
+        ::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 4px;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
-        @keyframes pulse-subtle {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-        .animate-pulse-subtle {
-            animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        .modal-backdrop {
+            background-color: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(4px);
         }
     </style>
 </head>
-<body class="min-h-full flex flex-col text-slate-800 antialiased selection:bg-ceps-500 selection:text-white">
+<body class="h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-ceps-500 selection:text-white">
 
-    <!-- Toast Notification Container -->
-    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-md w-full pointer-events-none"></div>
-
-    <!-- Header Navigation -->
-    <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+    <!-- Top Header -->
+    <header class="sticky top-0 z-30 bg-white border-b border-slate-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 md:h-20">
-                
-                <!-- Brand & Logo -->
-                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('explorar')">
-                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-br from-ceps-600 to-indigo-800 text-white flex items-center justify-center shadow-md shadow-ceps-500/20 transform hover:scale-105 transition-transform duration-200">
-                        <i class="fa-solid font-bold fa-brain text-xl md:text-2xl"></i>
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-ceps-700 to-ceps-500 text-white flex items-center justify-center font-extrabold text-xl shadow-md">
+                        <i class="fa-solid fa-brain"></i>
                     </div>
                     <div>
-                        <div class="flex items-center gap-2">
-                            <span class="font-black text-lg md:text-xl tracking-tight text-slate-900">CEPS</span>
-                            <span class="text-xs bg-ceps-100 text-ceps-700 font-bold px-2 py-0.5 rounded-full border border-ceps-200">Oportunidades</span>
+                        <div class="flex items-center space-x-2">
+                            <span class="font-bold text-slate-900 text-lg leading-tight tracking-tight">CEPS</span>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-ceps-50 text-ceps-700 border border-ceps-100">UPCH</span>
                         </div>
-                        <p class="text-xs text-slate-500 hidden sm:block">Centro de Estudiantes de Psicología</p>
+                        <p class="text-xs text-slate-500 hidden sm:block">Centro de Estudiantes de Psicología - Bolsa de Oportunidades</p>
                     </div>
                 </div>
 
-                <!-- Desktop Navigation Tabs -->
-                <nav class="hidden md:flex items-center gap-1 bg-slate-100/80 p-1.5 rounded-2xl border border-slate-200">
-                    <button id="nav-tab-explorar" onclick="switchTab('explorar')" class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-ceps-600 bg-white shadow-sm">
-                        <i class="fa-solid fa-compass"></i>
-                        <span>Explorar</span>
+                <!-- Action Buttons -->
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    <button id="btnSyncStatus" onclick="checkBackendConnection()" class="hidden md:inline-flex items-center text-xs px-2.5 py-1.5 rounded-lg font-medium border bg-emerald-50 text-emerald-700 border-emerald-200">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>
+                        Backend Conectado
                     </button>
                     
-                    <button id="nav-tab-proponer" onclick="switchTab('proponer')" class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-white/50">
-                        <i class="fa-solid fa-circle-plus text-ceps-500"></i>
-                        <span>Proponer Lugar</span>
+                    <button onclick="openModal('modalProponer')" class="inline-flex items-center justify-center px-3.5 py-2 rounded-xl text-sm font-semibold text-white bg-ceps-600 hover:bg-ceps-700 shadow-sm hover:shadow transition duration-150 active:scale-95">
+                        <i class="fa-solid fa-plus-circle mr-2 text-xs"></i>
+                        Proponer Lugar
                     </button>
-                    
-                    <button id="nav-tab-admin" onclick="handleAdminTabClick()" class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-white/50 relative">
-                        <i class="fa-solid fa-user-shield"></i>
-                        <span>Panel CEPS</span>
-                        <span id="pending-badge-nav" class="hidden min-w-[20px] h-5 px-1.5 bg-amber-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse">0</span>
+
+                    <button onclick="openModal('modalAdminLogin')" class="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition duration-150" title="Panel Administrador">
+                        <i class="fa-solid fa-user-shield text-lg"></i>
                     </button>
-                </nav>
-
-                <!-- User Role Switcher & Status -->
-                <div class="flex items-center gap-3">
-                    <!-- Status Sync Indicator -->
-                    <div id="sync-status" class="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                        <span id="sync-text">Sincronizado</span>
-                    </div>
-
-                    <!-- Role Dropdown -->
-                    <div class="relative inline-block text-left">
-                        <button id="role-menu-button" onclick="toggleRoleDropdown()" class="flex items-center gap-2 px-3 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 transition-colors">
-                            <span id="role-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                            <span id="role-label" class="hidden xs:inline">Modo Estudiante</span>
-                            <i class="fa-solid fa-chevron-down text-slate-400 text-xs ml-1"></i>
-                        </button>
-
-                        <div id="role-dropdown" class="hidden absolute right-0 mt-2 w-56 rounded-2xl bg-white shadow-xl border border-slate-100 py-2 z-50 transform origin-top-right transition-all">
-                            <div class="px-4 py-2 border-b border-slate-100">
-                                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Cambiar Modo</p>
-                            </div>
-                            <button onclick="setRole('student')" class="w-full text-left px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center justify-between">
-                                <span class="flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-slate-500"></i> Modo Estudiante</span>
-                                <i id="student-check" class="fa-solid fa-check text-ceps-600"></i>
-                            </button>
-                            <button onclick="setRole('admin')" class="w-full text-left px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center justify-between">
-                                <span class="flex items-center gap-2"><i class="fa-solid fa-user-lock text-amber-500"></i> Modo Administrador</span>
-                                <i id="admin-check" class="fa-solid fa-check text-ceps-600 hidden"></i>
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Mobile Bottom/Sub Navigation Bar -->
-        <div class="md:hidden flex border-t border-slate-200 bg-white px-2 py-2 justify-around">
-            <button id="mobile-tab-explorar" onclick="switchTab('explorar')" class="flex-1 py-2 rounded-lg text-xs font-semibold flex flex-col items-center gap-1 text-ceps-600 bg-ceps-50">
-                <i class="fa-solid fa-compass text-base"></i>
-                Explorar
-            </button>
-            <button id="mobile-tab-proponer" onclick="switchTab('proponer')" class="flex-1 py-2 rounded-lg text-xs font-semibold flex flex-col items-center gap-1 text-slate-600 hover:text-ceps-600">
-                <i class="fa-solid fa-circle-plus text-base text-ceps-500"></i>
-                Proponer
-            </button>
-            <button id="mobile-tab-admin" onclick="handleAdminTabClick()" class="flex-1 py-2 rounded-lg text-xs font-semibold flex flex-col items-center gap-1 text-slate-600 hover:text-ceps-600 relative">
-                <i class="fa-solid fa-user-shield text-base"></i>
-                Panel CEPS
-                <span id="pending-badge-mobile" class="hidden absolute top-1 right-4 w-4 h-4 bg-amber-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">0</span>
-            </button>
         </div>
     </header>
 
-    <!-- Main Content Shell -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
-        
-        <!-- Hero Banner (Shows on Explorar & Proponer) -->
-        <div id="hero-banner" class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-ceps-900 via-indigo-900 to-slate-900 text-white p-6 sm:p-10 mb-8 shadow-xl shadow-ceps-900/10">
-            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-ceps-500/20 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute right-1/3 -top-10 w-48 h-48 bg-psych-teal/20 rounded-full blur-2xl pointer-events-none"></div>
-
-            <div class="relative z-10 max-w-3xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-ceps-200 text-xs font-semibold mb-4 border border-white/10">
-                    <i class="fa-solid fa-bullhorn text-amber-400"></i>
-                    <span>Bolsa Oficial de Prácticas y Voluntariados CEPS</span>
+    <!-- Hero / Intro Banner -->
+    <section class="bg-gradient-to-b from-ceps-900 via-slate-900 to-slate-800 text-white py-10 px-4 sm:px-6 lg:px-8 shadow-inner">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="max-w-2xl text-center md:text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-ceps-100 text-xs font-medium backdrop-blur-sm mb-3">
+                    <i class="fa-solid fa-bullhorn text-amber-300"></i> Portal de Prácticas, Internado y Voluntariados
                 </div>
-                <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight mb-3">
-                    Encuentra tu próximo espacio de formación en Psicología
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-snug">
+                    Encuentra tu próximo centro de desarrollo en Psicología
                 </h1>
-                <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
-                    Directorio centralizado de Internados, Prácticas Preprofesionales y Voluntariados revisados por el Centro de Estudiantes. Explora por área de interés o sugiere un nuevo centro de prácticas.
+                <p class="mt-2 text-slate-300 text-sm sm:text-base leading-relaxed">
+                    Explora plazas verificadas, contacta directamente a las instituciones y postula de forma transparente.
                 </p>
+            </div>
 
-                <div class="flex flex-wrap gap-3">
-                    <button onclick="switchTab('explorar')" class="px-5 py-2.5 rounded-xl bg-ceps-500 hover:bg-ceps-600 text-white font-semibold text-sm shadow-lg shadow-ceps-500/30 transition-all flex items-center gap-2 transform active:scale-95">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <span>Explorar Ofertas</span>
-                    </button>
-                    <button onclick="switchTab('proponer')" class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-sm backdrop-blur-sm transition-all flex items-center gap-2 transform active:scale-95">
-                        <i class="fa-solid fa-plus-circle text-emerald-400"></i>
-                        <span>Registrar Nueva Oportunidad</span>
-                    </button>
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-3 gap-3 w-full md:w-auto text-center">
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10">
+                    <span id="statActive" class="block text-2xl font-bold text-amber-300">0</span>
+                    <span class="text-xs text-slate-300">Oportunidades</span>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10">
+                    <span id="statAreas" class="block text-2xl font-bold text-sky-300">6</span>
+                    <span class="text-xs text-slate-300">Áreas</span>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10">
+                    <span id="statVerified" class="block text-2xl font-bold text-emerald-300">100%</span>
+                    <span class="text-xs text-slate-300">Verificado</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Search & Filter Controls -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-8 space-y-4">
+            <!-- Search Bar -->
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <input type="text" id="searchInput" oninput="applyFilters()" placeholder="Buscar por puesto, institución, ciudad o palabras clave..." 
+                    class="block w-full pl-10 pr-10 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-ceps-500 focus:border-ceps-500 transition duration-150 placeholder:text-slate-400">
+                <button id="btnClearSearch" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Filters Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <!-- Area Filter -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">
+                        <i class="fa-solid fa-layer-group text-ceps-600 mr-1"></i> Área de Psicología
+                    </label>
+                    <select id="filterArea" onchange="applyFilters()" class="w-full text-sm rounded-xl border border-slate-300 py-2 px-3 focus:ring-2 focus:ring-ceps-500 focus:border-ceps-500">
+                        <option value="TODAS">Todas las áreas</option>
+                        <option value="Clínica y Salud">Clínica y Salud</option>
+                        <option value="Organizacional">Organizacional / RRHH</option>
+                        <option value="Educativa">Educativa</option>
+                        <option value="Social-Comunitaria">Social-Comunitaria</option>
+                        <option value="Neuropsicología">Neuropsicología</option>
+                        <option value="Deportiva">Deportiva</option>
+                    </select>
+                </div>
+
+                <!-- Type Filter -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">
+                        <i class="fa-solid fa-briefcase text-ceps-600 mr-1"></i> Tipo de Modalidad
+                    </label>
+                    <select id="filterType" onchange="applyFilters()" class="w-full text-sm rounded-xl border border-slate-300 py-2 px-3 focus:ring-2 focus:ring-ceps-500 focus:border-ceps-500">
+                        <option value="TODOS">Todos los tipos</option>
+                        <option value="Internado">Internado</option>
+                        <option value="Prácticas Preprofesionales">Prácticas Preprofesionales</option>
+                        <option value="Voluntariado">Voluntariado</option>
+                        <option value="Empleo / Trabajo">Empleo / Trabajo</option>
+                    </select>
+                </div>
+
+                <!-- Modality Filter -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">
+                        <i class="fa-solid fa-building-user text-ceps-600 mr-1"></i> Formato de Trabajo
+                    </label>
+                    <select id="filterModality" onchange="applyFilters()" class="w-full text-sm rounded-xl border border-slate-300 py-2 px-3 focus:ring-2 focus:ring-ceps-500 focus:border-ceps-500">
+                        <option value="TODAS">Todos los formatos</option>
+                        <option value="Presencial">Presencial</option>
+                        <option value="Remoto">Remoto</option>
+                        <option value="Híbrido">Híbrido</option>
+                    </select>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 1: EXPLORAR OPORTUNIDADES (PUBLIC) -->
-        <section id="view-explorar" class="space-y-6">
-            
-            <!-- Filters Bar -->
-            <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/80 shadow-sm space-y-4">
-                <div class="flex flex-col lg:flex-row gap-4 justify-between items-stretch lg:items-center">
-                    
-                    <!-- Search Bar -->
-                    <div class="relative flex-1">
-                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="search-input" oninput="applyFilters()" placeholder="Buscar por institución, funciones, palabras clave..." class="w-full pl-11 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ceps-500 focus:bg-white transition-all">
-                        <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1">
-                            <i class="fa-solid fa-xmark text-sm"></i>
-                        </button>
-                    </div>
+        <!-- Results Counter Bar -->
+        <div class="flex items-center justify-between mb-4 px-1">
+            <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                Oportunidades Disponibles 
+                <span id="resultsBadge" class="bg-ceps-100 text-ceps-800 text-xs font-extrabold px-2.5 py-0.5 rounded-full">0</span>
+            </h2>
+            <button onclick="resetAllFilters()" class="text-xs font-medium text-ceps-600 hover:text-ceps-800 flex items-center gap-1">
+                <i class="fa-solid fa-rotate-left text-xs"></i> Restablecer filtros
+            </button>
+        </div>
 
-                    <!-- Dropdown Filters -->
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <!-- Area Filter -->
-                        <div>
-                            <select id="filter-area" onchange="applyFilters()" class="w-full py-3 px-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-ceps-500">
-                                <option value="TODAS">Todas las Áreas</option>
-                                <option value="Clínica">Clínica</option>
-                                <option value="Social-Comunitaria">Social-Comunitaria</option>
-                                <option value="Organizacional">Organizacional</option>
-                                <option value="Educativa">Educativa</option>
-                                <option value="Neuropsicología">Neuropsicología</option>
-                                <option value="Deportiva/Ejercicio">Deportiva / Ejercicio</option>
-                            </select>
-                        </div>
+        <!-- Cards Container -->
+        <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dynamic Cards inserted here -->
+        </div>
 
-                        <!-- Type Filter -->
-                        <div>
-                            <select id="filter-tipo" onchange="applyFilters()" class="w-full py-3 px-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-ceps-500">
-                                <option value="TODOS">Todos los Tipos</option>
-                                <option value="Internado">Internado</option>
-                                <option value="Prácticas Preprofesionales">Prácticas Preprofesionales</option>
-                                <option value="Voluntariado">Voluntariado</option>
-                            </select>
-                        </div>
-
-                        <!-- Modality Filter -->
-                        <div>
-                            <select id="filter-modalidad" onchange="applyFilters()" class="w-full py-3 px-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-ceps-500">
-                                <option value="TODAS">Todas las Modalidades</option>
-                                <option value="Presencial">Presencial</option>
-                                <option value="Remoto">Remoto</option>
-                                <option value="Híbrido">Híbrido</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Active Filters Counter -->
-                <div class="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
-                    <div id="results-count" class="font-semibold text-slate-700">
-                        Cargando oportunidades...
-                    </div>
-                    <button onclick="resetAllFilters()" class="text-ceps-600 hover:text-ceps-800 font-semibold transition-colors flex items-center gap-1">
-                        <i class="fa-solid fa-rotate-right"></i>
-                        <span>Limpiar filtros</span>
-                    </button>
-                </div>
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-dashed border-slate-300 p-8">
+            <div class="w-16 h-16 mx-auto bg-slate-100 rounded-full flex items-center justify-center text-slate-400 text-2xl mb-4">
+                <i class="fa-solid fa-folder-open"></i>
             </div>
-
-            <!-- Directory Grid Container -->
-            <div id="directory-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Dynamic cards populated here -->
-            </div>
-
-            <!-- Empty State -->
-            <div id="directory-empty-state" class="hidden py-16 text-center bg-white rounded-3xl border border-slate-200/80 p-8">
-                <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl">
-                    <i class="fa-solid fa-folder-open"></i>
-                </div>
-                <h3 class="text-lg font-bold text-slate-800 mb-1">No se encontraron resultados</h3>
-                <p class="text-slate-500 text-sm max-w-md mx-auto mb-6">Prueba ajustando los filtros de búsqueda o término ingresado.</p>
-                <button onclick="resetAllFilters()" class="px-4 py-2 bg-ceps-600 hover:bg-ceps-700 text-white font-semibold text-sm rounded-xl transition-all">
-                    Restablecer búsqueda
-                </button>
-            </div>
-        </section>
-
-        <!-- TAB 2: PROPONER LUGAR (FORM) -->
-        <section id="view-proponer" class="hidden max-w-3xl mx-auto">
-            <div class="bg-white rounded-3xl border border-slate-200/80 shadow-md p-6 sm:p-10">
-                <div class="mb-8 border-b border-slate-100 pb-6">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold mb-2">
-                        <i class="fa-solid fa-paper-plane"></i>
-                        ConvocatoriaAbierta
-                    </div>
-                    <h2 class="text-2xl font-bold text-slate-900">Proponer Nueva Oportunidad</h2>
-                    <p class="text-slate-500 text-sm mt-1">
-                        ¿Conoces una institución, ONG, clínica u empresa que requiera practicantes o voluntarios de Psicología? Completa el formulario y el equipo de CEPS lo evaluará para ser publicado.
-                    </p>
-                </div>
-
-                <form id="opportunity-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
-                    
-                    <!-- Institucion -->
-                    <div>
-                        <label for="form-institucion" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                            Institución u Organización <span class="text-rose-500">*</span>
-                        </label>
-                        <div class="relative">
-                            <i class="fa-solid fa-building absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                            <input type="text" id="form-institucion" required placeholder="Ej: Hospital Larco Herrera / ONG Psicólogos Sin Fronteras" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ceps-500 focus:bg-white transition-all">
-                        </div>
-                    </div>
-
-                    <!-- Tipo & Área -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label for="form-tipo" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                                Tipo de Oportunidad <span class="text-rose-500">*</span>
-                            </label>
-                            <select id="form-tipo" required class="w-full py-3 px-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-ceps-500">
-                                <option value="" disabled selected>Selecciona una opción</option>
-                                <option value="Internado">Internado</option>
-                                <option value="Prácticas Preprofesionales">Prácticas Preprofesionales</option>
-                                <option value="Voluntariado">Voluntariado</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label for="form-area" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                                Área de Psicología <span class="text-rose-500">*</span>
-                            </label>
-                            <select id="form-area" required class="w-full py-3 px-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-ceps-500">
-                                <option value="" disabled selected>Selecciona el área</option>
-                                <option value="Clínica">Clínica</option>
-                                <option value="Social-Comunitaria">Social-Comunitaria</option>
-                                <option value="Organizacional">Organizacional</option>
-                                <option value="Educativa">Educativa</option>
-                                <option value="Neuropsicología">Neuropsicología</option>
-                                <option value="Deportiva/Ejercicio">Deportiva / Ejercicio</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Modalidad & Ubicación -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label for="form-modalidad" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                                Modalidad <span class="text-rose-500">*</span>
-                            </label>
-                            <select id="form-modalidad" required class="w-full py-3 px-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-ceps-500">
-                                <option value="" disabled selected>Selecciona modalidad</option>
-                                <option value="Presencial">Presencial</option>
-                                <option value="Remoto">Remoto</option>
-                                <option value="Híbrido">Híbrido</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label for="form-ubicacion" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                                Ubicación / Ciudad <span class="text-rose-500">*</span>
-                            </label>
-                            <div class="relative">
-                                <i class="fa-solid fa-location-dot absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                                <input type="text" id="form-ubicacion" required placeholder="Ej: Lima, Miraflores / Remoto" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ceps-500 focus:bg-white transition-all">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Descripción Breve y Funciones -->
-                    <div>
-                        <label for="form-descripcion" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                            Descripción Breve y Funciones Principales <span class="text-rose-500">*</span>
-                        </label>
-                        <textarea id="form-descripcion" rows="4" required placeholder="Describe brevemente las tareas: evaluación diagnóstica, talleres comunitarios, apoyo en selección de personal, etc." class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ceps-500 focus:bg-white transition-all custom-scrollbar"></textarea>
-                    </div>
-
-                    <!-- Requisitos -->
-                    <div>
-                        <label for="form-requisitos" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                            Requisitos <span class="text-rose-500">*</span>
-                        </label>
-                        <textarea id="form-requisitos" rows="3" required placeholder="Ej: Estudiantes a partir de 7mo ciclo, disponibilidad de 20 horas semanales, inglés intermedio." class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ceps-500 focus:bg-white transition-all custom-scrollbar"></textarea>
-                    </div>
-
-                    <!-- Contacto & Correo -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label for="form-contacto" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                                Contacto / Formulario de Postulación <span class="text-rose-500">*</span>
-                            </label>
-                            <div class="relative">
-                                <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                                <input type="text" id="form-contacto" required placeholder="Correo o Enlace de postulación" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ceps-500 focus:bg-white transition-all">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label for="form-correo-proponente" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                                Tu Correo Estudiantil <span class="text-rose-500">*</span>
-                            </label>
-                            <div class="relative">
-                                <i class="fa-solid fa-id-card absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                                <input type="email" id="form-correo-proponente" required placeholder="estudiante@universidad.edu.pe" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ceps-500 focus:bg-white transition-all">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Form Buttons -->
-                    <div class="pt-4 flex items-center justify-end gap-3">
-                        <button type="button" onclick="switchTab('explorar')" class="px-5 py-3 rounded-xl border border-slate-200 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition-colors">
-                            Cancelar
-                        </button>
-                        <button type="submit" id="submit-btn" class="px-6 py-3 rounded-xl bg-ceps-600 hover:bg-ceps-700 text-white font-semibold text-sm shadow-lg shadow-ceps-500/25 transition-all flex items-center gap-2 transform active:scale-95 disabled:opacity-50">
-                            <i id="submit-spinner" class="fa-solid fa-spinner fa-spin hidden"></i>
-                            <i id="submit-icon" class="fa-solid fa-paper-plane"></i>
-                            <span id="submit-text">Enviar Propuesta</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </section>
-
-        <!-- TAB 3: PANEL CEPS (ADMIN DASHBOARD) -->
-        <section id="view-admin" class="hidden space-y-6">
-            
-            <!-- Admin Top Bar -->
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm">
-                <div>
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-bold mb-1">
-                        <i class="fa-solid fa-shield-halved"></i>
-                        <span>Panel de Administración CEPS</span>
-                    </div>
-                    <h2 class="text-2xl font-bold text-slate-900">Gestión de Solicitudes</h2>
-                    <p class="text-xs sm:text-sm text-slate-500">Revisa, aprueba y publica propuestas enviadas por la comunidad estudiantil.</p>
-                </div>
-
-                <div class="flex items-center gap-2">
-                    <button onclick="syncDataFromBackend(true)" class="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold flex items-center gap-2 transition-colors">
-                        <i class="fa-solid fa-rotate text-ceps-600"></i>
-                        <span>Forzar Sincronización</span>
-                    </button>
-                    <button onclick="setRole('student')" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-2 transition-colors">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>Salir de Admin</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Stats KPI Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                    <div>
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Pendientes</p>
-                        <p id="stat-pending" class="text-2xl font-black text-amber-600 mt-1">0</p>
-                    </div>
-                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-xl">
-                        <i class="fa-solid fa-clock"></i>
-                    </div>
-                </div>
-
-                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                    <div>
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Aprobadas</p>
-                        <p id="stat-approved" class="text-2xl font-black text-emerald-600 mt-1">0</p>
-                    </div>
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl">
-                        <i class="fa-solid fa-circle-check"></i>
-                    </div>
-                </div>
-
-                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                    <div>
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Registros</p>
-                        <p id="stat-total" class="text-2xl font-black text-slate-800 mt-1">0</p>
-                    </div>
-                    <div class="w-12 h-12 rounded-xl bg-ceps-50 text-ceps-600 flex items-center justify-center text-xl">
-                        <i class="fa-solid fa-layer-group"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Admin Sub-tabs -->
-            <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
-                <div class="flex border-b border-slate-100 bg-slate-50/50 p-2 gap-2">
-                    <button id="admin-subtab-pending" onclick="switchAdminSubtab('pending')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-slate-900 shadow-sm border border-slate-200/60 flex items-center gap-2">
-                        <i class="fa-solid fa-hourglass-half text-amber-500"></i>
-                        <span>Solicitudes Pendientes</span>
-                        <span id="badge-pending-count" class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-extrabold">0</span>
-                    </button>
-
-                    <button id="admin-subtab-approved" onclick="switchAdminSubtab('approved')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-2">
-                        <i class="fa-solid fa-circle-check text-emerald-500"></i>
-                        <span>Publicadas en Catálogo</span>
-                        <span id="badge-approved-count" class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-bold">0</span>
-                    </button>
-                </div>
-
-                <!-- Admin Pending Table -->
-                <div id="admin-pending-container" class="p-4 sm:p-6 overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="border-b border-slate-100 text-xs font-bold uppercase tracking-wider text-slate-400">
-                                <th class="pb-3 px-2">Institución</th>
-                                <th class="pb-3 px-2">Detalles</th>
-                                <th class="pb-3 px-2">Proponente</th>
-                                <th class="pb-3 px-2">Fecha</th>
-                                <th class="pb-3 px-2 text-right">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-pending-tbody" class="divide-y divide-slate-100 text-xs sm:text-sm">
-                            <!-- Rows loaded via JS -->
-                        </tbody>
-                    </table>
-
-                    <div id="admin-pending-empty" class="hidden text-center py-12">
-                        <i class="fa-solid fa-circle-check text-4xl text-emerald-400 mb-2"></i>
-                        <h4 class="font-bold text-slate-700">¡Todo al día!</h4>
-                        <p class="text-slate-400 text-xs">No hay solicitudes pendientes de revisión.</p>
-                    </div>
-                </div>
-
-                <!-- Admin Approved Table -->
-                <div id="admin-approved-container" class="hidden p-4 sm:p-6 overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="border-b border-slate-100 text-xs font-bold uppercase tracking-wider text-slate-400">
-                                <th class="pb-3 px-2">Institución</th>
-                                <th class="pb-3 px-2">Categoría</th>
-                                <th class="pb-3 px-2">Ubicación</th>
-                                <th class="pb-3 px-2">Contacto</th>
-                                <th class="pb-3 px-2 text-right">Gestión</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-approved-tbody" class="divide-y divide-slate-100 text-xs sm:text-sm">
-                            <!-- Rows loaded via JS -->
-                        </tbody>
-                    </table>
-
-                    <div id="admin-approved-empty" class="hidden text-center py-12">
-                        <i class="fa-solid fa-folder-open text-4xl text-slate-300 mb-2"></i>
-                        <h4 class="font-bold text-slate-700">Catálogo vacío</h4>
-                        <p class="text-slate-400 text-xs">No hay oportunidades publicadas actualmente.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+            <h3 class="text-lg font-bold text-slate-800 mb-1">No se encontraron oportunidades</h3>
+            <p class="text-slate-500 text-sm max-w-md mx-auto mb-6">Prueba cambiando los criterios de búsqueda o borra los filtros seleccionados.</p>
+            <button onclick="resetAllFilters()" class="px-4 py-2 bg-slate-800 text-white text-sm font-semibold rounded-xl hover:bg-slate-900 transition">
+                Limpiar búsqueda y filtros
+            </button>
+        </div>
     </main>
 
-    <!-- Modal: Admin PIN Security Verification -->
-    <div id="pin-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
-        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 transform transition-all scale-100">
-            <div class="text-center mb-6">
-                <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl">
-                    <i class="fa-solid fa-lock"></i>
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-8 px-4 sm:px-6 lg:px-8 mt-auto text-sm">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-ceps-600 text-white flex items-center justify-center font-bold text-sm">
+                    <i class="fa-solid fa-brain"></i>
                 </div>
-                <h3 class="text-lg font-bold text-slate-900">Acceso Restringido CEPS</h3>
-                <p class="text-xs text-slate-500 mt-1">Ingresa el PIN de seguridad asignado a la directiva CEPS.</p>
+                <div>
+                    <p class="text-slate-200 font-semibold">CEPS - Universidad Peruana Cayetano Heredia</p>
+                    <p class="text-xs text-slate-500">Gestión de Oportunidades Académicas y Profesionales</p>
+                </div>
+            </div>
+            <p class="text-xs text-slate-500 text-center md:text-right">
+                &copy; 2026 Centro de Estudiantes de Psicología. Todos los derechos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- MODAL 1: PROPONER OPORTUNIDAD -->
+    <!-- ========================================== -->
+    <div id="modalProponer" class="fixed inset-0 z-50 modal-backdrop hidden overflow-y-auto flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden border border-slate-100 my-8">
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-ceps-900 to-ceps-700 p-5 text-white flex items-center justify-between">
+                <div>
+                    <h3 class="font-bold text-lg leading-snug">Proponer Nueva Oportunidad</h3>
+                    <p class="text-xs text-ceps-100">Publica una plaza de internado, prácticas o voluntariado para estudiantes.</p>
+                </div>
+                <button onclick="closeModal('modalProponer')" class="text-white/70 hover:text-white p-1 rounded-lg hover:bg-white/10 transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
             </div>
 
-            <form onsubmit="verifyAdminPin(event)" class="space-y-4">
-                <div>
-                    <input type="password" id="pin-input" placeholder="Ingresa PIN (Clave: ceps2026)" required class="w-full text-center tracking-widest text-lg py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-ceps-500">
-                    <p id="pin-error" class="hidden text-rose-500 text-xs font-semibold text-center mt-2">
-                        <i class="fa-solid fa-circle-exclamation mr-1"></i> PIN incorrecto
-                    </p>
+            <!-- Modal Form -->
+            <form id="formProponer" onsubmit="handleProposeSubmit(event)" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Title -->
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Título de la Oportunidad / Puesto *</label>
+                        <input type="text" id="propTitulo" required placeholder="Ej. Practicante Preprofesional de Selección" 
+                            class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-500 focus:border-ceps-500">
+                    </div>
+
+                    <!-- Organization -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Institución / Empresa / Centro *</label>
+                        <input type="text" id="propOrganizacion" required placeholder="Ej. Clínica San Pablo, ONG Sonrisas, etc." 
+                            class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-500 focus:border-ceps-500">
+                    </div>
+
+                    <!-- Psychology Area -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Área de Psicología *</label>
+                        <select id="propArea" required class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-500">
+                            <option value="Clínica y Salud">Clínica y Salud</option>
+                            <option value="Organizacional">Organizacional / RRHH</option>
+                            <option value="Educativa">Educativa</option>
+                            <option value="Social-Comunitaria">Social-Comunitaria</option>
+                            <option value="Neuropsicología">Neuropsicología</option>
+                            <option value="Deportiva">Deportiva</option>
+                        </select>
+                    </div>
+
+                    <!-- Opportunity Type -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tipo de Oportunidad *</label>
+                        <select id="propTipo" required class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-500">
+                            <option value="Internado">Internado</option>
+                            <option value="Prácticas Preprofesionales">Prácticas Preprofesionales</option>
+                            <option value="Voluntariado">Voluntariado</option>
+                            <option value="Empleo / Trabajo">Empleo / Trabajo</option>
+                        </select>
+                    </div>
+
+                    <!-- Modality -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Formato / Modalidad *</label>
+                        <select id="propModalidad" required class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-500">
+                            <option value="Presencial">Presencial</option>
+                            <option value="Remoto">Remoto</option>
+                            <option value="Híbrido">Híbrido</option>
+                        </select>
+                    </div>
+
+                    <!-- Address / Location -->
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Ubicación / Distrito (Opcional)</label>
+                        <input type="text" id="propUbicacion" placeholder="Ej. Miraflores, Lima / En línea" 
+                            class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-500">
+                    </div>
                 </div>
 
-                <div class="flex gap-2">
-                    <button type="button" onclick="closePinModal()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-50">
+                <!-- Description -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Descripción de las funciones y requisitos *</label>
+                    <textarea id="propDescripcion" required rows="4" placeholder="Detalla el perfil del estudiante, horario sugerido, principales tareas y modalidad de trabajo..." 
+                        class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-500"></textarea>
+                </div>
+
+                <!-- CONTACT METHODS SECTION (OPTIONAL FIELDS) -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-address-book text-ceps-600"></i> Métodos de Contacto Directo (Opcionales)
+                        </h4>
+                        <span class="text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full font-semibold">Sin obligación</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Email Contact -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">
+                                <i class="fa-regular fa-envelope text-blue-600 mr-1"></i> Correo Electrónico
+                            </label>
+                            <input type="email" id="propContactoEmail" placeholder="ejemplo@organizacion.org" 
+                                class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-500">
+                            <span class="text-[11px] text-slate-500">Muestra un botón directo para enviar correo</span>
+                        </div>
+
+                        <!-- Phone / WhatsApp Contact -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">
+                                <i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i> Teléfono o WhatsApp
+                            </label>
+                            <input type="tel" id="propContactoTelefono" placeholder="Ej. 987654321" 
+                                class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-500">
+                            <span class="text-[11px] text-slate-500">Muestra botón directo a WhatsApp/Llamada</span>
+                        </div>
+
+                        <!-- Web / Social Media Link -->
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">
+                                <i class="fa-solid fa-globe text-purple-600 mr-1"></i> Enlace Web, Instagram o LinkedIn
+                            </label>
+                            <input type="url" id="propContactoWeb" placeholder="https://instagram.com/tu_pagina o https://linkedin.com/in/perfil" 
+                                class="w-full text-sm rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-500">
+                            <span class="text-[11px] text-slate-500">Se detectará si es Instagram, LinkedIn o sitio web oficial</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex items-center justify-end space-x-3 pt-3 border-t border-slate-100">
+                    <button type="button" onclick="closeModal('modalProponer')" class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">
                         Cancelar
                     </button>
-                    <button type="submit" class="flex-1 py-2.5 rounded-xl bg-ceps-600 hover:bg-ceps-700 text-white font-semibold text-xs shadow-md shadow-ceps-500/20">
-                        Verificar
+                    <button type="submit" id="btnSubmitPropuesta" class="px-5 py-2.5 text-sm font-semibold text-white bg-ceps-600 hover:bg-ceps-700 rounded-xl shadow-md transition flex items-center">
+                        <span>Enviar Propuesta</span>
                     </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal: Opportunity Detail View -->
-    <div id="detail-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-slate-100">
-            <!-- Modal Header -->
-            <div class="p-6 border-b border-slate-100 flex items-start justify-between bg-slate-50/50">
-                <div class="space-y-2 pr-4">
-                    <div id="detail-badges" class="flex flex-wrap gap-2"></div>
-                    <h3 id="detail-title" class="text-2xl font-bold text-slate-900 leading-tight"></h3>
-                    <p id="detail-location" class="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
-                        <i class="fa-solid fa-location-dot text-rose-500"></i>
-                        <span></span>
+    <!-- ========================================== -->
+    <!-- MODAL 2: DETALLES DE LA OPORTUNIDAD -->
+    <!-- ========================================== -->
+    <div id="modalDetalle" class="fixed inset-0 z-50 modal-backdrop hidden overflow-y-auto flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden border border-slate-100 my-8">
+            <!-- Header -->
+            <div id="modalDetalleHeader" class="p-6 text-white bg-slate-900 flex items-start justify-between">
+                <div class="pr-4">
+                    <div id="modalDetalleBadges" class="flex flex-wrap gap-2 mb-2"></div>
+                    <h3 id="modalDetalleTitulo" class="text-xl font-bold leading-tight"></h3>
+                    <p id="modalDetalleOrganizacion" class="text-slate-300 text-sm mt-1 flex items-center gap-1.5"></p>
+                </div>
+                <button onclick="closeModal('modalDetalle')" class="text-white/70 hover:text-white p-1 rounded-lg hover:bg-white/10 transition">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-6 space-y-5 max-h-[70vh] overflow-y-auto">
+                <div>
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Detalles del Puesto</h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div>
+                            <span class="block text-xs text-slate-500">Área</span>
+                            <span id="modalDetalleArea" class="font-semibold text-slate-800"></span>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-slate-500">Tipo</span>
+                            <span id="modalDetalleTipo" class="font-semibold text-slate-800"></span>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-slate-500">Modalidad</span>
+                            <span id="modalDetalleModalidad" class="font-semibold text-slate-800"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="modalDetalleUbicacionContainer" class="hidden">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Ubicación</h4>
+                    <p id="modalDetalleUbicacion" class="text-sm text-slate-700 flex items-center gap-1.5">
+                        <i class="fa-solid fa-location-dot text-rose-500"></i> <span></span>
                     </p>
                 </div>
-                <button onclick="closeDetailModal()" class="w-8 h-8 rounded-full bg-slate-200/60 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <!-- Modal Content -->
-            <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar text-sm text-slate-600">
-                <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Descripción Breve & Funciones</h4>
-                    <p id="detail-description" class="leading-relaxed bg-slate-50 p-4 rounded-2xl border border-slate-100 whitespace-pre-line text-slate-800"></p>
-                </div>
 
                 <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Requisitos y Perfil</h4>
-                    <div id="detail-requirements" class="bg-slate-50 p-4 rounded-2xl border border-slate-100 whitespace-pre-line text-slate-800"></div>
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Descripción y Requisitos</h4>
+                    <p id="modalDetalleDescripcion" class="text-slate-700 text-sm whitespace-pre-line leading-relaxed bg-slate-50/50 p-4 rounded-xl border border-slate-100"></p>
                 </div>
 
-                <div class="flex items-center justify-between text-xs text-slate-400 border-t border-slate-100 pt-4">
-                    <span id="detail-date"></span>
-                    <span id="detail-id" class="font-mono"></span>
+                <!-- Dynamic Contact Action Buttons Container -->
+                <div>
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Canales Directos de Contacto</h4>
+                    <div id="modalDetalleContactos" class="flex flex-col sm:flex-row flex-wrap gap-2.5">
+                        <!-- Dynamic Contact Buttons Render Here -->
+                    </div>
                 </div>
             </div>
 
-            <!-- Modal Footer CTA -->
-            <div class="p-6 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-3">
-                <button onclick="closeDetailModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-100">
+            <!-- Footer -->
+            <div class="bg-slate-50 p-4 px-6 border-t border-slate-200 flex justify-end">
+                <button onclick="closeModal('modalDetalle')" class="px-5 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 transition">
                     Cerrar
                 </button>
-                <a id="detail-contact-btn" href="#" target="_blank" rel="noopener noreferrer" class="px-6 py-2.5 rounded-xl bg-ceps-600 hover:bg-ceps-700 text-white font-semibold text-xs shadow-md shadow-ceps-500/20 flex items-center gap-2">
-                    <i class="fa-solid fa-paper-plane"></i>
-                    <span>Postular / Contactar</span>
-                </a>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="mt-auto border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p>© 2026 Centro de Estudiantes de Psicología (CEPS). Todos los derechos reservados.</p>
-            <p class="flex items-center gap-1">
-                <span>Conectado a Google Sheets</span>
-                <i class="fa-solid fa-circle-check text-emerald-500"></i>
-            </p>
+    <!-- ========================================== -->
+    <!-- MODAL 3: LOGIN ADMIN Y PANEL -->
+    <!-- ========================================== -->
+    <div id="modalAdminLogin" class="fixed inset-0 z-50 modal-backdrop hidden overflow-y-auto flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 border border-slate-100">
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-ceps-100 text-ceps-700 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900">Acceso Administración CEPS</h3>
+                <p class="text-xs text-slate-500">Ingresa el PIN de seguridad para gestionar las solicitudes.</p>
+            </div>
+
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">PIN de Acceso</label>
+                    <input type="password" id="adminPin" required placeholder="••••••••" 
+                        class="w-full text-center text-lg tracking-widest rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-ceps-500">
+                </div>
+                <div class="flex space-x-2">
+                    <button type="button" onclick="closeModal('modalAdminLogin')" class="w-1/2 py-2.5 text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="w-1/2 py-2.5 text-sm font-semibold text-white bg-ceps-600 hover:bg-ceps-700 rounded-xl shadow">
+                        Ingresar
+                    </button>
+                </div>
+            </form>
         </div>
-    </footer>
+    </div>
+
+    <!-- MODAL ADMIN PANEL -->
+    <div id="modalAdminPanel" class="fixed inset-0 z-50 modal-backdrop hidden overflow-y-auto flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden border border-slate-100 my-8">
+            <div class="bg-slate-900 p-5 text-white flex items-center justify-between">
+                <div>
+                    <h3 class="font-bold text-lg">Panel de Administración de Publicaciones</h3>
+                    <p class="text-xs text-slate-400">Aprueba, edita o rechaza propuestas en revisión.</p>
+                </div>
+                <button onclick="closeModal('modalAdminPanel')" class="text-white/70 hover:text-white p-1 rounded-lg">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="p-6 max-h-[75vh] overflow-y-auto space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                    <span class="text-sm font-bold text-slate-700">Propuestas Pendientes de Aprobación</span>
+                    <button onclick="loadOpportunitiesFromBackend()" class="text-xs text-ceps-600 hover:text-ceps-800 font-semibold flex items-center gap-1">
+                        <i class="fa-solid fa-rotate"></i> Actualizar lista
+                    </button>
+                </div>
+
+                <div id="adminPendingList" class="space-y-3">
+                    <!-- Pending Items inserted via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        /* ==========================================================================
-           CONFIGURATION & INITIAL STATE
-           ========================================================================== */
-        
-        // Exact Google Apps Script Web App URL provided
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzk9cThmashkng78RN60hUHSXV8YeYLEHMGyy2YXILVatGPmFBxsEFL8eb5UKM3yqh/exec';
-        const DEMO_ADMIN_PIN = 'ceps2026';
+        // BACKEND GOOGLE APPS SCRIPT URL
+        const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzzk9cThmashkng78RN60hUHSXV8YeYLEHMGyy2YXILVatGPmFBxsEFL8eb5UKM3yqh/exec";
 
-        // Local Application State
-        let state = {
-            opportunities: [],
-            currentTab: 'explorar',
-            adminSubtab: 'pending',
-            userRole: 'student', // 'student' | 'admin'
-            isAdminAuthenticated: false,
-            searchQuery: '',
-            filterArea: 'TODAS',
-            filterTipo: 'TODOS',
-            filterModalidad: 'TODAS'
-        };
+        // APP STATE
+        let opportunities = [];
+        const ADMIN_PIN = "ceps2026";
 
-        // Seed Backup Data (Fallback when network or first load)
-        const SEED_DATA = [
+        // DEFAULT INITIAL MOCK DATA (FALLBACK IF OFFLINE / EMPTY)
+        const DEFAULT_DATA = [
             {
-                id: 'ceps-101',
-                institucion: 'Hospital Nacional Guillermo Almenara',
-                area: 'Clínica',
-                tipo: 'Internado',
-                modalidad: 'Presencial',
-                ubicacion: 'Lima, La Victoria',
-                descripcion: 'Evaluaciones neuropsicológicas, diagnóstico clínico, aplicación de pruebas psicológicas y elaboración de informes en consulta externa.',
-                requisitos: 'Estudiantes del último año de la carrera de Psicología. Disponibilidad de 30 horas semanales. Habilidades de redacción de informes.',
-                contacto: 'psicologia.almenara@essalud.gob.pe',
-                correoProponente: 'internado.psicog@unmsm.edu.pe',
-                fecha: '2026-02-15',
-                estado: 'Aprobado'
+                id: "1",
+                titulo: "Interno(a) en Psicología Clínica y de la Salud",
+                organizacion: "Hospital Cayetano Heredia",
+                area: "Clínica y Salud",
+                tipo: "Internado",
+                modalidad: "Presencial",
+                ubicacion: "San Martín de Porres, Lima",
+                descripcion: "Evaluación psicodiagnóstica, atención ambulatoria, intervención individual y participación en programas de prevención de la salud mental. Se ofrece acompañamiento con supervisión continua.",
+                contacto_email: "psicologia@hospitalcayetano.gob.pe",
+                contacto_telefono: "987654321",
+                contacto_web_redes: "https://www.gob.pe/hospitalcayetano",
+                estado: "APROBADO"
             },
             {
-                id: 'ceps-102',
-                institucion: 'ONG Psicología y Comunidad Viva',
-                area: 'Social-Comunitaria',
-                tipo: 'Voluntariado',
-                modalidad: 'Híbrido',
-                ubicacion: 'Lima / Villa El Salvador',
-                descripcion: 'Diseño e implementación de talleres psicoeducativos en salud mental comunitaria y prevención de violencia en adolescentes.',
-                requisitos: 'A partir de 5to ciclo de Psicología. Compromiso mínimo de 4 meses (6 hrs semanales). Vocación de servicio.',
-                contacto: 'https://psicologiaycomunidad.org/unete',
-                correoProponente: 'comunidad@ceps.org',
-                fecha: '2026-03-01',
-                estado: 'Aprobado'
+                id: "2",
+                titulo: "Practicante Preprofesional de Selección y Talento",
+                organizacion: "Consultora HR Tech Global",
+                area: "Organizacional",
+                tipo: "Prácticas Preprofesionales",
+                modalidad: "Híbrido",
+                ubicacion: "San Isidro, Lima",
+                descripcion: "Soporte en procesos de reclutamiento masivo, filtro curricular, entrevistas por competencias y elaboración de informes psicolaborales. Horario flexible adaptable a clases universitarias.",
+                contacto_email: "talento@hrtechglobal.com",
+                contacto_telefono: "912345678",
+                contacto_web_redes: "https://www.linkedin.com/company/hrtechglobal",
+                estado: "APROBADO"
             },
             {
-                id: 'ceps-103',
-                institucion: 'Consultora Talent & People HR',
-                area: 'Organizacional',
-                tipo: 'Prácticas Preprofesionales',
-                modalidad: 'Remoto',
-                ubicacion: 'Remoto (Todo Perú)',
-                descripcion: 'Apoyo en reclutamiento y selección de talento, filtros curriculares, entrevistas por competencias y aplicación de pruebas psicotécnicas.',
-                requisitos: 'Estudiantes de 7mo a 9no ciclo. Manejo de Excel básico/intermedio. Conocimiento en selección por competencias.',
-                contacto: 'reclutamiento@talentpeople.pe',
-                correoProponente: 'practicas@ceps.org',
-                fecha: '2026-03-05',
-                estado: 'Aprobado'
+                id: "3",
+                titulo: "Coordinador(a) de Voluntariado Comunitario",
+                organizacion: "ONG Psicología y Comunidad",
+                area: "Social-Comunitaria",
+                tipo: "Voluntariado",
+                modalidad: "Presencial",
+                ubicacion: "Carabayllo, Lima",
+                descripcion: "Diseño y facilitación de talleres socioemocionales para niños y adolescentes en situación de vulnerabilidad. Trabajo directo en campo con enfoque participativo.",
+                contacto_email: "contacto@psicologiacomunidad.org",
+                contacto_telefono: "",
+                contacto_web_redes: "https://instagram.com/psico_comunidad_peru",
+                estado: "APROBADO"
             },
             {
-                id: 'ceps-104',
-                institucion: 'Colegio Psicopedagógico San Agustín',
-                area: 'Educativa',
-                tipo: 'Prácticas Preprofesionales',
-                modalidad: 'Presencial',
-                ubicacion: 'Lima, San Borja',
-                descripcion: 'Acompañamiento psicopedagógico a estudiantes de nivel primaria y secundaria, talleres de orientación vocacional y hábitos de estudio.',
-                requisitos: 'A partir de 6to ciclo. Empatía, dinamismo y disponibilidad en turno mañana (08:00 - 13:00).',
-                contacto: 'psicopedagogia@sanagustin.edu.pe',
-                correoProponente: 'estudiante.propuesta@gmail.com',
-                fecha: '2026-03-10',
-                estado: 'Pendiente'
+                id: "4",
+                titulo: "Practicante de Psicopedagogía",
+                organizacion: "Colegio Innova Schools",
+                area: "Educativa",
+                tipo: "Prácticas Preprofesionales",
+                modalidad: "Presencial",
+                ubicacion: "Surco, Lima",
+                descripcion: "Acompañamiento a estudiantes en dificultades de aprendizaje, apoyo en talleres para padres de familia y seguimiento de casos psicopedagógicos.",
+                contacto_email: "convocatorias@innovaschools.edu.pe",
+                contacto_telefono: "998877665",
+                contacto_web_redes: "",
+                estado: "APROBADO"
             }
         ];
 
-        /**
-         * Normalizes raw items received from Google Apps Script / Sheet headers.
-         */
-        function normalizeOpportunity(raw, index = 0) {
-            const getVal = (...keys) => {
-                for (let k of keys) {
-                    if (raw[k] !== undefined && raw[k] !== null && raw[k] !== '') return raw[k];
-                    const foundKey = Object.keys(raw).find(rk => rk.toLowerCase().replace(/[^a-z0-9]/g, '') === k.toLowerCase().replace(/[^a-z0-9]/g, ''));
-                    if (foundKey && raw[foundKey] !== undefined && raw[foundKey] !== null) return raw[foundKey];
-                }
-                return '';
-            };
+        window.addEventListener('DOMContentLoaded', () => {
+            loadOpportunitiesFromBackend();
+        });
 
-            const rawStatus = String(getVal('estado', 'status', 'Estado') || 'Pendiente').trim();
-            const statusUpper = rawStatus.toUpperCase();
-            
-            let finalStatus = 'Pendiente';
-            if (statusUpper === 'APROBADO' || statusUpper === 'APPROVED' || statusUpper === 'PUBLICADO') {
-                finalStatus = 'Aprobado';
-            } else if (statusUpper === 'RECHAZADO' || statusUpper === 'REJECTED') {
-                finalStatus = 'Rechazado';
-            }
-
-            return {
-                id: String(getVal('id', 'ID', 'Id') || `gen-${Date.now()}-${index}`),
-                institucion: String(getVal('institucion', 'Institucion', 'institución', 'Institución', 'organization') || 'Institución No Especificada'),
-                area: String(getVal('area', 'Area', 'Área') || 'Clínica'),
-                tipo: String(getVal('tipo', 'Tipo', 'type') || 'Prácticas Preprofesionales'),
-                modalidad: String(getVal('modalidad', 'Modalidad', 'modality') || 'Presencial'),
-                ubicacion: String(getVal('ubicacion', 'Ubicacion', 'Ubicación', 'location') || 'Sin especificar'),
-                descripcion: String(getVal('descripcion', 'Descripcion', 'Descripción', 'description') || ''),
-                requisitos: String(getVal('requisitos', 'Requisitos', 'requirements') || ''),
-                contacto: String(getVal('contacto', 'Contacto', 'contact') || '#'),
-                correoProponente: String(getVal('correoProponente', 'CorreoProponente', 'correo', 'email') || 'anonimo@ceps.org'),
-                fecha: String(getVal('fecha', 'Fecha', 'date') || new Date().toISOString().split('T')[0]),
-                estado: finalStatus
-            };
-        }
-
-        /**
-         * Fetches items from Google Sheets Apps Script API.
-         */
-        async function syncDataFromBackend(userInitiated = false) {
-            updateSyncIndicator('loading', 'Sincronizando...');
+        // ==========================================
+        // DATA FETCHING & BACKEND SYNC
+        // ==========================================
+        async function loadOpportunitiesFromBackend() {
+            const syncStatus = document.getElementById('btnSyncStatus');
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, { method: 'GET' });
-                
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                
-                const data = await response.json();
-                
-                let rawList = [];
-                if (Array.isArray(data)) {
-                    rawList = data;
-                } else if (data.data && Array.isArray(data.data)) {
-                    rawList = data.data;
-                } else if (data.items && Array.isArray(data.items)) {
-                    rawList = data.items;
-                }
-
-                if (rawList.length > 0) {
-                    state.opportunities = rawList.map((item, idx) => normalizeOpportunity(item, idx));
-                    saveToLocalStorage();
-                    updateSyncIndicator('success', 'Sincronizado');
-                    if (userInitiated) showToast('Datos sincronizados exitosamente con Google Sheets', 'success');
+                const response = await fetch(BACKEND_URL + "?action=getOpportunities");
+                if (response.ok) {
+                    const data = await response.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        opportunities = data;
+                    } else if (data.status === "success" && Array.isArray(data.data)) {
+                        opportunities = data.data;
+                    } else {
+                        // Fallback to local storage or defaults if empty
+                        loadLocalStorageOrDefault();
+                    }
                 } else {
-                    loadFromLocalStorageOrSeed();
-                    updateSyncIndicator('warning', 'Modo Local');
+                    loadLocalStorageOrDefault();
                 }
             } catch (err) {
-                console.warn('Google Sheets API fallback.', err);
-                loadFromLocalStorageOrSeed();
-                updateSyncIndicator('warning', 'Sin conexión Backend');
-                if (userInitiated) showToast('Usando datos locales guardados.', 'info');
+                console.warn("Backend error, relying on local state:", err);
+                loadLocalStorageOrDefault();
+            } finally {
+                renderCards();
+                updateStats();
             }
-
-            renderAllViews();
         }
 
-        function loadFromLocalStorageOrSeed() {
-            const cached = localStorage.getItem('ceps_opportunities_v2');
-            if (cached) {
+        function loadLocalStorageOrDefault() {
+            const saved = localStorage.getItem('ceps_opportunities');
+            if (saved) {
                 try {
-                    state.opportunities = JSON.parse(cached);
-                } catch (e) {
-                    state.opportunities = [...SEED_DATA];
+                    opportunities = JSON.parse(saved);
+                } catch(e) {
+                    opportunities = [...DEFAULT_DATA];
                 }
             } else {
-                state.opportunities = [...SEED_DATA];
+                opportunities = [...DEFAULT_DATA];
                 saveToLocalStorage();
             }
         }
 
         function saveToLocalStorage() {
-            localStorage.setItem('ceps_opportunities_v2', JSON.stringify(state.opportunities));
+            localStorage.setItem('ceps_opportunities', JSON.stringify(opportunities));
         }
 
-        function switchTab(tabName) {
-            state.currentTab = tabName;
+        function checkBackendConnection() {
+            showToast("Comprobando conexión con Google Sheets...", "info");
+            fetch(BACKEND_URL + "?action=getOpportunities")
+                .then(res => res.json())
+                .then(() => {
+                    showToast("¡Conexión exitosa con el Backend de Google Sheets!", "success");
+                })
+                .catch(() => {
+                    showToast("No se pudo conectar al Backend. Se usará el almacenamiento local.", "warning");
+                });
+        }
 
-            const views = {
-                explorar: document.getElementById('view-explorar'),
-                proponer: document.getElementById('view-proponer'),
-                admin: document.getElementById('view-admin')
-            };
+        // ==========================================
+        // DYNAMIC RENDERING & ACTION BUTTONS
+        // ==========================================
+        function renderCards() {
+            const container = document.getElementById('cardsGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            // Filter criteria
+            const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
+            const areaVal = document.getElementById('filterArea').value;
+            const typeVal = document.getElementById('filterType').value;
+            const modalityVal = document.getElementById('filterModality').value;
 
-            const hero = document.getElementById('hero-banner');
+            // Only show APPROVED items for normal students
+            const activeItems = opportunities.filter(item => {
+                const isApproved = (item.estado === "APROBADO" || !item.estado);
+                if (!isApproved) return false;
 
-            Object.keys(views).forEach(key => {
-                if (key === tabName) {
-                    views[key].classList.remove('hidden');
-                } else {
-                    views[key].classList.add('hidden');
-                }
+                const matchSearch = !searchVal || 
+                    (item.titulo && item.titulo.toLowerCase().includes(searchVal)) ||
+                    (item.organizacion && item.organizacion.toLowerCase().includes(searchVal)) ||
+                    (item.descripcion && item.descripcion.toLowerCase().includes(searchVal)) ||
+                    (item.ubicacion && item.ubicacion.toLowerCase().includes(searchVal));
+
+                const matchArea = (areaVal === "TODAS") || (item.area === areaVal);
+                const matchType = (typeVal === "TODOS") || (item.tipo === typeVal);
+                const matchModality = (modalityVal === "TODAS") || (item.modalidad === modalityVal);
+
+                return matchSearch && matchArea && matchType && matchModality;
             });
 
-            if (tabName === 'admin') {
-                hero.classList.add('hidden');
-            } else {
-                hero.classList.remove('hidden');
-            }
+            document.getElementById('resultsBadge').innerText = activeItems.length;
 
-            updateNavTabStyle('nav-tab-explorar', tabName === 'explorar');
-            updateNavTabStyle('nav-tab-proponer', tabName === 'proponer');
-            updateNavTabStyle('nav-tab-admin', tabName === 'admin');
-
-            updateMobileNavTabStyle('mobile-tab-explorar', tabName === 'explorar');
-            updateMobileNavTabStyle('mobile-tab-proponer', tabName === 'proponer');
-            updateMobileNavTabStyle('mobile-tab-admin', tabName === 'admin');
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function updateNavTabStyle(id, isActive) {
-            const el = document.getElementById(id);
-            if (!el) return;
-            if (isActive) {
-                el.className = "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-ceps-600 bg-white shadow-sm";
-            } else {
-                el.className = "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-white/50 relative";
-            }
-        }
-
-        function updateMobileNavTabStyle(id, isActive) {
-            const el = document.getElementById(id);
-            if (!el) return;
-            if (isActive) {
-                el.className = "flex-1 py-2 rounded-lg text-xs font-semibold flex flex-col items-center gap-1 text-ceps-600 bg-ceps-50 relative";
-            } else {
-                el.className = "flex-1 py-2 rounded-lg text-xs font-semibold flex flex-col items-center gap-1 text-slate-600 hover:text-ceps-600 relative";
-            }
-        }
-
-        function handleAdminTabClick() {
-            if (state.userRole === 'admin' && state.isAdminAuthenticated) {
-                switchTab('admin');
-            } else {
-                openPinModal();
-            }
-        }
-
-        function toggleRoleDropdown() {
-            document.getElementById('role-dropdown').classList.toggle('hidden');
-        }
-
-        function setRole(role) {
-            document.getElementById('role-dropdown').classList.add('hidden');
-
-            if (role === 'admin') {
-                if (!state.isAdminAuthenticated) {
-                    openPinModal();
-                    return;
-                }
-                state.userRole = 'admin';
-                updateRoleUI(true);
-                switchTab('admin');
-                showToast('Modo Administrador activado', 'info');
-            } else {
-                state.userRole = 'student';
-                updateRoleUI(false);
-                if (state.currentTab === 'admin') switchTab('explorar');
-                showToast('Modo Estudiante activado', 'info');
-            }
-        }
-
-        function updateRoleUI(isAdmin) {
-            const roleDot = document.getElementById('role-dot');
-            const roleLabel = document.getElementById('role-label');
-            const studentCheck = document.getElementById('student-check');
-            const adminCheck = document.getElementById('admin-check');
-
-            if (isAdmin) {
-                roleDot.className = "w-2.5 h-2.5 rounded-full bg-amber-500";
-                roleLabel.textContent = "Modo Administrador";
-                studentCheck.classList.add('hidden');
-                adminCheck.classList.remove('hidden');
-            } else {
-                roleDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
-                roleLabel.textContent = "Modo Estudiante";
-                studentCheck.classList.remove('hidden');
-                adminCheck.classList.add('hidden');
-            }
-        }
-
-        function openPinModal() {
-            document.getElementById('pin-modal').classList.remove('hidden');
-            document.getElementById('pin-input').value = '';
-            document.getElementById('pin-error').classList.add('hidden');
-            setTimeout(() => document.getElementById('pin-input').focus(), 100);
-        }
-
-        function closePinModal() {
-            document.getElementById('pin-modal').classList.add('hidden');
-        }
-
-        function verifyAdminPin(e) {
-            e.preventDefault();
-            const inputPin = document.getElementById('pin-input').value.trim();
-            if (inputPin === DEMO_ADMIN_PIN) {
-                state.isAdminAuthenticated = true;
-                state.userRole = 'admin';
-                updateRoleUI(true);
-                closePinModal();
-                switchTab('admin');
-                showToast('Autenticación exitosa como Administrador CEPS', 'success');
-            } else {
-                document.getElementById('pin-error').classList.remove('hidden');
-            }
-        }
-
-        function applyFilters() {
-            state.searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
-            state.filterArea = document.getElementById('filter-area').value;
-            state.filterTipo = document.getElementById('filter-tipo').value;
-            state.filterModalidad = document.getElementById('filter-modalidad').value;
-
-            const clearBtn = document.getElementById('clear-search-btn');
-            if (state.searchQuery.length > 0) {
-                clearBtn.classList.remove('hidden');
-            } else {
-                clearBtn.classList.add('hidden');
-            }
-
-            renderDirectory();
-        }
-
-        function clearSearch() {
-            document.getElementById('search-input').value = '';
-            applyFilters();
-        }
-
-        function resetAllFilters() {
-            document.getElementById('search-input').value = '';
-            document.getElementById('filter-area').value = 'TODAS';
-            document.getElementById('filter-tipo').value = 'TODOS';
-            document.getElementById('filter-modalidad').value = 'TODAS';
-            applyFilters();
-        }
-
-        function renderDirectory() {
-            const grid = document.getElementById('directory-cards-grid');
-            const emptyState = document.getElementById('directory-empty-state');
-            const resultsCount = document.getElementById('results-count');
-
-            const approvedList = state.opportunities.filter(item => item.estado === 'Aprobado');
-
-            const filtered = approvedList.filter(item => {
-                const queryMatch = !state.searchQuery || 
-                    item.institucion.toLowerCase().includes(state.searchQuery) ||
-                    item.descripcion.toLowerCase().includes(state.searchQuery) ||
-                    item.requisitos.toLowerCase().includes(state.searchQuery) ||
-                    item.ubicacion.toLowerCase().includes(state.searchQuery);
-
-                const areaMatch = (state.filterArea === 'TODAS') || (item.area === state.filterArea);
-                const tipoMatch = (state.filterTipo === 'TODOS') || (item.tipo === state.filterTipo);
-                const modMatch = (state.filterModalidad === 'TODAS') || (item.modalidad === state.filterModalidad);
-
-                return queryMatch && areaMatch && tipoMatch && modMatch;
-            });
-
-            resultsCount.textContent = `Mostrando ${filtered.length} de ${approvedList.length} oportunidades publicadas`;
-
-            if (filtered.length === 0) {
-                grid.innerHTML = '';
+            if (activeItems.length === 0) {
+                container.innerHTML = '';
                 emptyState.classList.remove('hidden');
                 return;
             }
 
             emptyState.classList.add('hidden');
-            grid.innerHTML = filtered.map(item => createCardHTML(item)).join('');
+            container.innerHTML = activeItems.map(item => createCardHTML(item)).join('');
         }
 
         function createCardHTML(item) {
-            const areaColors = {
-                'Clínica': 'bg-rose-50 text-rose-700 border-rose-200',
-                'Social-Comunitaria': 'bg-emerald-50 text-emerald-700 border-emerald-200',
-                'Organizacional': 'bg-indigo-50 text-indigo-700 border-indigo-200',
-                'Educativa': 'bg-amber-50 text-amber-700 border-amber-200',
-                'Neuropsicología': 'bg-purple-50 text-purple-700 border-purple-200',
-                'Deportiva/Ejercicio': 'bg-teal-50 text-teal-700 border-teal-200'
-            };
+            const areaColor = getAreaBadgeColor(item.area);
+            const modalityBadge = getModalityBadge(item.modalidad);
 
-            const areaBadgeClass = areaColors[item.area] || 'bg-slate-100 text-slate-700 border-slate-200';
+            // Generate Contact Buttons for the card
+            const contactButtons = renderContactButtons(item, true);
 
             return `
-                <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between overflow-hidden group">
-                    <div class="p-6 space-y-4">
-                        <div class="flex flex-wrap items-center gap-2">
-                            <span class="px-2.5 py-1 rounded-full text-xs font-bold border ${areaBadgeClass}">
-                                ${escapeHTML(item.area)}
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden group">
+                    <div class="p-5">
+                        <!-- Badges Header -->
+                        <div class="flex flex-wrap items-center gap-1.5 mb-3">
+                            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full ${areaColor}">
+                                ${item.area}
                             </span>
-                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                                ${escapeHTML(item.tipo)}
+                            <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                                ${item.tipo}
                             </span>
-                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">
-                                <i class="fa-solid ${item.modalidad === 'Presencial' ? 'fa-building' : item.modalidad === 'Remoto' ? 'fa-laptop' : 'fa-house-laptop'} mr-1"></i>
-                                ${escapeHTML(item.modalidad)}
-                            </span>
+                            ${modalityBadge}
                         </div>
 
-                        <div>
-                            <h3 class="font-bold text-lg text-slate-900 group-hover:text-ceps-600 transition-colors line-clamp-2">
-                                ${escapeHTML(item.institucion)}
-                            </h3>
-                            <p class="text-xs text-slate-500 font-medium flex items-center gap-1 mt-1">
-                                <i class="fa-solid fa-location-dot text-rose-500"></i>
-                                <span>${escapeHTML(item.ubicacion)}</span>
-                            </p>
-                        </div>
-
-                        <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-                            ${escapeHTML(item.descripcion)}
+                        <!-- Title & Org -->
+                        <h3 class="text-base font-bold text-slate-900 group-hover:text-ceps-600 transition duration-150 line-clamp-2 mb-1">
+                            ${escapeHtml(item.titulo)}
+                        </h3>
+                        <p class="text-xs font-semibold text-slate-600 flex items-center gap-1.5 mb-3">
+                            <i class="fa-solid fa-building text-slate-400"></i> ${escapeHtml(item.organizacion)}
                         </p>
 
-                        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 text-xs text-slate-500">
-                            <p class="font-bold text-slate-700 mb-1 flex items-center gap-1">
-                                <i class="fa-solid fa-list-check text-ceps-500"></i>
-                                <span>Requisitos clave:</span>
+                        <!-- Location -->
+                        ${item.ubicacion ? `
+                            <p class="text-xs text-slate-500 mb-3 flex items-center gap-1.5">
+                                <i class="fa-solid fa-location-dot text-rose-500"></i> ${escapeHtml(item.ubicacion)}
                             </p>
-                            <p class="line-clamp-2">${escapeHTML(item.requisitos)}</p>
-                        </div>
+                        ` : ''}
+
+                        <!-- Description snippet -->
+                        <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4">
+                            ${escapeHtml(item.descripcion)}
+                        </p>
                     </div>
 
-                    <div class="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
-                        <span class="text-[11px] text-slate-400 font-medium">Publicado: ${item.fecha}</span>
-                        <button onclick="openDetailModal('${item.id}')" class="px-4 py-2 bg-white hover:bg-ceps-600 hover:text-white border border-slate-200 text-ceps-600 text-xs font-bold rounded-xl shadow-sm transition-all duration-200 flex items-center gap-1.5">
-                            <span>Ver detalles</span>
-                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    <!-- Card Actions -->
+                    <div class="bg-slate-50 p-4 border-t border-slate-100 space-y-2 mt-auto">
+                        <!-- Direct Action Contact Buttons -->
+                        ${contactButtons}
+
+                        <!-- Secondary View Detail Button -->
+                        <button onclick="openDetailModal('${item.id}')" class="w-full py-2 px-3 text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-100 rounded-xl transition flex items-center justify-center gap-1">
+                            <i class="fa-regular fa-eye"></i> Ver Detalle Completo
                         </button>
                     </div>
                 </div>
             `;
         }
 
-        async function handleFormSubmit(e) {
+        function renderContactButtons(item, isCard = false) {
+            let html = '<div class="flex flex-col sm:flex-row flex-wrap gap-2 w-full">';
+
+            const hasEmail = item.contacto_email && item.contacto_email.trim() !== "";
+            const hasPhone = item.contacto_telefono && item.contacto_telefono.trim() !== "";
+            const hasWeb = item.contacto_web_redes && item.contacto_web_redes.trim() !== "";
+
+            if (!hasEmail && !hasPhone && !hasWeb) {
+                return `<div class="text-[11px] text-slate-400 italic text-center py-1">Sin información de contacto directo dada</div>`;
+            }
+
+            // WhatsApp / Phone Button
+            if (hasPhone) {
+                const rawPhone = item.contacto_telefono.replace(/\D/g, '');
+                const waLink = rawPhone.length >= 9 ? `https://wa.me/51${rawPhone}` : `tel:${rawPhone}`;
+                html += `
+                    <a href="${waLink}" target="_blank" rel="noopener" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-sm transition">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> ${isCard ? 'WhatsApp' : 'Contactar por WhatsApp'}
+                    </a>
+                `;
+            }
+
+            // Email Button
+            if (hasEmail) {
+                const mailtoLink = `mailto:${item.contacto_email.trim()}?subject=Postulación:%20${encodeURIComponent(item.titulo)}`;
+                html += `
+                    <a href="${mailtoLink}" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm transition">
+                        <i class="fa-regular fa-envelope text-sm"></i> ${isCard ? 'Correo' : 'Contactar por Correo'}
+                    </a>
+                `;
+            }
+
+            // Web or Social Link Button
+            if (hasWeb) {
+                const url = item.contacto_web_redes.trim();
+                const socialInfo = detectSocialPlatform(url);
+                html += `
+                    <a href="${url.startsWith('http') ? url : 'https://' + url}" target="_blank" rel="noopener" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-white ${socialInfo.bg} rounded-xl shadow-sm transition">
+                        <i class="${socialInfo.icon} text-sm"></i> ${socialInfo.label}
+                    </a>
+                `;
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        function detectSocialPlatform(url) {
+            const lower = url.toLowerCase();
+            if (lower.includes('instagram.com')) {
+                return { label: 'Instagram', icon: 'fa-brands fa-instagram', bg: 'bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90' };
+            } else if (lower.includes('linkedin.com')) {
+                return { label: 'LinkedIn', icon: 'fa-brands fa-linkedin', bg: 'bg-sky-700 hover:bg-sky-800' };
+            } else {
+                return { label: 'Sitio Web', icon: 'fa-solid fa-globe', bg: 'bg-teal-600 hover:bg-teal-700' };
+            }
+        }
+
+        function getAreaBadgeColor(area) {
+            switch(area) {
+                case 'Clínica y Salud': return 'bg-rose-100 text-rose-800 border border-rose-200';
+                case 'Organizacional': return 'bg-amber-100 text-amber-800 border border-amber-200';
+                case 'Educativa': return 'bg-blue-100 text-blue-800 border border-blue-200';
+                case 'Social-Comunitaria': return 'bg-emerald-100 text-emerald-800 border border-emerald-200';
+                case 'Neuropsicología': return 'bg-purple-100 text-purple-800 border border-purple-200';
+                case 'Deportiva': return 'bg-orange-100 text-orange-800 border border-orange-200';
+                default: return 'bg-slate-100 text-slate-800';
+            }
+        }
+
+        function getModalityBadge(modality) {
+            switch(modality) {
+                case 'Presencial': return `<span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-700"><i class="fa-solid fa-building text-[10px]"></i> Presencial</span>`;
+                case 'Remoto': return `<span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-sky-50 text-sky-700"><i class="fa-solid fa-laptop text-[10px]"></i> Remoto</span>`;
+                case 'Híbrido': return `<span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700"><i class="fa-solid fa-arrows-split-up-and-left text-[10px]"></i> Híbrido</span>`;
+                default: return '';
+            }
+        }
+
+        // ==========================================
+        // DETAIL MODAL LOGIC
+        // ==========================================
+        function openDetailModal(id) {
+            const item = opportunities.find(o => String(o.id) === String(id));
+            if (!item) return;
+
+            document.getElementById('modalDetalleTitulo').innerText = item.titulo;
+            document.getElementById('modalDetalleOrganizacion').innerHTML = `<i class="fa-solid fa-building"></i> ${item.organizacion}`;
+            document.getElementById('modalDetalleArea').innerText = item.area;
+            document.getElementById('modalDetalleTipo').innerText = item.tipo;
+            document.getElementById('modalDetalleModalidad').innerText = item.modalidad;
+            document.getElementById('modalDetalleDescripcion').innerText = item.descripcion;
+
+            // Badges
+            const badgesContainer = document.getElementById('modalDetalleBadges');
+            badgesContainer.innerHTML = `
+                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${getAreaBadgeColor(item.area)}">${item.area}</span>
+                <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-800 text-white">${item.tipo}</span>
+            `;
+
+            // Location
+            const locContainer = document.getElementById('modalDetalleUbicacionContainer');
+            if (item.ubicacion) {
+                locContainer.classList.remove('hidden');
+                document.getElementById('modalDetalleUbicacion').querySelector('span').innerText = item.ubicacion;
+            } else {
+                locContainer.classList.add('hidden');
+            }
+
+            // Dynamic Action Buttons inside Detail Modal
+            const contactContainer = document.getElementById('modalDetalleContactos');
+            contactContainer.innerHTML = renderContactButtons(item, false);
+
+            openModal('modalDetalle');
+        }
+
+        // ==========================================
+        // PROPOSE FORM SUBMISSION
+        // ==========================================
+        async function handleProposeSubmit(e) {
             e.preventDefault();
+            const btn = document.getElementById('btnSubmitPropuesta');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-2"></i> Enviando...`;
 
-            const submitBtn = document.getElementById('submit-btn');
-            const submitIcon = document.getElementById('submit-icon');
-            const submitSpinner = document.getElementById('submit-spinner');
-            const submitText = document.getElementById('submit-text');
-
-            submitBtn.disabled = true;
-            submitIcon.classList.add('hidden');
-            submitSpinner.classList.remove('hidden');
-            submitText.textContent = "Enviando a CEPS...";
-
-            const newProposal = {
-                id: 'ceps-' + Date.now(),
-                institucion: document.getElementById('form-institucion').value.trim(),
-                tipo: document.getElementById('form-tipo').value,
-                area: document.getElementById('form-area').value,
-                modalidad: document.getElementById('form-modalidad').value,
-                ubicacion: document.getElementById('form-ubicacion').value.trim(),
-                descripcion: document.getElementById('form-descripcion').value.trim(),
-                requisitos: document.getElementById('form-requisitos').value.trim(),
-                contacto: document.getElementById('form-contacto').value.trim(),
-                correoProponente: document.getElementById('form-correo-proponente').value.trim(),
-                fecha: new Date().toISOString().split('T')[0],
-                estado: 'Pendiente'
+            const newOpportunity = {
+                id: Date.now().toString(),
+                titulo: document.getElementById('propTitulo').value.trim(),
+                organizacion: document.getElementById('propOrganizacion').value.trim(),
+                area: document.getElementById('propArea').value,
+                tipo: document.getElementById('propTipo').value,
+                modalidad: document.getElementById('propModalidad').value,
+                ubicacion: document.getElementById('propUbicacion').value.trim(),
+                descripcion: document.getElementById('propDescripcion').value.trim(),
+                contacto_email: document.getElementById('propContactoEmail').value.trim(),
+                contacto_telefono: document.getElementById('propContactoTelefono').value.trim(),
+                contacto_web_redes: document.getElementById('propContactoWeb').value.trim(),
+                estado: "PENDIENTE" // Requires admin review
             };
 
             try {
-                await fetch(GOOGLE_SCRIPT_URL, {
+                // Post to Google Apps Script Backend
+                await fetch(BACKEND_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(newProposal)
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newOpportunity)
                 });
+
+                // Add locally for instant response
+                opportunities.push(newOpportunity);
+                saveToLocalStorage();
+
+                showToast("¡Propuesta enviada con éxito! Será revisada por la directiva CEPS.", "success");
+                closeModal('modalProponer');
+                document.getElementById('formProponer').reset();
             } catch (err) {
-                console.warn("Error enviando a Google Sheets, guardando localmente.", err);
-            }
-
-            state.opportunities.unshift(newProposal);
-            saveToLocalStorage();
-            renderAllViews();
-
-            submitBtn.disabled = false;
-            submitIcon.classList.remove('hidden');
-            submitSpinner.classList.add('hidden');
-            submitText.textContent = "Enviar Propuesta";
-
-            document.getElementById('opportunity-form').reset();
-            showToast('¡Propuesta enviada con éxito! El equipo de CEPS la revisará pronto.', 'success');
-
-            if (state.userRole === 'admin') {
-                switchTab('admin');
-            } else {
-                switchTab('explorar');
+                console.error("Error submitting form:", err);
+                // Fallback local save
+                opportunities.push(newOpportunity);
+                saveToLocalStorage();
+                showToast("Propuesta registrada localmente. Pendiente de aprobación.", "info");
+                closeModal('modalProponer');
+                document.getElementById('formProponer').reset();
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `Enviar Propuesta`;
+                renderCards();
             }
         }
 
-        function switchAdminSubtab(subtab) {
-            state.adminSubtab = subtab;
-            const pendingContainer = document.getElementById('admin-pending-container');
-            const approvedContainer = document.getElementById('admin-approved-container');
-
-            const btnPending = document.getElementById('admin-subtab-pending');
-            const btnApproved = document.getElementById('admin-subtab-approved');
-
-            if (subtab === 'pending') {
-                pendingContainer.classList.remove('hidden');
-                approvedContainer.classList.add('hidden');
-                btnPending.className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-slate-900 shadow-sm border border-slate-200/60 flex items-center gap-2";
-                btnApproved.className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-2";
+        // ==========================================
+        // ADMIN PANEL & PIN AUTHENTICATION
+        // ==========================================
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const pin = document.getElementById('adminPin').value;
+            if (pin === ADMIN_PIN) {
+                closeModal('modalAdminLogin');
+                document.getElementById('adminPin').value = '';
+                openAdminPanel();
             } else {
-                pendingContainer.classList.add('hidden');
-                approvedContainer.classList.remove('hidden');
-                btnApproved.className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-slate-900 shadow-sm border border-slate-200/60 flex items-center gap-2";
-                btnPending.className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-2";
+                showToast("PIN de administración incorrecto.", "error");
             }
         }
 
-        function renderAdminTables() {
-            const pendingList = state.opportunities.filter(o => o.estado === 'Pendiente');
-            const approvedList = state.opportunities.filter(o => o.estado === 'Aprobado');
+        function openAdminPanel() {
+            renderAdminPendingList();
+            openModal('modalAdminPanel');
+        }
 
-            document.getElementById('stat-pending').textContent = pendingList.length;
-            document.getElementById('stat-approved').textContent = approvedList.length;
-            document.getElementById('stat-total').textContent = state.opportunities.length;
+        function renderAdminPendingList() {
+            const list = document.getElementById('adminPendingList');
+            const pending = opportunities.filter(o => o.estado === "PENDIENTE");
 
-            document.getElementById('badge-pending-count').textContent = pendingList.length;
-            document.getElementById('badge-approved-count').textContent = approvedList.length;
-
-            const navBadge = document.getElementById('pending-badge-nav');
-            const mobileBadge = document.getElementById('pending-badge-mobile');
-            
-            if (pendingList.length > 0) {
-                navBadge.textContent = pendingList.length;
-                navBadge.classList.remove('hidden');
-                mobileBadge.textContent = pendingList.length;
-                mobileBadge.classList.remove('hidden');
-            } else {
-                navBadge.classList.add('hidden');
-                mobileBadge.classList.add('hidden');
+            if (pending.length === 0) {
+                list.innerHTML = `
+                    <div class="text-center py-8 text-slate-500 text-sm bg-slate-50 rounded-xl border border-dashed">
+                        <i class="fa-solid fa-circle-check text-emerald-500 text-2xl mb-2"></i>
+                        <p>No hay propuestas pendientes de aprobación en este momento.</p>
+                    </div>
+                `;
+                return;
             }
 
-            const pendingTbody = document.getElementById('admin-pending-tbody');
-            const pendingEmpty = document.getElementById('admin-pending-empty');
+            list.innerHTML = pending.map(item => `
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">PENDIENTE</span>
+                            <span class="text-xs text-slate-500">${item.area} • ${item.tipo}</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">${escapeHtml(item.titulo)}</h4>
+                        <p class="text-xs text-slate-600"><i class="fa-solid fa-building"></i> ${escapeHtml(item.organizacion)}</p>
+                        <p class="text-xs text-slate-500 line-clamp-2">${escapeHtml(item.descripcion)}</p>
+                        
+                        <!-- Contacts Preview -->
+                        <div class="text-[11px] text-slate-600 flex flex-wrap gap-2 pt-1">
+                            ${item.contacto_email ? `<span><i class="fa-regular fa-envelope"></i> ${escapeHtml(item.contacto_email)}</span>` : ''}
+                            ${item.contacto_telefono ? `<span><i class="fa-brands fa-whatsapp"></i> ${escapeHtml(item.contacto_telefono)}</span>` : ''}
+                            ${item.contacto_web_redes ? `<span><i class="fa-solid fa-link"></i> ${escapeHtml(item.contacto_web_redes)}</span>` : ''}
+                        </div>
+                    </div>
 
-            if (pendingList.length === 0) {
-                pendingTbody.innerHTML = '';
-                pendingEmpty.classList.remove('hidden');
-            } else {
-                pendingEmpty.classList.add('hidden');
-                pendingTbody.innerHTML = pendingList.map(item => `
-                    <tr class="hover:bg-slate-50/80 transition-colors">
-                        <td class="py-4 px-2 font-bold text-slate-900">
-                            <div>${escapeHTML(item.institucion)}</div>
-                            <span class="text-[10px] text-slate-400 font-mono">${escapeHTML(item.id)}</span>
-                        </td>
-                        <td class="py-4 px-2 space-y-1">
-                            <div class="flex gap-1">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700">${escapeHTML(item.area)}</span>
-                                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-ceps-50 text-ceps-700">${escapeHTML(item.tipo)}</span>
-                            </div>
-                            <p class="text-xs text-slate-500 line-clamp-1">${escapeHTML(item.descripcion)}</p>
-                        </td>
-                        <td class="py-4 px-2 text-slate-600">
-                            <span class="font-medium">${escapeHTML(item.correoProponente)}</span>
-                        </td>
-                        <td class="py-4 px-2 text-slate-400 font-mono text-xs">
-                            ${escapeHTML(item.fecha)}
-                        </td>
-                        <td class="py-4 px-2 text-right space-x-1 whitespace-nowrap">
-                            <button onclick="approveOpportunity('${item.id}')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold text-xs shadow-sm transition-all inline-flex items-center gap-1">
-                                <i class="fa-solid fa-check"></i>
-                                <span>Aprobar</span>
-                            </button>
-                            <button onclick="rejectOpportunity('${item.id}')" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg font-semibold text-xs border border-rose-200 transition-all inline-flex items-center gap-1">
-                                <i class="fa-solid fa-xmark"></i>
-                                <span>Rechazar</span>
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-
-            const approvedTbody = document.getElementById('admin-approved-tbody');
-            const approvedEmpty = document.getElementById('admin-approved-empty');
-
-            if (approvedList.length === 0) {
-                approvedTbody.innerHTML = '';
-                approvedEmpty.classList.remove('hidden');
-            } else {
-                approvedEmpty.classList.add('hidden');
-                approvedTbody.innerHTML = approvedList.map(item => `
-                    <tr class="hover:bg-slate-50/80 transition-colors">
-                        <td class="py-4 px-2 font-bold text-slate-900">
-                            ${escapeHTML(item.institucion)}
-                        </td>
-                        <td class="py-4 px-2">
-                            <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-ceps-50 text-ceps-700">
-                                ${escapeHTML(item.area)} - ${escapeHTML(item.tipo)}
-                            </span>
-                        </td>
-                        <td class="py-4 px-2 text-slate-600 text-xs">
-                            ${escapeHTML(item.ubicacion)} (${escapeHTML(item.modalidad)})
-                        </td>
-                        <td class="py-4 px-2 text-xs text-slate-500 font-mono">
-                            ${escapeHTML(item.contacto)}
-                        </td>
-                        <td class="py-4 px-2 text-right">
-                            <button onclick="deleteOpportunity('${item.id}')" class="px-3 py-1.5 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-600 rounded-lg font-semibold text-xs transition-all inline-flex items-center gap-1">
-                                <i class="fa-solid fa-trash-can"></i>
-                                <span>Eliminar</span>
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
+                    <div class="flex items-center gap-2 self-end md:self-center">
+                        <button onclick="approveOpportunity('${item.id}')" class="px-3 py-1.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow transition">
+                            <i class="fa-solid fa-check"></i> Aprobar
+                        </button>
+                        <button onclick="rejectOpportunity('${item.id}')" class="px-3 py-1.5 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-lg shadow transition">
+                            <i class="fa-solid fa-trash"></i> Rechazar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         async function approveOpportunity(id) {
-            const item = state.opportunities.find(o => o.id === id);
-            if (!item) return;
+            const opp = opportunities.find(o => String(o.id) === String(id));
+            if (opp) {
+                opp.estado = "APROBADO";
+                saveToLocalStorage();
+                renderAdminPendingList();
+                renderCards();
+                updateStats();
+                showToast("Oportunidad aprobada y publicada.", "success");
 
-            item.estado = 'Aprobado';
-            saveToLocalStorage();
-            renderAllViews();
-
-            showToast(`Oportunidad "${item.institucion}" aprobada y publicada.`, 'success');
-
-            try {
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({
-                        action: 'updateStatus',
-                        id: id,
-                        estado: 'Aprobado'
-                    })
-                });
-            } catch (err) {
-                console.warn('Backend sync offline.', err);
+                // Sync with GAS
+                try {
+                    await fetch(`${BACKEND_URL}?action=approve&id=${id}`);
+                } catch(e){}
             }
         }
 
         async function rejectOpportunity(id) {
-            const item = state.opportunities.find(o => o.id === id);
-            if (!item) return;
-
-            state.opportunities = state.opportunities.filter(o => o.id !== id);
+            opportunities = opportunities.filter(o => String(o.id) !== String(id));
             saveToLocalStorage();
-            renderAllViews();
-
-            showToast(`Solicitud de "${item.institucion}" rechazada.`, 'info');
+            renderAdminPendingList();
+            renderCards();
+            updateStats();
+            showToast("Oportunidad eliminada.", "info");
 
             try {
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({
-                        action: 'delete',
-                        id: id
-                    })
-                });
-            } catch (err) {
-                console.warn('Backend sync offline.', err);
-            }
+                await fetch(`${BACKEND_URL}?action=reject&id=${id}`);
+            } catch(e){}
         }
 
-        function deleteOpportunity(id) {
-            rejectOpportunity(id);
+        // ==========================================
+        // HELPERS & UI CONTROLS
+        // ==========================================
+        function applyFilters() {
+            const searchVal = document.getElementById('searchInput').value;
+            const btnClear = document.getElementById('btnClearSearch');
+            if (searchVal) btnClear.classList.remove('hidden');
+            else btnClear.classList.add('hidden');
+
+            renderCards();
         }
 
-        function openDetailModal(id) {
-            const item = state.opportunities.find(o => o.id === id);
-            if (!item) return;
-
-            document.getElementById('detail-title').textContent = item.institucion;
-            document.getElementById('detail-location').querySelector('span').textContent = `${item.ubicacion} (${item.modalidad})`;
-            document.getElementById('detail-description').textContent = item.descripcion;
-            document.getElementById('detail-requirements').textContent = item.requisitos;
-            document.getElementById('detail-date').textContent = `Fecha publicación: ${item.fecha}`;
-            document.getElementById('detail-id').textContent = `ID: ${item.id}`;
-
-            const badgesContainer = document.getElementById('detail-badges');
-            badgesContainer.innerHTML = `
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-ceps-100 text-ceps-800">${escapeHTML(item.area)}</span>
-                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">${escapeHTML(item.tipo)}</span>
-                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">${escapeHTML(item.modalidad)}</span>
-            `;
-
-            const contactBtn = document.getElementById('detail-contact-btn');
-            if (item.contacto.includes('@')) {
-                contactBtn.href = `mailto:${item.contacto}?subject=Postulacion%20Oportunidad%20Psicologia%20CEPS`;
-            } else if (item.contacto.startsWith('http')) {
-                contactBtn.href = item.contacto;
-            } else {
-                contactBtn.href = `https://google.com/search?q=${encodeURIComponent(item.institucion + ' ' + item.contacto)}`;
-            }
-
-            document.getElementById('detail-modal').classList.remove('hidden');
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('btnClearSearch').classList.add('hidden');
+            renderCards();
         }
 
-        function closeDetailModal() {
-            document.getElementById('detail-modal').classList.add('hidden');
+        function resetAllFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterArea').value = 'TODAS';
+            document.getElementById('filterType').value = 'TODOS';
+            document.getElementById('filterModality').value = 'TODAS';
+            document.getElementById('btnClearSearch').classList.add('hidden');
+            renderCards();
         }
 
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            
-            const icons = {
-                success: 'fa-circle-check text-emerald-500',
-                info: 'fa-circle-info text-ceps-500',
-                warning: 'fa-triangle-exclamation text-amber-500',
-                error: 'fa-circle-xmark text-rose-500'
-            };
-
-            const borderColors = {
-                success: 'border-emerald-200',
-                info: 'border-ceps-200',
-                warning: 'border-amber-200',
-                error: 'border-rose-200'
-            };
-
-            toast.className = `pointer-events-auto flex items-start gap-3 p-4 bg-white/95 backdrop-blur-md border ${borderColors[type] || 'border-slate-200'} rounded-2xl shadow-xl transform transition-all duration-300 ease-out translate-y-2 opacity-0`;
-            
-            toast.innerHTML = `
-                <i class="fa-solid ${icons[type] || icons.info} text-xl mt-0.5"></i>
-                <div class="flex-1 text-xs sm:text-sm font-medium text-slate-800 leading-snug">
-                    ${escapeHTML(message)}
-                </div>
-                <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600 text-xs">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            `;
-
-            container.appendChild(toast);
-
-            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-2');
-                setTimeout(() => toast.remove(), 300);
-            }, 4500);
+        function updateStats() {
+            const approved = opportunities.filter(o => o.estado === "APROBADO" || !o.estado);
+            document.getElementById('statActive').innerText = approved.length;
         }
 
-        function updateSyncIndicator(status, text) {
-            const syncText = document.getElementById('sync-text');
-            const syncContainer = document.getElementById('sync-status');
-
-            syncText.textContent = text;
-
-            if (status === 'loading') {
-                syncContainer.className = "hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200";
-            } else if (status === 'success') {
-                syncContainer.className = "hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200";
-            } else {
-                syncContainer.className = "hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200";
-            }
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
         }
 
-        function renderAllViews() {
-            renderDirectory();
-            renderAdminTables();
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
         }
 
-        function escapeHTML(str) {
+        function escapeHtml(str) {
             if (!str) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
+            return str.replace(/&/g, "&amp;")
+                      .replace(/</g, "&lt;")
+                      .replace(/>/g, "&gt;")
+                      .replace(/"/g, "&quot;")
+                      .replace(/'/g, "&#039;");
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            loadFromLocalStorageOrSeed();
-            renderAllViews();
-            syncDataFromBackend();
-        });
+        // TOAST NOTIFICATIONS
+        function showToast(message, type = "info") {
+            const existing = document.getElementById('toastNotification');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'toastNotification';
+            
+            let bg = 'bg-slate-900 text-white';
+            if (type === 'success') bg = 'bg-emerald-700 text-white';
+            if (type === 'error') bg = 'bg-rose-700 text-white';
+            if (type === 'warning') bg = 'bg-amber-600 text-white';
+
+            toast.className = `fixed bottom-5 right-5 z-50 ${bg} px-4 py-3 rounded-xl shadow-xl font-medium text-sm flex items-center gap-2 transform transition-all duration-300 translate-y-full opacity-0`;
+            toast.innerHTML = `<span>${message}</span>`;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-full', 'opacity-0');
+            }, 50);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-full', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
     </script>
 </body>
 </html>
