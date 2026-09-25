@@ -8,21 +8,29 @@
     <!-- Favicon Oficial CEPS -->
     <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1G2qkSz9lFEGLpvTCkTAhO2nOamYfSIXs&sz=w128">
 
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
                     colors: {
                         brand: {
-                            verde: '#d4db77',
-                            amarillo: '#fec72e',
                             fucsia: '#e1559c',
+                            fucsialight: '#fdf2f8',
+                            amarillo: '#fec72e',
+                            verde: '#d4db77',
                             lila: '#e9d4f6',
-                            lilaghost: '#f6effb',
-                            celeste: '#0284c7',
-                            celestelight: '#e0f2fe',
+                            lilaghost: '#f7f0fa',
+                            celeste: '#0ea5e9',
                             dark: '#1e293b'
                         }
                     }
@@ -36,7 +44,7 @@
 <body class="bg-[#faf9fc] text-brand-dark min-h-screen flex flex-col font-sans antialiased">
 
     <!-- HEADER / NAVIGATION -->
-    <header class="bg-white border-b border-brand-lila/60 sticky top-0 z-40 shadow-sm">
+    <header class="bg-white border-b border-brand-lila/60 sticky top-0 z-40 shadow-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 
@@ -46,47 +54,50 @@
                          alt="Logo CEPS" 
                          class="w-12 h-12 object-contain rounded-xl p-0.5 border border-brand-lila/50 bg-white shadow-xs">
                     <div>
-                        <span class="text-xs font-bold tracking-wider text-brand-celeste uppercase block">Universidad Peruana Cayetano Heredia</span>
+                        <span class="text-[11px] font-bold tracking-wider text-brand-fucsia uppercase block">Universidad Peruana Cayetano Heredia</span>
                         <h1 class="text-xl font-extrabold text-brand-dark flex items-center gap-2">
-                            CEPS <span class="text-brand-celeste font-medium">| Portal de Oportunidades</span>
+                            CEPS <span class="text-brand-fucsia font-semibold">| Portal de Oportunidades</span>
                         </h1>
                     </div>
                 </div>
 
-                <!-- Navigation Tabs & Role Selector -->
+                <!-- Navigation Tabs & Custom Role Selector -->
                 <div class="flex items-center space-x-2 sm:space-x-4">
-                    <nav class="hidden md:flex space-x-1 bg-brand-lilaghost p-1.5 rounded-xl border border-brand-lila/40">
-                        <button onclick="switchTab('explorar')" id="tab-explorar" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 bg-white text-brand-dark shadow-xs">
-                            <i class="fa-solid fa-compass mr-1.5 text-brand-celeste"></i> Explorar
+                    <nav class="hidden md:flex space-x-1 bg-brand-lilaghost p-1.5 rounded-2xl border border-brand-lila/50">
+                        <button onclick="switchTab('explorar')" id="tab-explorar" class="px-4 py-2 text-sm font-bold rounded-xl transition-all duration-200 bg-white text-brand-fucsia shadow-xs">
+                            <i class="fa-solid fa-compass mr-1.5 text-brand-fucsia"></i> Explorar
                         </button>
-                        <button onclick="switchTab('proponer')" id="tab-proponer" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-slate-600 hover:text-brand-dark">
-                            <i class="fa-solid fa-plus-circle mr-1.5 text-brand-fucsia"></i> Proponer Lugar
+                        <button onclick="switchTab('proponer')" id="tab-proponer" class="px-4 py-2 text-sm font-bold rounded-xl transition-all duration-200 text-slate-600 hover:text-brand-fucsia">
+                            <i class="fa-solid fa-plus-circle mr-1.5 text-brand-amarillo"></i> Proponer Lugar
                         </button>
-                        <button onclick="switchTab('admin')" id="tab-admin" class="hidden px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-slate-600 hover:text-brand-dark relative">
+                        <button onclick="switchTab('admin')" id="tab-admin" class="hidden px-4 py-2 text-sm font-bold rounded-xl transition-all duration-200 text-slate-600 hover:text-brand-fucsia relative">
                             <i class="fa-solid fa-user-shield mr-1.5 text-brand-celeste"></i> Panel CEPS
-                            <span id="pending-badge" class="hidden absolute -top-1 -right-1 bg-brand-fucsia text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">0</span>
+                            <span id="pending-badge" class="hidden absolute -top-1 -right-1 bg-brand-fucsia text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded-full border-2 border-white">0</span>
                         </button>
                     </nav>
 
-                    <!-- Role Switcher -->
+                    <!-- Stylized Role Switcher -->
                     <div class="relative">
-                        <select id="role-selector" onchange="handleRoleChange(this.value)" class="bg-white border-2 border-brand-amarillo text-brand-dark font-bold text-xs sm:text-sm py-2 px-3 rounded-xl shadow-xs hover:border-brand-amarillo/80 focus:outline-none cursor-pointer">
-                            <option value="estudiante">Estudiante</option>
-                            <option value="ceps">CEPS</option>
-                        </select>
+                        <div class="flex items-center bg-brand-fucsialight border-2 border-brand-fucsia/40 rounded-2xl p-1 shadow-xs hover:border-brand-fucsia transition-all">
+                            <span class="text-xs font-black text-brand-fucsia px-2 py-1 uppercase tracking-wider hidden sm:inline">Rol:</span>
+                            <select id="role-selector" onchange="handleRoleChange(this.value)" class="bg-white text-brand-dark font-extrabold text-xs sm:text-sm py-1.5 px-3 rounded-xl focus:outline-none cursor-pointer border border-brand-lila/60 shadow-2xs">
+                                <option value="estudiante">Estudiante</option>
+                                <option value="ceps">CEPS</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Mobile Navigation Bar -->
             <div class="md:hidden flex border-t border-brand-lila/30 py-2 justify-around">
-                <button onclick="switchTab('explorar')" id="mob-tab-explorar" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-brand-celestelight text-brand-celeste">
+                <button onclick="switchTab('explorar')" id="mob-tab-explorar" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-brand-fucsia text-white">
                     <i class="fa-solid fa-compass mr-1"></i> Explorar
                 </button>
-                <button onclick="switchTab('proponer')" id="mob-tab-proponer" class="text-xs font-medium text-slate-600 px-3 py-1.5">
+                <button onclick="switchTab('proponer')" id="mob-tab-proponer" class="text-xs font-bold text-slate-600 px-3 py-1.5">
                     <i class="fa-solid fa-plus-circle mr-1 text-brand-fucsia"></i> Proponer
                 </button>
-                <button onclick="switchTab('admin')" id="mob-tab-admin" class="hidden text-xs font-medium text-slate-600 px-3 py-1.5">
+                <button onclick="switchTab('admin')" id="mob-tab-admin" class="hidden text-xs font-bold text-slate-600 px-3 py-1.5">
                     <i class="fa-solid fa-user-shield mr-1 text-brand-celeste"></i> Panel
                 </button>
             </div>
@@ -94,22 +105,22 @@
     </header>
 
     <!-- HERO SECTION -->
-    <section class="bg-gradient-to-r from-brand-lilaghost via-white to-brand-celestelight/40 py-8 border-b border-brand-lila/40">
+    <section class="bg-gradient-to-br from-white via-brand-fucsialight/40 to-brand-lilaghost py-10 border-b border-brand-lila/40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
-                <span class="inline-block bg-brand-amarillo/30 text-brand-dark text-xs font-extrabold px-3 py-1 rounded-full border border-brand-amarillo/50 mb-2">
-                    <i class="fa-solid fa-graduation-cap mr-1"></i> Centro de Estudiantes de Psicología
+                <span class="inline-block bg-brand-amarillo/30 text-brand-dark text-xs font-extrabold px-3 py-1 rounded-full border border-brand-amarillo/60 mb-3 shadow-2xs">
+                    <i class="fa-solid fa-graduation-cap mr-1 text-brand-fucsia"></i> Centro de Estudiantes de Psicología
                 </span>
                 <h2 class="text-2xl sm:text-3xl font-black text-brand-dark tracking-tight">
-                    Encuentra tu próximo espacio de <span class="text-brand-celeste underline decoration-brand-amarillo decoration-4 underline-offset-4">prácticas o voluntariado</span>
+                    Encuentra tu próximo espacio de <span class="text-brand-fucsia underline decoration-brand-amarillo decoration-4 underline-offset-4">prácticas o voluntariado</span>
                 </h2>
-                <p class="text-sm sm:text-base text-slate-600 mt-2 max-w-2xl">
+                <p class="text-xs sm:text-sm text-slate-600 mt-2 max-w-2xl font-medium leading-relaxed">
                     Base comunitaria de oportunidades en psicología clínica, social, organizacional, educativa y de la salud verificadas por el CEPS.
                 </p>
             </div>
 
             <!-- Status Connection Pill -->
-            <div id="connection-status" class="flex items-center gap-2 bg-white px-3.5 py-2 rounded-xl border border-brand-lila/60 text-xs font-semibold text-slate-500 shadow-xs">
+            <div id="connection-status" class="flex items-center gap-2 bg-white px-4 py-2.5 rounded-2xl border border-brand-lila/60 text-xs font-bold text-slate-600 shadow-xs">
                 <span class="w-2.5 h-2.5 rounded-full bg-slate-300 animate-pulse" id="status-dot"></span>
                 <span id="status-text">Conectando...</span>
             </div>
@@ -129,12 +140,12 @@
                     <!-- Search Input -->
                     <div class="relative">
                         <i class="fa-solid fa-search absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
-                        <input type="text" id="search-input" oninput="applyFilters()" placeholder="Buscar por institución, cargo o área..." class="w-full pl-10 pr-4 py-2.5 bg-brand-lilaghost/50 border border-brand-lila/60 rounded-xl text-sm focus:outline-none focus:border-brand-celeste focus:bg-white transition-all">
+                        <input type="text" id="search-input" oninput="applyFilters()" placeholder="Buscar por institución, cargo..." class="w-full pl-10 pr-4 py-2.5 bg-brand-lilaghost/60 border border-brand-lila/60 rounded-xl text-xs font-medium focus:outline-none focus:border-brand-fucsia focus:bg-white transition-all">
                     </div>
 
                     <!-- Area Filter -->
                     <div>
-                        <select id="filter-area" onchange="applyFilters()" class="w-full py-2.5 px-3 bg-brand-lilaghost/50 border border-brand-lila/60 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:border-brand-celeste focus:bg-white transition-all">
+                        <select id="filter-area" onchange="applyFilters()" class="w-full py-2.5 px-3 bg-brand-lilaghost/60 border border-brand-lila/60 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-brand-fucsia focus:bg-white transition-all">
                             <option value="">Todas las Áreas</option>
                             <option value="Clínica">Psicología Clínica</option>
                             <option value="Social-Comunitaria">Psicología Social-Comunitaria</option>
@@ -147,7 +158,7 @@
 
                     <!-- Type Filter -->
                     <div>
-                        <select id="filter-tipo" onchange="applyFilters()" class="w-full py-2.5 px-3 bg-brand-lilaghost/50 border border-brand-lila/60 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:border-brand-celeste focus:bg-white transition-all">
+                        <select id="filter-tipo" onchange="applyFilters()" class="w-full py-2.5 px-3 bg-brand-lilaghost/60 border border-brand-lila/60 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-brand-fucsia focus:bg-white transition-all">
                             <option value="">Todos los Tipos</option>
                             <option value="Prácticas Preprofesionales">Prácticas Preprofesionales</option>
                             <option value="Voluntariado">Voluntariado</option>
@@ -158,7 +169,7 @@
 
                     <!-- Modality Filter -->
                     <div>
-                        <select id="filter-modalidad" onchange="applyFilters()" class="w-full py-2.5 px-3 bg-brand-lilaghost/50 border border-brand-lila/60 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:border-brand-celeste focus:bg-white transition-all">
+                        <select id="filter-modalidad" onchange="applyFilters()" class="w-full py-2.5 px-3 bg-brand-lilaghost/60 border border-brand-lila/60 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-brand-fucsia focus:bg-white transition-all">
                             <option value="">Todas las Modalidades</option>
                             <option value="Presencial">Presencial</option>
                             <option value="Híbrido">Híbrido</option>
@@ -190,34 +201,34 @@
             <!-- Empty State -->
             <div id="empty-state" class="hidden text-center py-16 bg-white rounded-2xl border border-dashed border-slate-300 p-8">
                 <i class="fa-solid fa-folder-open text-4xl text-slate-300 mb-3"></i>
-                <h3 class="text-lg font-bold text-brand-dark">No se encontraron oportunidades</h3>
-                <p class="text-sm text-slate-500 mt-1">Prueba cambiando los filtros de búsqueda o sé el primero en proponer una plaza.</p>
+                <h3 class="text-base font-extrabold text-brand-dark">No se encontraron oportunidades</h3>
+                <p class="text-xs text-slate-500 mt-1">Prueba cambiando los filtros de búsqueda o sé el primero en proponer una plaza.</p>
             </div>
         </section>
 
         <!-- TAB 2: PROPONER LUGAR -->
         <section id="view-proponer" class="hidden max-w-2xl mx-auto">
-            <div class="bg-white rounded-2xl border border-brand-lila/60 shadow-sm overflow-hidden">
-                <div class="bg-gradient-to-r from-brand-celestelight to-white p-6 border-b border-brand-lila/40">
+            <div class="bg-white rounded-2xl border border-brand-lila/60 shadow-xs overflow-hidden">
+                <div class="bg-gradient-to-r from-brand-fucsialight to-white p-6 border-b border-brand-lila/40">
                     <h3 class="text-xl font-black text-brand-dark">Proponer una Oportunidad / Lugar</h3>
-                    <p class="text-xs sm:text-sm text-slate-600 mt-1">Comparte con la comunidad universitaria vacantes de prácticas, voluntariados u proyectos.</p>
+                    <p class="text-xs text-slate-600 mt-1 font-medium">Comparte con la comunidad universitaria vacantes de prácticas, voluntariados u proyectos.</p>
                 </div>
 
                 <form id="proponer-form" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4">
                     
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Nombre de la Institución / Organización *</label>
-                        <input type="text" name="institucion" required placeholder="Ej. Municipalidad de Jesús María, ONG Modomental" class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-sm focus:outline-none focus:border-brand-celeste focus:bg-white">
+                        <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Nombre de la Institución / Organización *</label>
+                        <input type="text" name="institucion" required placeholder="Ej. Municipalidad de Jesús María, ONG Modomental" class="w-full p-3 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-xs font-medium focus:outline-none focus:border-brand-fucsia focus:bg-white">
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Puesto / Cargo *</label>
-                            <input type="text" name="puesto" required placeholder="Ej. Practicante de Psicología Comunitario" class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-sm focus:outline-none focus:border-brand-celeste focus:bg-white">
+                            <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Puesto / Cargo *</label>
+                            <input type="text" name="puesto" required placeholder="Ej. Practicante de Psicología Comunitario" class="w-full p-3 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-xs font-medium focus:outline-none focus:border-brand-fucsia focus:bg-white">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Área de la Psicología *</label>
-                            <select name="area" required class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-sm font-medium focus:outline-none focus:border-brand-celeste focus:bg-white">
+                            <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Área de la Psicología *</label>
+                            <select name="area" required class="w-full p-3 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-xs font-extrabold text-slate-700 focus:outline-none focus:border-brand-fucsia focus:bg-white">
                                 <option value="Social-Comunitaria">Social-Comunitaria</option>
                                 <option value="Clínica">Clínica</option>
                                 <option value="Organizacional">Organizacional</option>
@@ -230,8 +241,8 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tipo *</label>
-                            <select name="tipo" required class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-sm font-medium focus:outline-none focus:border-brand-celeste focus:bg-white">
+                            <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Tipo *</label>
+                            <select name="tipo" required class="w-full p-3 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-xs font-extrabold text-slate-700 focus:outline-none focus:border-brand-fucsia focus:bg-white">
                                 <option value="Prácticas Preprofesionales">Prácticas Preprofesionales</option>
                                 <option value="Voluntariado">Voluntariado</option>
                                 <option value="Investigación">Investigación</option>
@@ -239,8 +250,8 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Modalidad *</label>
-                            <select name="modalidad" required class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-sm font-medium focus:outline-none focus:border-brand-celeste focus:bg-white">
+                            <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Modalidad *</label>
+                            <select name="modalidad" required class="w-full p-3 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-xs font-extrabold text-slate-700 focus:outline-none focus:border-brand-fucsia focus:bg-white">
                                 <option value="Presencial">Presencial</option>
                                 <option value="Híbrido">Híbrido</option>
                                 <option value="Remoto">Remoto</option>
@@ -249,38 +260,38 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Ubicación / Distrito *</label>
-                        <input type="text" name="ubicacion" required placeholder="Ej. Jesús María, San Juan de Lurigancho, Remoto" class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-sm focus:outline-none focus:border-brand-celeste focus:bg-white">
+                        <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Ubicación / Distrito *</label>
+                        <input type="text" name="ubicacion" required placeholder="Ej. Jesús María, San Juan de Lurigancho, Remoto" class="w-full p-3 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-xs font-medium focus:outline-none focus:border-brand-fucsia focus:bg-white">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Descripción y Requisitos *</label>
-                        <textarea name="descripcion" rows="4" required placeholder="Detalla las funciones, horarios, requerimientos o compromisos del puesto..." class="w-full p-2.5 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-sm focus:outline-none focus:border-brand-celeste focus:bg-white"></textarea>
+                        <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Descripción y Requisitos *</label>
+                        <textarea name="descripcion" rows="4" required placeholder="Detalla las funciones, horarios, requerimientos o compromisos del puesto..." class="w-full p-3 bg-brand-lilaghost/40 border border-brand-lila/60 rounded-xl text-xs font-medium focus:outline-none focus:border-brand-fucsia focus:bg-white"></textarea>
                     </div>
 
                     <!-- Independent Optional Contact Methods -->
                     <div class="border-t border-brand-lila/50 pt-4 space-y-3">
-                        <span class="block text-xs font-black text-brand-celeste uppercase tracking-wider">Opciones de Contacto (Ingresa al menos una)</span>
+                        <span class="block text-xs font-black text-brand-fucsia uppercase tracking-wider">Opciones de Contacto (Ingresa al menos una)</span>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <div>
-                                <label class="block text-[11px] font-bold text-slate-600 mb-1">Correo Electrónico</label>
-                                <input type="email" name="contacto_email" placeholder="contacto@org.pe" class="w-full p-2 bg-brand-lilaghost/30 border border-brand-lila/50 rounded-lg text-xs focus:outline-none focus:border-brand-celeste">
+                                <label class="block text-[11px] font-extrabold text-slate-600 mb-1">Correo Electrónico</label>
+                                <input type="email" name="contacto_email" placeholder="contacto@org.pe" class="w-full p-2.5 bg-brand-lilaghost/30 border border-brand-lila/50 rounded-lg text-xs focus:outline-none focus:border-brand-fucsia">
                             </div>
                             <div>
-                                <label class="block text-[11px] font-bold text-slate-600 mb-1">Teléfono / WhatsApp</label>
-                                <input type="text" name="contacto_telefono" placeholder="+51 987654321" class="w-full p-2 bg-brand-lilaghost/30 border border-brand-lila/50 rounded-lg text-xs focus:outline-none focus:border-brand-celeste">
+                                <label class="block text-[11px] font-extrabold text-slate-600 mb-1">Teléfono / WhatsApp</label>
+                                <input type="text" name="contacto_telefono" placeholder="+51 987654321" class="w-full p-2.5 bg-brand-lilaghost/30 border border-brand-lila/50 rounded-lg text-xs focus:outline-none focus:border-brand-fucsia">
                             </div>
                             <div>
-                                <label class="block text-[11px] font-bold text-slate-600 mb-1">Red Social / Web</label>
-                                <input type="url" name="contacto_web" placeholder="https://instagram.com/..." class="w-full p-2 bg-brand-lilaghost/30 border border-brand-lila/50 rounded-lg text-xs focus:outline-none focus:border-brand-celeste">
+                                <label class="block text-[11px] font-extrabold text-slate-600 mb-1">Red Social / Web</label>
+                                <input type="url" name="contacto_web" placeholder="https://instagram.com/..." class="w-full p-2.5 bg-brand-lilaghost/30 border border-brand-lila/50 rounded-lg text-xs focus:outline-none focus:border-brand-fucsia">
                             </div>
                         </div>
                     </div>
 
                     <div class="pt-4 flex justify-end gap-3">
-                        <button type="button" onclick="switchTab('explorar')" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100">Cancelar</button>
-                        <button type="submit" id="submit-btn" class="px-6 py-2.5 bg-brand-amarillo text-brand-dark font-extrabold rounded-xl text-sm hover:bg-brand-amarillo/90 shadow-xs transition-all">
+                        <button type="button" onclick="switchTab('explorar')" class="px-5 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100">Cancelar</button>
+                        <button type="submit" id="submit-btn" class="px-6 py-2.5 bg-brand-fucsia text-white font-extrabold rounded-xl text-xs hover:bg-brand-fucsia/90 shadow-xs transition-all">
                             Enviar Propuesta
                         </button>
                     </div>
@@ -292,13 +303,13 @@
         <section id="view-admin" class="hidden space-y-6">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-brand-lila/50 shadow-xs">
                 <div>
-                    <h3 class="text-xl font-black text-brand-dark flex items-center gap-2">
-                        <i class="fa-solid fa-user-shield text-brand-celeste"></i> Moderación de Oportunidades CEPS
+                    <h3 class="text-lg font-black text-brand-dark flex items-center gap-2">
+                        <i class="fa-solid fa-user-shield text-brand-fucsia"></i> Moderación de Oportunidades CEPS
                     </h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Aprueba o rechaza las propuestas enviadas antes de que aparezcan en la vista pública de estudiantes.</p>
+                    <p class="text-xs text-slate-500 font-medium mt-0.5">Aprueba o rechaza las propuestas enviadas antes de que aparezcan en la vista pública de estudiantes.</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <span id="pending-count-badge" class="bg-brand-amarillo/40 text-brand-dark text-xs font-bold px-3 py-1.5 rounded-xl border border-brand-amarillo">
+                    <span id="pending-count-badge" class="bg-brand-amarillo/40 text-brand-dark text-xs font-extrabold px-3 py-1.5 rounded-xl border border-brand-amarillo">
                         0 Solicitudes Pendientes
                     </span>
                 </div>
@@ -313,18 +324,18 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-white border-t border-brand-lila/50 py-6 mt-12 text-center text-xs text-slate-500">
+    <footer class="bg-white border-t border-brand-lila/50 py-6 mt-12 text-center text-xs text-slate-500 font-medium">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center space-x-2">
                 <img src="https://drive.google.com/thumbnail?id=1G2qkSz9lFEGLpvTCkTAhO2nOamYfSIXs&sz=w100" class="w-6 h-6 object-contain">
-                <span class="font-bold text-brand-dark">CEPS UPCH 2026</span>
+                <span class="font-extrabold text-brand-dark">CEPS UPCH 2026</span>
             </div>
             <p>Gestión del Centro de Estudiantes de Psicología - Universidad Peruana Cayetano Heredia</p>
         </div>
     </footer>
 
     <!-- TOAST NOTIFICATION -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-brand-dark text-white text-xs sm:text-sm font-semibold px-4 py-3 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-2">
+    <div id="toast" class="fixed bottom-5 right-5 bg-brand-dark text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-2">
         <i class="fa-solid fa-circle-check text-brand-verde text-base" id="toast-icon"></i>
         <span id="toast-message">Notificación</span>
     </div>
@@ -453,18 +464,18 @@
                 if (v === tab) {
                     if (viewEl) viewEl.classList.remove('hidden');
                     if (tabEl) {
-                        tabEl.className = "px-4 py-2 text-sm font-bold rounded-lg bg-white text-brand-dark shadow-xs";
+                        tabEl.className = "px-4 py-2 text-sm font-bold rounded-xl bg-white text-brand-fucsia shadow-xs";
                     }
                     if (mobTabEl) {
-                        mobTabEl.className = "text-xs font-bold px-3 py-1.5 rounded-lg bg-brand-celestelight text-brand-celeste";
+                        mobTabEl.className = "text-xs font-bold px-3 py-1.5 rounded-xl bg-brand-fucsia text-white";
                     }
                 } else {
                     if (viewEl) viewEl.classList.add('hidden');
                     if (tabEl) {
-                        tabEl.className = "px-4 py-2 text-sm font-semibold rounded-lg text-slate-600 hover:text-brand-dark";
+                        tabEl.className = "px-4 py-2 text-sm font-bold rounded-xl text-slate-600 hover:text-brand-fucsia";
                     }
                     if (mobTabEl) {
-                        mobTabEl.className = "text-xs font-medium text-slate-600 px-3 py-1.5";
+                        mobTabEl.className = "text-xs font-bold text-slate-600 px-3 py-1.5";
                     }
                 }
             });
@@ -516,7 +527,7 @@
 
                 // Area Color Mapping
                 let areaBadgeClass = "bg-brand-lilaghost text-brand-dark border-brand-lila";
-                if (item.area === 'Social-Comunitaria') areaBadgeClass = "bg-brand-lila/40 text-brand-dark border-brand-lila";
+                if (item.area === 'Social-Comunitaria') areaBadgeClass = "bg-brand-fucsialight text-brand-fucsia border-brand-fucsia/30";
                 if (item.area === 'Clínica') areaBadgeClass = "bg-brand-celestelight text-brand-celeste border-brand-celestelight";
                 if (item.area === 'Organizacional') areaBadgeClass = "bg-brand-amarillo/30 text-brand-dark border-brand-amarillo/50";
 
@@ -524,7 +535,7 @@
                 let contactButtonsHtml = '';
                 if (item.contacto_email) {
                     contactButtonsHtml += `
-                        <a href="mailto:${item.contacto_email}" target="_blank" class="flex-1 bg-brand-celestelight hover:bg-brand-celeste hover:text-white text-brand-celeste font-bold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all">
+                        <a href="mailto:${item.contacto_email}" target="_blank" class="flex-1 bg-brand-fucsialight hover:bg-brand-fucsia hover:text-white text-brand-fucsia font-extrabold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all">
                             <i class="fa-solid fa-envelope"></i> Correo
                         </a>
                     `;
@@ -532,7 +543,7 @@
                 if (item.contacto_telefono) {
                     const cleanPhone = item.contacto_telefono.replace(/[^0-9]/g, '');
                     contactButtonsHtml += `
-                        <a href="https://wa.me/${cleanPhone}" target="_blank" class="flex-1 bg-brand-verde/40 hover:bg-brand-verde text-brand-dark font-bold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all">
+                        <a href="https://wa.me/${cleanPhone}" target="_blank" class="flex-1 bg-brand-verde/40 hover:bg-brand-verde text-brand-dark font-extrabold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all">
                             <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp
                         </a>
                     `;
@@ -544,7 +555,7 @@
                     if (item.contacto_web.includes('linkedin')) { icon = "fa-linkedin"; label = "LinkedIn"; }
 
                     contactButtonsHtml += `
-                        <a href="${item.contacto_web}" target="_blank" class="flex-1 bg-brand-lilaghost hover:bg-brand-lila text-brand-dark font-bold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all">
+                        <a href="${item.contacto_web}" target="_blank" class="flex-1 bg-brand-lilaghost hover:bg-brand-lila text-brand-dark font-extrabold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all">
                             <i class="fa-brands ${icon} text-sm"></i> ${label}
                         </a>
                     `;
@@ -553,26 +564,26 @@
                 card.innerHTML = `
                     <div class="space-y-3">
                         <div class="flex items-center justify-between gap-2">
-                            <span class="text-[11px] font-extrabold px-2.5 py-1 rounded-full border ${areaBadgeClass}">
+                            <span class="text-[10px] font-black px-2.5 py-1 rounded-full border ${areaBadgeClass}">
                                 ${item.area}
                             </span>
-                            <span class="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+                            <span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
                                 ${item.modalidad}
                             </span>
                         </div>
 
                         <div>
                             <h4 class="text-base font-extrabold text-brand-dark leading-snug">${item.puesto}</h4>
-                            <p class="text-xs font-bold text-brand-celeste mt-0.5"><i class="fa-solid fa-building mr-1"></i> ${item.institucion}</p>
+                            <p class="text-xs font-bold text-brand-fucsia mt-0.5"><i class="fa-solid fa-building mr-1"></i> ${item.institucion}</p>
                         </div>
 
-                        <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                        <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed font-medium">
                             ${item.descripcion}
                         </p>
                     </div>
 
                     <div class="pt-4 mt-4 border-t border-brand-lila/30 space-y-2">
-                        <div class="flex items-center text-[11px] text-slate-500 gap-1">
+                        <div class="flex items-center text-[11px] font-semibold text-slate-500 gap-1">
                             <i class="fa-solid fa-location-dot text-brand-fucsia"></i>
                             <span class="truncate">${item.ubicacion}</span>
                         </div>
@@ -608,8 +619,8 @@
                 pendingGrid.innerHTML = `
                     <div class="col-span-full bg-white p-8 rounded-2xl border border-dashed border-slate-300 text-center">
                         <i class="fa-solid fa-circle-check text-3xl text-brand-verde mb-2"></i>
-                        <h4 class="text-sm font-bold text-brand-dark">¡Todo al día!</h4>
-                        <p class="text-xs text-slate-500">No hay nuevas propuestas pendientes de aprobación.</p>
+                        <h4 class="text-sm font-extrabold text-brand-dark">¡Todo al día!</h4>
+                        <p class="text-xs text-slate-500 font-medium">No hay nuevas propuestas pendientes de aprobación.</p>
                     </div>
                 `;
                 return;
@@ -623,11 +634,11 @@
                     <div class="space-y-2">
                         <div class="flex justify-between items-start">
                             <span class="bg-brand-amarillo/30 text-brand-dark text-[10px] font-black px-2 py-0.5 rounded-md border border-brand-amarillo">PENDIENTE</span>
-                            <span class="text-[10px] text-slate-400">${item.fecha || 'Reciente'}</span>
+                            <span class="text-[10px] font-semibold text-slate-400">${item.fecha || 'Reciente'}</span>
                         </div>
                         <h4 class="font-extrabold text-sm text-brand-dark">${item.puesto}</h4>
-                        <p class="text-xs font-bold text-brand-celeste">${item.institucion}</p>
-                        <p class="text-xs text-slate-600">${item.descripcion}</p>
+                        <p class="text-xs font-bold text-brand-fucsia">${item.institucion}</p>
+                        <p class="text-xs font-medium text-slate-600">${item.descripcion}</p>
                     </div>
 
                     <div class="flex gap-2 pt-2 border-t border-slate-100">
